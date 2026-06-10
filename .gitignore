@@ -1,0 +1,16 @@
+# 依赖与构建产物
+node_modules/
+dist/
+.astro/
+
+# 本地工作文件（不进仓库）
+docs/superpowers/
+.superpowers/
+.obsidian/
+
+# 环境与系统
+.env
+.env.*
+*.log
+.DS_Store
+Thumbs.db
