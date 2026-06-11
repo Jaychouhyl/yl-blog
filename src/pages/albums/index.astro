@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate } from '../../lib/text';
+
+const albums = (await getCollection('albums')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const albumsWithFull = await Promise.all(
+  albums.map(async (album) => ({
+    album,
+    fulls: await Promise.all(
+      album.data.images.map((img) => getImage({ src: img.src, width: 1600 }))
+    ),
+  }))
+);
+---
+<BaseLayout title="相册">
+  <div class="container roomy" style="padding-top:var(--page-top);">
+    <p class="page-sub">GALLERY</p>
+    <h1 class="page-title">相册</h1>
+    {albumsWithFull.map(({ album, fulls }) => (
+      <section>
+        <h2 class="album-title">{album.data.title} <span class="muted">{formatDate(album.data.date)}</span></h2>
+        <div class="masonry">
+          {album.data.images.map((img, i) => (
+            <Image
+              class="shot" src={img.src} alt={img.alt} width={480}
+              loading="lazy" data-full={fulls[i].src}
+            />
+          ))}
+        </div>
+      </section>
+    ))}
+    {albumsWithFull.length === 0 && <p class="muted" style="margin-top:24px;">相册还是空的。</p>}
+  </div>
+  <dialog id="lightbox">
+    <img id="lightbox-img" alt="大图预览" />
+  </dialog>
+</BaseLayout>
+<style>
+  .album-title { font-size: 22px; margin: 28px 0 12px; }
+  .masonry { columns: 3 280px; column-gap: 14px; }
+  .shot { width: 100%; height: auto; border-radius: 10px; margin-bottom: 14px; cursor: zoom-in;
+    break-inside: avoid; box-shadow: var(--shadow); }
+  dialog { border: none; background: rgba(0, 0, 0, 0.85); padding: 24px; border-radius: 12px; }
+  dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
+  dialog img { max-width: 86vw; max-height: 86vh; border-radius: 8px; }
+</style>
+<script>
+  const box = document.getElementById('lightbox') as HTMLDialogElement;
+  const big = document.getElementById('lightbox-img') as HTMLImageElement;
+  document.querySelectorAll<HTMLImageElement>('.shot').forEach((img) => {
+    img.addEventListener('click', () => {
+      big.src = img.dataset.full!;
+      box.showModal();
+    });
+  });
+  box.addEventListener('click', () => box.close());
+</script>
