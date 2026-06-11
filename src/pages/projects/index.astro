@@ -2,7 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id));
 const rendered = await Promise.all(projects.map(async (p) => ({ p, Content: (await render(p)).Content })));
 ---
 <BaseLayout title="项目">
@@ -15,10 +15,11 @@ const rendered = await Promise.all(projects.map(async (p) => ({ p, Content: (awa
           <h2 class="name">{p.data.title}</h2>
           <div class="tech">{p.data.tech.map((t) => <span class="chip">{t}</span>)}</div>
           <div class="desc"><Content /></div>
-          {p.data.repo && <a class="repo" href={p.data.repo} target="_blank" rel="noopener noreferrer">仓库地址 →</a>}
+          {p.data.repo && <a class="repo" href={p.data.repo} target="_blank" rel="noopener noreferrer" aria-label={`${p.data.title} 仓库地址`}>仓库地址 →</a>}
         </div>
       ))}
     </div>
+    {rendered.length === 0 && <p class="muted" style="margin-top:24px;">暂无项目。</p>}
   </div>
 </BaseLayout>
 <style>
@@ -28,4 +29,5 @@ const rendered = await Promise.all(projects.map(async (p) => ({ p, Content: (awa
   .tech { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
   .desc { color: var(--ink-2); font-size: 14px; }
   .repo { color: var(--sakura); font-size: 14px; }
+  .desc :global(p) { margin: 0.4em 0; }
 </style>
