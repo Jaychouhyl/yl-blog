@@ -1,6 +1,6 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob, file } from 'astro/loaders';
-import { parse as parseYaml } from 'yaml';
 
 const posts = defineCollection({
   loader: glob({
@@ -33,7 +33,7 @@ const projects = defineCollection({
 });
 
 const albums = defineCollection({
-  loader: file('./src/content/albums/albums.yaml', { parser: (t) => parseYaml(t) }),
+  loader: file('./src/content/albums/albums.yaml'),
   schema: ({ image }) =>
     z.object({
       id: z.string(),
@@ -44,7 +44,7 @@ const albums = defineCollection({
 });
 
 const friends = defineCollection({
-  loader: file('./src/content/friends/friends.yaml', { parser: (t) => parseYaml(t) }),
+  loader: file('./src/content/friends/friends.yaml'),
   schema: z.object({
     id: z.string(),
     name: z.string(),
