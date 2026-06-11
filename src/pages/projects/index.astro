@@ -1,0 +1,31 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(projects.map(async (p) => ({ p, Content: (await render(p)).Content })));
+---
+<BaseLayout title="项目">
+  <div class="container roomy" style="padding-top:var(--page-top);">
+    <p class="page-sub">PROJECTS</p>
+    <h1 class="page-title">项目</h1>
+    <div class="grid">
+      {rendered.map(({ p, Content }) => (
+        <div class="glass card">
+          <h2 class="name">{p.data.title}</h2>
+          <div class="tech">{p.data.tech.map((t) => <span class="chip">{t}</span>)}</div>
+          <div class="desc"><Content /></div>
+          {p.data.repo && <a class="repo" href={p.data.repo} target="_blank" rel="noopener noreferrer">仓库地址 →</a>}
+        </div>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+<style>
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin-top: 24px; }
+  .card { padding: 26px 28px; }
+  .name { margin: 0 0 10px; font-size: 24px; }
+  .tech { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .desc { color: var(--ink-2); font-size: 14px; }
+  .repo { color: var(--sakura); font-size: 14px; }
+</style>
