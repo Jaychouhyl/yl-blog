@@ -1,0 +1,31 @@
+{
+  "name": "yl-blog",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "check": "astro check",
+    "build": "astro check && astro build && pagefind --site dist",
+    "preview": "astro preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource/noto-serif-sc": "^5.2.8",
+    "astro": "^6.4.6",
+    "katex": "^0.17.0",
+    "marked": "^18.0.5",
+    "oh-my-live2d": "^0.19.3",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
+    "yaml": "^2.9.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "linkinator": "^7.6.1",
+    "pagefind": "^1.5.2",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8"
+  }
+}
