@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jaychouhyl.github.io/yl-blog/sitemap-index.xml
