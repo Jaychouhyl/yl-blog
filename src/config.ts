@@ -25,5 +25,6 @@ export const SITE = {
 const rawBase = import.meta.env.BASE_URL;
 /** 给站内路径加 base 前缀：withBase('/posts/') => '/yl-blog/posts/' */
 export function withBase(path: string): string {
-  return (rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase) + path;
+  const normalPath = path.startsWith('/') ? path : '/' + path;
+  return (rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase) + normalPath;
 }
