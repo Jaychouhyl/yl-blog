@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config';
+---
+<BaseLayout title="关于">
+  <div class="container roomy" style="padding-top:var(--page-top);max-width:680px;">
+    <p class="page-sub">ABOUT</p>
+    <h1 class="page-title">关于我</h1>
+    <div class="bio">
+      <p>你好，我是 {SITE.name}。</p>
+      <p>平时写写随笔、做点小项目，最近在学习量化交易，偶尔追番。</p>
+      <p>这个小站用来收留那些不想丢掉的字句和念头。</p>
+      <h2>联系我</h2>
+      <p>GitHub：<a class="link" href={SITE.github} target="_blank" rel="noopener noreferrer">@Jaychouhyl</a></p>
+    </div>
+  </div>
+</BaseLayout>
+<style>
+  .bio { font-size: 16px; line-height: 2; }
+  .bio h2 { font-size: 22px; margin-top: 2em; }
+  .link { color: var(--sakura); }
+</style>

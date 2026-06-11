@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const friends = await getCollection('friends');
+---
+<BaseLayout title="友链">
+  <div class="container roomy" style="padding-top:var(--page-top);">
+    <p class="page-sub">FRIENDS</p>
+    <h1 class="page-title">友链</h1>
+    <div class="grid">
+      {friends.map((f) => (
+        <a class="glass card" href={f.data.url} target="_blank" rel="noopener noreferrer">
+          {f.data.avatar && <img class="f-avatar" src={f.data.avatar} alt="" loading="lazy" />}
+          <div class="name">{f.data.name}</div>
+          <div class="muted">{f.data.desc}</div>
+        </a>
+      ))}
+    </div>
+    {friends.length === 0 && <p class="muted" style="margin-top:24px;">还没有友链。</p>}
+    <p class="muted" style="margin-top:32px;">想交换友链？到任意文章评论区留言即可。</p>
+  </div>
+</BaseLayout>
+<style>
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-top: 24px; }
+  .card { padding: 18px 20px; }
+  .f-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; margin-bottom: 8px; }
+  .name { font-family: var(--serif); font-size: 17px; }
+</style>

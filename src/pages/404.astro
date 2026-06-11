@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../config';
+---
+<BaseLayout title="404">
+  <div class="container roomy" style="padding-top:160px;text-align:center;">
+    <h1 class="big">404</h1>
+    <p class="kaomoji">(´；ω；`) 这一页被樱花吹走了…</p>
+    <p class="actions">
+      <a class="chip chip-lg" href={withBase('/')}>回到首页</a>
+      <button class="chip chip-lg search" id="search-404">搜索一下</button>
+    </p>
+  </div>
+</BaseLayout>
+<style>
+  .big { font-size: 88px; margin: 0; font-family: var(--serif); }
+  .kaomoji { font-size: 18px; }
+  .actions { display: flex; gap: 10px; justify-content: center; }
+  .search { border: none; cursor: pointer; }
+</style>
+<script>
+  document.getElementById('search-404')?.addEventListener('click', () => {
+    (document.getElementById('search-btn') as HTMLButtonElement | null)?.click();
+  });
+</script>
