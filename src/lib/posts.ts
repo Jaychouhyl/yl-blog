@@ -23,5 +23,5 @@ export function allTags(posts: Post[]): [string, Post[]][] {
     if (!map.has(t)) map.set(t, []);
     map.get(t)!.push(p);
   }
-  return [...map.entries()].sort((a, b) => b[1].length - a[1].length);
+  return [...map.entries()].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0], 'zh'));
 }
