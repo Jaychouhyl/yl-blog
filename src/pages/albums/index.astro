@@ -28,6 +28,7 @@ const albumsWithFull = await Promise.all(
             <Image
               class="shot" src={img.src} alt={img.alt} width={480}
               loading="lazy" data-full={fulls[i].src}
+              tabindex="0" role="button"
             />
           ))}
         </div>
@@ -51,11 +52,25 @@ const albumsWithFull = await Promise.all(
 <script>
   const box = document.getElementById('lightbox') as HTMLDialogElement;
   const big = document.getElementById('lightbox-img') as HTMLImageElement;
+  let opener: HTMLElement | null = null;
+
+  function openLightbox(img: HTMLImageElement) {
+    const fullSrc = img.dataset.full;
+    if (!fullSrc) return;
+    opener = img;
+    big.src = fullSrc;
+    box.showModal();
+  }
+
   document.querySelectorAll<HTMLImageElement>('.shot').forEach((img) => {
-    img.addEventListener('click', () => {
-      big.src = img.dataset.full!;
-      box.showModal();
+    img.addEventListener('click', () => openLightbox(img));
+    img.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openLightbox(img);
+      }
     });
   });
   box.addEventListener('click', () => box.close());
+  box.addEventListener('close', () => { opener?.focus(); opener = null; });
 </script>
