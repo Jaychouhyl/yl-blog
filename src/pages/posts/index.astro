@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../config';
+import { publishedPosts, groupByYear, allTags } from '../../lib/posts';
+import { formatDate } from '../../lib/text';
+
+const posts = await publishedPosts();
+const byYear = groupByYear(posts);
+const tags = allTags(posts);
+---
+<BaseLayout title="随笔归档">
+  <div class="container dense" style="padding-top:110px;max-width:760px;">
+    <p class="page-sub">ARCHIVE</p>
+    <h1 class="page-title">随笔归档</h1>
+    <p class="tag-cloud">
+      {tags.map(([t, list]) => (
+        <a class="chip" href={withBase(`/tags/${t}/`)}>#{t} {list.length}</a>
+      ))}
+    </p>
+    {byYear.map(([year, list]) => (
+      <section>
+        <h2 class="year">{year}</h2>
+        <ul class="timeline">
+          {list.map((p) => (
+            <li>
+              <span class="muted date">{formatDate(p.data.date).slice(5)}</span>
+              <a href={withBase(`/posts/${p.id}/`)}>{p.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</BaseLayout>
+<style>
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 8px; }
+  .year { font-size: 28px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+  .timeline { list-style: none; padding: 0; margin: 0; }
+  .timeline li { display: flex; gap: 16px; padding: 7px 0; border-bottom: 1px dashed var(--line); }
+  .date { font-family: var(--mono); flex-shrink: 0; }
+</style>

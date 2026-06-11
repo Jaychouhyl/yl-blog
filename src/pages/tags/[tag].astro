@@ -1,0 +1,23 @@
+---
+import type { InferGetStaticPropsType } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { publishedPosts, allTags } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const tags = allTags(await publishedPosts());
+  return tags.map(([tag, posts]) => ({ params: { tag }, props: { posts } }));
+}
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { tag } = Astro.params;
+const { posts } = Astro.props as Props;
+---
+<BaseLayout title={`标签：${tag}`}>
+  <div class="container dense" style="padding-top:110px;max-width:760px;">
+    <p class="page-sub">TAG</p>
+    <h1 class="page-title">#{tag}</h1>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      {posts.map((p) => <PostCard post={p} />)}
+    </div>
+  </div>
+</BaseLayout>
