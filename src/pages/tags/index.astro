@@ -5,13 +5,16 @@ import { publishedPosts, allTags } from '../../lib/posts';
 const tags = allTags(await publishedPosts());
 ---
 <BaseLayout title="标签">
-  <div class="container roomy" style="padding-top:110px;max-width:760px;">
+  <div class="container roomy" style="padding-top:var(--page-top);max-width:760px;">
     <p class="page-sub">TAGS</p>
     <h1 class="page-title">标签</h1>
-    <p style="display:flex;flex-wrap:wrap;gap:10px;">
+    <div class="cloud">
       {tags.map(([t, list]) => (
-        <a class="chip" style="font-size:14px;padding:4px 14px;" href={withBase(`/tags/${t}/`)}>#{t} · {list.length}</a>
+        <a class="chip chip-lg" href={withBase(`/tags/${t}/`)} aria-label={`${t} 标签，共 ${list.length} 篇`}>#{t} · {list.length}</a>
       ))}
-    </p>
+    </div>
   </div>
 </BaseLayout>
+<style>
+  .cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+</style>

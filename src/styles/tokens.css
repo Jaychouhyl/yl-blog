@@ -1,4 +1,5 @@
 :root {
+  --page-top: 110px; /* fixed 导航高度 + 页首留白 */
   --bg-paper: #faf6ef;
   --banner-1: #ffb98a;
   --banner-2: #ffe9d2;

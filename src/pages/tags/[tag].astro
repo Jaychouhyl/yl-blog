@@ -10,10 +10,10 @@ export async function getStaticPaths() {
 }
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { tag } = Astro.params;
-const { posts } = Astro.props as Props;
+const { posts } = Astro.props;
 ---
 <BaseLayout title={`标签：${tag}`}>
-  <div class="container dense" style="padding-top:110px;max-width:760px;">
+  <div class="container dense" style="padding-top:var(--page-top);max-width:760px;">
     <p class="page-sub">TAG</p>
     <h1 class="page-title">#{tag}</h1>
     <div style="display:flex;flex-direction:column;gap:14px;">

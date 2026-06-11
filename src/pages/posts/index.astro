@@ -9,21 +9,21 @@ const byYear = groupByYear(posts);
 const tags = allTags(posts);
 ---
 <BaseLayout title="随笔归档">
-  <div class="container dense" style="padding-top:110px;max-width:760px;">
+  <div class="container dense" style="padding-top:var(--page-top);max-width:760px;">
     <p class="page-sub">ARCHIVE</p>
     <h1 class="page-title">随笔归档</h1>
-    <p class="tag-cloud">
+    <nav class="tag-cloud" aria-label="标签云">
       {tags.map(([t, list]) => (
-        <a class="chip" href={withBase(`/tags/${t}/`)}>#{t} {list.length}</a>
+        <a class="chip" href={withBase(`/tags/${t}/`)} aria-label={`${t} 标签，共 ${list.length} 篇`}>#{t} {list.length}</a>
       ))}
-    </p>
+    </nav>
     {byYear.map(([year, list]) => (
       <section>
         <h2 class="year">{year}</h2>
         <ul class="timeline">
           {list.map((p) => (
             <li>
-              <span class="muted date">{formatDate(p.data.date).slice(5)}</span>
+              <time class="muted date" datetime={formatDate(p.data.date)}>{formatDate(p.data.date).slice(5)/* MM-DD */}</time>
               <a href={withBase(`/posts/${p.id}/`)}>{p.data.title}</a>
             </li>
           ))}
