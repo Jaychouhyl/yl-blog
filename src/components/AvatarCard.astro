@@ -1,0 +1,19 @@
+---
+import { SITE, withBase } from '../config';
+---
+<div class="glass card">
+  <img class="avatar" src={withBase('/avatar.png')} alt="头像" width="84" height="84" />
+  <div class="name">{SITE.name}</div>
+  <div class="muted">写字 · 做项目 · 追番</div>
+  <div class="links">
+    <a class="chip" href={SITE.github} rel="noopener noreferrer">GitHub</a>
+    <a class="chip" href={withBase('/rss.xml')}>RSS</a>
+  </div>
+</div>
+<style>
+  .card { padding: 22px 16px; text-align: center; }
+  .avatar { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; margin: 0 auto;
+    border: 3px solid var(--card-border); box-shadow: var(--shadow); }
+  .name { font-family: var(--serif); font-size: 18px; margin-top: 10px; }
+  .links { margin-top: 10px; display: flex; justify-content: center; gap: 6px; }
+</style>

@@ -1,0 +1,23 @@
+---
+import { withBase } from '../config';
+import { formatDate, readingMinutes } from '../lib/text';
+import type { Post } from '../lib/posts';
+
+interface Props { post: Post; }
+const { post } = Astro.props;
+---
+<a class="glass card" href={withBase(`/posts/${post.id}/`)}>
+  <div class="title">{post.data.title}</div>
+  {post.data.summary && <p class="muted summary">{post.data.summary}</p>}
+  <div class="meta">
+    {post.data.tags.map((t) => <span class="chip">#{t}</span>)}
+    <span class="muted">{formatDate(post.data.date)} · 约 {readingMinutes(post.body ?? '')} 分钟</span>
+  </div>
+</a>
+<style>
+  .card { display: block; padding: 18px 22px; transition: transform 0.2s, box-shadow 0.2s; }
+  .card:hover { transform: translateY(-2px); color: inherit; }
+  .title { font-family: var(--serif); font-size: 17px; }
+  .summary { margin: 6px 0 0; }
+  .meta { margin-top: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+</style>

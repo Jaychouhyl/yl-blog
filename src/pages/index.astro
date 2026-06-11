@@ -1,9 +1,51 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import AvatarCard from '../components/AvatarCard.astro';
+import SiteStats from '../components/SiteStats.astro';
+import PostCard from '../components/PostCard.astro';
+import { withBase } from '../config';
+import { publishedPosts } from '../lib/posts';
+
+const recent = (await publishedPosts()).slice(0, 5);
 ---
 <BaseLayout>
-  <div class="container roomy" style="padding-top:120px;">
-    <p class="page-sub">UNDER CONSTRUCTION</p>
-    <h1 class="page-title">建设中。</h1>
+  <section class="banner">
+    <div class="hero container">
+      <p class="page-sub">ESSAYS · PROJECTS · OTAKU LIFE — EST. 2026</p>
+      <h1 class="hero-title">字句之间，<br />自有天地<span class="accent">。</span></h1>
+    </div>
+  </section>
+
+  <div class="container columns">
+    <aside class="side">
+      <AvatarCard />
+      <SiteStats />
+    </aside>
+    <div class="feed">
+      {recent.map((post) => <PostCard post={post} />)}
+      <a class="more muted" href={withBase('/posts/')}>查看全部随笔 →</a>
+    </div>
   </div>
 </BaseLayout>
+<style>
+  .banner {
+    height: 420px;
+    background: linear-gradient(180deg, var(--banner-1) 0%, var(--banner-2) 60%, var(--bg-paper) 100%);
+    display: flex; align-items: flex-end;
+  }
+  /* 横幅插画就位后：给 .banner 加 background-image 即可，渐变保留为兜底 */
+  .hero { width: 100%; padding-bottom: 56px; }
+  .hero-title {
+    font-size: clamp(40px, 6vw, 64px);
+    margin: 10px 0 0; font-weight: 700;
+  }
+  .accent { color: var(--sakura); }
+  .columns { display: flex; gap: 22px; padding-top: 32px; padding-bottom: 80px; }
+  .side { width: 230px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
+  .feed { flex: 1; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .more { text-align: center; padding: 8px; }
+  @media (max-width: 768px) {
+    .columns { flex-direction: column; }
+    .side { width: 100%; }
+  }
+</style>
