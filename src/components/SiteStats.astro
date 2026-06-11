@@ -4,6 +4,7 @@ import { countWords } from '../lib/text';
 import { SITE } from '../config';
 
 const posts = await publishedPosts();
+// allTags 返回 [tagName, posts[]] 元组数组，.length 即唯一标签数
 const tagCount = allTags(posts).length;
 const totalWords = posts.reduce((sum, p) => sum + countWords(p.body ?? ''), 0);
 ---
@@ -26,7 +27,7 @@ const totalWords = posts.reduce((sum, p) => sum + countWords(p.body ?? ''), 0);
 <script>
   const el = document.getElementById('run-days')!;
   const days = Math.floor((Date.now() - new Date(el.dataset.start!).getTime()) / 86400000);
-  el.textContent = `${days} 天`;
+  el.textContent = `${Math.max(0, days)} 天`;
   // 不蒜子脚本由生产构建注入（Task 14）；取到数字才显示该行
   const pvRow = document.getElementById('pv-row')!;
   const pv = document.getElementById('busuanzi_value_site_pv')!;
