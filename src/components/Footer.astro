@@ -1,0 +1,23 @@
+---
+import { SITE, withBase } from '../config';
+const year = new Date().getFullYear();
+---
+<footer>
+  <span>© {year} {SITE.name}·小筑 · {SITE.motto}</span>
+  <span>
+    <a href={withBase('/rss.xml')}>RSS</a> ·
+    <a href={SITE.github} rel="noopener">GitHub</a> ·
+    <button id="live2d-toggle" class="text-btn">看板娘</button> ✿
+  </span>
+</footer>
+<style>
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 16px 7%;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    font-size: 12px; color: var(--ink-3);
+  }
+  footer a:hover { color: var(--sakura); }
+  .text-btn { background: none; border: none; cursor: pointer; color: var(--ink-3); font-size: 12px; padding: 0; }
+  .text-btn:hover { color: var(--sakura); }
+</style>

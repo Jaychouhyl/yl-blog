@@ -1,0 +1,33 @@
+:root {
+  --bg-paper: #faf6ef;
+  --banner-1: #ffb98a;
+  --banner-2: #ffe9d2;
+  --ink: #3a3228;
+  --ink-2: #7a6e5d;
+  --ink-3: #a89a85;
+  --sakura: #f08aa0;
+  --sakura-soft: #fdeef1;
+  --warm: #ffb98a;
+  --card: rgba(255, 255, 255, 0.72);
+  --card-border: rgba(255, 255, 255, 0.85);
+  --line: #ece2d0;
+  --shadow: 0 4px 20px rgba(140, 100, 80, 0.1);
+  --serif: 'Noto Serif SC', Georgia, 'Source Han Serif SC', STSong, serif;
+  --sans: system-ui, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  --mono: Consolas, 'Cascadia Code', monospace;
+}
+html[data-theme='dark'] {
+  --bg-paper: #1c1916;
+  --banner-1: #3a2c22;
+  --banner-2: #241e18;
+  --ink: #e8e2d8;
+  --ink-2: #b0a490;
+  --ink-3: #7a6e5d;
+  --sakura: #d4738c;
+  --sakura-soft: #3a2a30;
+  --warm: #b8845f;
+  --card: rgba(40, 36, 32, 0.72);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --line: #332d26;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}

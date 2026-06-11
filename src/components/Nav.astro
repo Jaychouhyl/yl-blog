@@ -1,0 +1,41 @@
+---
+import { SITE, withBase } from '../config';
+const current = Astro.url.pathname;
+---
+<nav class="glass nav">
+  <a class="brand" href={withBase('/')}>{SITE.name}<span class="dot">·</span>小筑</a>
+  {SITE.nav.map((item) => (
+    <a class:list={['link', { active: current === withBase(item.href) }]} href={withBase(item.href)}>{item.label}</a>
+  ))}
+  <span class="sep">|</span>
+  <button id="search-btn" class="icon-btn" title="搜索 (Ctrl+K)">🔍</button>
+  <button id="theme-btn" class="icon-btn" title="切换深浅色">🌙</button>
+</nav>
+<style>
+  .nav {
+    position: fixed; top: 18px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 20px;
+    padding: 10px 26px; border-radius: 99px; z-index: 100;
+    font-size: 14px; white-space: nowrap;
+  }
+  .brand { font-family: var(--serif); font-size: 17px; }
+  .dot { color: var(--sakura); }
+  .link { color: var(--ink-2); }
+  .link.active, .link:hover { color: var(--ink); }
+  .sep { color: var(--line); }
+  .icon-btn { background: none; border: none; cursor: pointer; font-size: 15px; padding: 0; }
+  @media (max-width: 768px) {
+    .nav { gap: 12px; padding: 8px 16px; font-size: 13px; max-width: 94vw; overflow-x: auto; }
+  }
+</style>
+<script>
+  const btn = document.getElementById('theme-btn')!;
+  btn.textContent = document.documentElement.dataset.theme === 'dark' ? '☀️' : '🌙';
+  btn.addEventListener('click', () => {
+    const html = document.documentElement;
+    const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+    html.dataset.theme = next;
+    localStorage.setItem('theme', next);
+    btn.textContent = next === 'dark' ? '☀️' : '🌙';
+  });
+</script>

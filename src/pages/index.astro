@@ -1,5 +1,9 @@
 ---
-import { SITE } from '../config';
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<html lang="zh-CN"><head><meta charset="utf-8" /><title>{SITE.name}</title></head>
-<body><h1>{SITE.name} · 建设中</h1></body></html>
+<BaseLayout>
+  <div class="container roomy" style="padding-top:120px;">
+    <p class="page-sub">UNDER CONSTRUCTION</p>
+    <h1 class="page-title">建设中。</h1>
+  </div>
+</BaseLayout>
