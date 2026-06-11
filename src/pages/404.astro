@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { withBase } from '../config';
 ---
 <BaseLayout title="404">
-  <div class="container roomy" style="padding-top:160px;text-align:center;">
+  <div class="container roomy" style="padding-top:calc(var(--page-top) + 50px);text-align:center;">
     <h1 class="big">404</h1>
     <p class="kaomoji">(´；ω；`) 这一页被樱花吹走了…</p>
     <p class="actions">
@@ -16,7 +16,7 @@ import { withBase } from '../config';
   .big { font-size: 88px; margin: 0; font-family: var(--serif); }
   .kaomoji { font-size: 18px; }
   .actions { display: flex; gap: 10px; justify-content: center; }
-  .search { border: none; cursor: pointer; }
+  .search { border: none; cursor: pointer; font-family: inherit; }
 </style>
 <script>
   document.getElementById('search-404')?.addEventListener('click', () => {

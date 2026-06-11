@@ -10,7 +10,7 @@ const friends = await getCollection('friends');
     <div class="grid">
       {friends.map((f) => (
         <a class="glass card" href={f.data.url} target="_blank" rel="noopener noreferrer">
-          {f.data.avatar && <img class="f-avatar" src={f.data.avatar} alt="" loading="lazy" />}
+          {f.data.avatar && <img class="f-avatar" src={f.data.avatar} alt="" loading="lazy" referrerpolicy="no-referrer" />}
           <div class="name">{f.data.name}</div>
           <div class="muted">{f.data.desc}</div>
         </a>
