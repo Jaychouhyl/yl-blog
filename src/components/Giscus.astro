@@ -1,0 +1,28 @@
+---
+import { SITE } from '../config';
+const g = SITE.giscus;
+---
+{g.repoId && g.categoryId ? (
+  <div class="giscus-wrap">
+    <script
+      is:inline
+      src="https://giscus.app/client.js"
+      data-repo={g.repo}
+      data-repo-id={g.repoId}
+      data-category={g.category}
+      data-category-id={g.categoryId}
+      data-mapping="pathname"
+      data-reactions-enabled="1"
+      data-input-position="top"
+      data-theme="preferred_color_scheme"
+      data-lang="zh-CN"
+      data-loading="lazy"
+      crossorigin="anonymous"
+      async
+    ></script>
+  </div>
+) : (
+  <p class="muted" style="text-align:center;padding:16px;border:1px dashed var(--line);border-radius:10px;">
+    评论区尚未开通（待 giscus 配置完成）
+  </p>
+)}

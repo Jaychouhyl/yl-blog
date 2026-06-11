@@ -1,0 +1,24 @@
+.prose { font-size: 16px; line-height: 1.9; }
+.prose h2 { font-size: 26px; margin: 2em 0 0.6em; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+.prose h3 { font-size: 20px; margin: 1.6em 0 0.5em; }
+.prose p { margin: 0.9em 0; }
+.prose blockquote {
+  margin: 1em 0; padding: 2px 18px;
+  border-left: 3px solid var(--sakura);
+  background: var(--sakura-soft); border-radius: 0 8px 8px 0;
+  color: var(--ink-2);
+}
+.prose code:not(.astro-code code) {
+  background: var(--sakura-soft); padding: 1px 6px; border-radius: 4px;
+  font-family: var(--mono); font-size: 0.9em;
+}
+.prose .astro-code { border-radius: 10px; padding: 16px; font-size: 14px; }
+html[data-theme='dark'] .prose .astro-code,
+html[data-theme='dark'] .prose .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
+.prose img { border-radius: 10px; margin: 1em auto; }
+.prose table { border-collapse: collapse; width: 100%; }
+.prose th, .prose td { border: 1px solid var(--line); padding: 6px 12px; }
+.prose .katex-display { overflow-x: auto; padding: 4px 0; }

@@ -1,0 +1,58 @@
+---
+import type { InferGetStaticPropsType } from 'astro';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Giscus from '../../components/Giscus.astro';
+import { withBase } from '../../config';
+import { publishedPosts } from '../../lib/posts';
+import { formatDate, readingMinutes } from '../../lib/text';
+import '../../styles/prose.css';
+import 'katex/dist/katex.min.css';
+
+export async function getStaticPaths() {
+  const posts = await publishedPosts();
+  return posts.map((post, i) => ({
+    params: { id: post.id },
+    props: { post, prev: posts[i + 1] ?? null, next: posts[i - 1] ?? null },
+  }));
+}
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { post, prev, next } = Astro.props;
+const { Content, headings } = await render(post);
+const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+<BaseLayout title={post.data.title} description={post.data.summary ?? post.data.title}>
+  <article class="container dense" style="padding-top:var(--page-top);max-width:760px;">
+    <header class="head">
+      <h1 class="page-title" style="font-size:clamp(28px,4vw,40px);">{post.data.title}</h1>
+      <div class="meta muted">
+        <time datetime={formatDate(post.data.date)}>{formatDate(post.data.date)}</time> · 约 {readingMinutes(post.body ?? '')} 分钟 ·
+        {post.data.tags.map((t) => <a class="chip" href={withBase(`/tags/${t}/`)}>#{t}</a>)}
+      </div>
+    </header>
+    {toc.length > 2 && (
+      <nav class="toc glass" aria-label="目录">
+        <div class="toc-head">目录</div>
+        {toc.map((h) => (
+          <a class:list={['toc-link', `d${h.depth}`]} href={`#${h.slug}`}>{h.text}</a>
+        ))}
+      </nav>
+    )}
+    <div class="prose"><Content /></div>
+    <nav class="pn" aria-label="文章导航">
+      {prev ? <a class="glass pn-card" href={withBase(`/posts/${prev.id}/`)}>← {prev.data.title}</a> : <span />}
+      {next ? <a class="glass pn-card" href={withBase(`/posts/${next.id}/`)}>{next.data.title} →</a> : <span />}
+    </nav>
+    <Giscus />
+  </article>
+</BaseLayout>
+<style>
+  .head { margin-bottom: 24px; }
+  .meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .toc { padding: 14px 18px; margin-bottom: 24px; font-size: 13px; }
+  .toc-head { font-family: var(--serif); margin-bottom: 6px; }
+  .toc-link { display: block; padding: 3px 0; color: var(--ink-2); }
+  .toc-link.d3 { padding-left: 16px; }
+  .pn { display: flex; justify-content: space-between; gap: 12px; margin: 40px 0 24px; }
+  .pn-card { padding: 12px 16px; font-size: 14px; max-width: 48%; }
+</style>
