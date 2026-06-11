@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow:
 
 Sitemap: https://jaychouhyl.github.io/yl-blog/sitemap-index.xml

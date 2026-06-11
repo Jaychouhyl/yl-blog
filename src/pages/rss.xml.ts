@@ -10,13 +10,14 @@ export async function GET(context: APIContext) {
     title: SITE.name,
     description: SITE.description,
     site: new URL(withBase('/'), context.site!),
+    customData: '<language>zh-CN</language>',
     items: await Promise.all(
       posts.map(async (post) => ({
         title: post.data.title,
         pubDate: post.data.date,
         description: post.data.summary ?? '',
         link: withBase(`/posts/${post.id}/`),
-        content: String(await marked.parse(post.body ?? '')),
+        content: await marked.parse(post.body ?? ''),
       }))
     ),
   });
