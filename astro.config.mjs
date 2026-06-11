@@ -11,6 +11,6 @@ export default defineConfig({
   integrations: [sitemap()],
   markdown: {
     processor: unified({ remarkPlugins: [remarkMath], rehypePlugins: [rehypeKatex] }),
-    shikiConfig: { themes: { light: 'vitesse-light', dark: 'vitesse-dark' } },
+    shikiConfig: { themes: { light: 'vitesse-light', dark: 'vitesse-dark' }, defaultColor: false },
   },
 });
