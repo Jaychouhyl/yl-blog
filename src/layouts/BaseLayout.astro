@@ -29,7 +29,7 @@ const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · ${SITE.m
   </head>
   <body>
     <Nav />
-    <main><slot /></main>
+    <main data-pagefind-body><slot /></main>
     <Footer />
     <SearchModal />
     <script src="../scripts/effects.ts"></script>

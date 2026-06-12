@@ -25,7 +25,7 @@ const projects = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      repo: z.string().url().optional(),
+      repo: z.url().optional(),
       tech: z.array(z.string()).default([]),
       cover: image().optional(),
       order: z.number().default(99),
@@ -48,9 +48,9 @@ const friends = defineCollection({
   schema: z.object({
     id: z.string(),
     name: z.string(),
-    url: z.string().url(),
+    url: z.url(),
     desc: z.string().default(''),
-    avatar: z.string().url().optional(),
+    avatar: z.url().optional(),
   }),
 });
 

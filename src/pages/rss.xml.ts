@@ -17,6 +17,7 @@ export async function GET(context: APIContext) {
         pubDate: post.data.date,
         description: post.data.summary ?? '',
         link: withBase(`/posts/${post.id}/`),
+        // RSS 用 marked 渲染纯 Markdown：KaTeX 公式在阅读器中显示为 LaTeX 源码，属已知取舍
         content: await marked.parse(post.body ?? ''),
       }))
     ),
