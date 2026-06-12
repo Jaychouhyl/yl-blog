@@ -14,8 +14,15 @@ const recent = (await publishedPosts()).slice(0, 5);
     <div class="hero-veil"></div>
     <button class="hero-down" aria-label="向下滚动查看内容">⌄</button>
     <div class="hero-wave" aria-hidden="true">
-      <svg class="wave wave-back" viewBox="0 0 2880 100" preserveAspectRatio="none"><path d="M0,68 C180,90 540,90 720,68 C900,46 1260,46 1440,68 C1620,90 1980,90 2160,68 C2340,46 2700,46 2880,68 L2880,100 L0,100 Z" /></svg>
-      <svg class="wave wave-front" viewBox="0 0 2880 100" preserveAspectRatio="none"><path d="M0,58 C180,34 540,34 720,58 C900,82 1260,82 1440,58 C1620,34 1980,34 2160,58 C2340,82 2700,82 2880,58 L2880,100 L0,100 Z" /></svg>
+      <svg class="waves" viewBox="0 24 150 28" preserveAspectRatio="none">
+        <defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v48h-352z" /></defs>
+        <g class="parallax">
+          <use href="#gentle-wave" x="48" y="0" class="w1" />
+          <use href="#gentle-wave" x="48" y="3" class="w2" />
+          <use href="#gentle-wave" x="48" y="5" class="w3" />
+          <use href="#gentle-wave" x="48" y="7" class="w4" />
+        </g>
+      </svg>
     </div>
   </section>
 
@@ -42,8 +49,9 @@ const recent = (await publishedPosts()).slice(0, 5);
     height: 100svh;
     display: flex; align-items: center; justify-content: center;
     overflow: hidden;
+    background: #000;
   }
-  .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.6s ease-out; }
+  .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.6s ease-out; }
   .hero-img.loaded { opacity: 1; }
   @media (prefers-reduced-motion: reduce) { .hero-img { transition: none; opacity: 1; } }
   .hero-veil {
@@ -64,14 +72,16 @@ const recent = (await publishedPosts()).slice(0, 5);
   }
   .hero-wave {
     position: absolute; left: 0; right: 0; bottom: -1px; z-index: 2;
-    width: 100%; height: clamp(72px, 9vw, 130px); overflow: hidden;
+    width: 100%; height: clamp(80px, 13vh, 150px); overflow: hidden;
   }
-  .wave { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; }
-  .wave path { fill: var(--bg-paper); }
-  .wave-back { opacity: .5; animation: waveX 15s linear infinite; }
-  .wave-front { animation: waveX 10s linear infinite reverse; }
-  @keyframes waveX { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  @media (prefers-reduced-motion: reduce) { .wave { animation: none; } }
+  .waves { width: 100%; height: 100%; min-height: 80px; }
+  .parallax use { fill: var(--bg-paper); }
+  .parallax .w1 { opacity: .5; animation: waveMove 8s cubic-bezier(.55,.5,.45,.5) -2s infinite; }
+  .parallax .w2 { opacity: .35; animation: waveMove 11s cubic-bezier(.55,.5,.45,.5) -3s infinite; }
+  .parallax .w3 { opacity: .2; animation: waveMove 14s cubic-bezier(.55,.5,.45,.5) -4s infinite; }
+  .parallax .w4 { opacity: 1; animation: waveMove 22s cubic-bezier(.55,.5,.45,.5) -5s infinite; }
+  @keyframes waveMove { 0% { transform: translate3d(-90px,0,0); } 100% { transform: translate3d(85px,0,0); } }
+  @media (prefers-reduced-motion: reduce) { .parallax use { animation: none; } }
   @keyframes bob { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 10px); } }
   @media (prefers-reduced-motion: reduce) { .hero-down { animation: none; } }
 
