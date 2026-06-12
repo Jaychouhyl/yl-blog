@@ -27,8 +27,9 @@ const current = Astro.url.pathname;
   .icon-btn { background: none; border: none; cursor: pointer; font-size: 15px; padding: 0; }
   :global(html[data-theme='light']) #theme-btn::before { content: '🌙'; }
   :global(html[data-theme='dark']) #theme-btn::before { content: '☀️'; }
+  .nav::-webkit-scrollbar { display: none; }
   @media (max-width: 768px) {
-    .nav { gap: 12px; padding: 8px 16px; font-size: 13px; max-width: 94vw; overflow-x: auto; }
+    .nav { gap: 12px; padding: 8px 16px; font-size: 13px; max-width: 94vw; overflow-x: auto; scrollbar-width: none; }
   }
   .nav { transition: background .3s, box-shadow .3s, backdrop-filter .3s; }
   .nav.transparent {
