@@ -12,6 +12,8 @@ export const SITE = {
     { label: '友链', href: '/friends/' },
     { label: '关于', href: '/about/' },
   ],
+  // 首屏全屏插画：把图片放到 public/ 后改这里的文件名即可（如 '/hero.jpg'）
+  heroImage: '/hero-default.svg',
   // repoId / categoryId 留空时评论区显示「尚未开通」提示；
   // 站主在 https://giscus.app 开通后回填即可生效
   giscus: {

@@ -3,20 +3,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import AvatarCard from '../components/AvatarCard.astro';
 import SiteStats from '../components/SiteStats.astro';
 import PostCard from '../components/PostCard.astro';
-import { withBase } from '../config';
+import { SITE, withBase } from '../config';
 import { publishedPosts } from '../lib/posts';
 
 const recent = (await publishedPosts()).slice(0, 5);
 ---
 <BaseLayout>
-  <section class="banner">
-    <div class="hero container">
-      <p class="page-sub">ESSAYS · PROJECTS · OTAKU LIFE — EST. 2026</p>
-      <h1 class="hero-title">字句之间，<br />自有天地<span class="accent">。</span></h1>
+  <section class="hero-screen">
+    <img class="hero-img" src={withBase(SITE.heroImage)} alt="" fetchpriority="high" />
+    <div class="hero-veil"></div>
+    <div class="hero-text">
+      <p class="hero-eyebrow">ESSAYS · PROJECTS · OTAKU LIFE — EST. 2026</p>
+      <h1 class="hero-name">{SITE.name}</h1>
+      <p class="hero-motto">{SITE.motto}</p>
     </div>
+    <button class="hero-down" aria-label="向下滚动查看内容">⌄</button>
   </section>
 
-  <div class="container columns">
+  <div class="container columns" id="home-content">
     <aside class="side">
       <AvatarCard />
       <SiteStats />
@@ -28,19 +32,35 @@ const recent = (await publishedPosts()).slice(0, 5);
   </div>
 </BaseLayout>
 <style>
-  .banner {
-    height: 420px;
-    background: linear-gradient(180deg, var(--banner-1) 0%, var(--banner-2) 60%, var(--bg-paper) 100%);
-    display: flex; align-items: flex-end;
+  .hero-screen {
+    position: relative;
+    height: 100vh;
+    height: 100svh;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
   }
-  /* 横幅插画就位后：给 .banner 加 background-image 即可，渐变保留为兜底 */
-  .hero { width: 100%; padding-bottom: 56px; }
-  .hero-title {
-    font-size: clamp(40px, 6vw, 64px);
-    margin: 10px 0 0; font-weight: 700;
+  .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-veil {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,.22) 78%, var(--bg-paper) 100%);
   }
-  .accent { color: var(--sakura); }
-  .columns { display: flex; gap: 22px; padding-top: 32px; padding-bottom: 80px; }
+  :global(html[data-theme='dark']) .hero-veil {
+    background: linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.15) 30%, rgba(0,0,0,.45) 78%, var(--bg-paper) 100%);
+  }
+  .hero-text { position: relative; text-align: center; color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.35); padding: 0 24px; }
+  .hero-eyebrow { letter-spacing: 4px; font-size: 12px; text-transform: uppercase; opacity: .9; }
+  .hero-name { font-size: clamp(64px, 11vw, 120px); margin: 8px 0 6px; font-weight: 700; }
+  .hero-motto { font-size: clamp(16px, 2.4vw, 22px); letter-spacing: 6px; opacity: .95; }
+  .hero-down {
+    position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
+    background: none; border: none; cursor: pointer;
+    color: #fff; font-size: 34px; line-height: 1; text-shadow: 0 2px 12px rgba(0,0,0,.4);
+    animation: bob 2s ease-in-out infinite;
+  }
+  @keyframes bob { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 10px); } }
+  @media (prefers-reduced-motion: reduce) { .hero-down { animation: none; } }
+
+  .columns { display: flex; gap: 22px; padding-top: 48px; padding-bottom: 80px; }
   .side { width: 230px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
   .feed { flex: 1; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
   .more { text-align: center; padding: 8px; }
@@ -49,3 +69,8 @@ const recent = (await publishedPosts()).slice(0, 5);
     .side { width: 100%; }
   }
 </style>
+<script>
+  document.querySelector('.hero-down')?.addEventListener('click', () => {
+    document.getElementById('home-content')?.scrollIntoView({ behavior: 'smooth' });
+  });
+</script>
