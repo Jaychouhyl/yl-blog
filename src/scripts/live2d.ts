@@ -2,7 +2,7 @@ const KEY = 'live2d';
 
 async function initLive2d() {
   if (innerWidth <= 768) return; // 移动端不加载；与 base.css/Nav 的 768px 响应断点保持一致
-  if (localStorage.getItem(KEY) === 'off') return;
+  if (localStorage.getItem(KEY) !== 'on') return; // 默认关闭：WebGL 持续渲染是低配设备卡顿主因，参考站同样禁用动画看板娘
   try {
     const { loadOml2d } = await import('oh-my-live2d');
     loadOml2d({
@@ -38,8 +38,8 @@ async function initLive2d() {
 }
 
 document.getElementById('live2d-toggle')?.addEventListener('click', () => {
-  const off = localStorage.getItem(KEY) === 'off';
-  localStorage.setItem(KEY, off ? 'on' : 'off');
+  const on = localStorage.getItem(KEY) === 'on';
+  localStorage.setItem(KEY, on ? 'off' : 'on');
   location.reload();
 });
 

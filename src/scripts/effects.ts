@@ -11,7 +11,7 @@ if (!reduced) {
     rot: number; vr: number; life: number; // life<0 表示常驻飘落瓣
   }
   const petals: Petal[] = [];
-  const MAX_AMBIENT = 12; // 克制的密度
+  const MAX_AMBIENT = 6; // 参考站常驻 5 片的克制密度
 
   // 1. 缓存 --sakura 颜色，主题切换时通过 MutationObserver 刷新
   function readSakura() {
@@ -63,7 +63,7 @@ if (!reduced) {
     // 使用逻辑坐标（CSS 像素）清除画布
     ctx.clearRect(0, 0, innerWidth, innerHeight);
     const ambient = petals.filter((p) => p.life < 0).length;
-    if (ambient < MAX_AMBIENT && Math.random() < 0.03) petals.push(spawnAmbient());
+    if (ambient < MAX_AMBIENT && Math.random() < 0.02) petals.push(spawnAmbient());
 
     // 1. 使用缓存的 sakura 变量，不再每帧读取 getComputedStyle
     for (let i = petals.length - 1; i >= 0; i--) {

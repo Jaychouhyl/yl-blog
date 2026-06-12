@@ -39,7 +39,9 @@ const recent = (await publishedPosts()).slice(0, 5);
     display: flex; align-items: center; justify-content: center;
     overflow: hidden;
   }
-  .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.6s ease-out; }
+  .hero-img.loaded { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .hero-img { transition: none; opacity: 1; } }
   .hero-veil {
     position: absolute; inset: 0;
     background: linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,.08) 70%, var(--bg-paper) 100%);
@@ -74,4 +76,10 @@ const recent = (await publishedPosts()).slice(0, 5);
     const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.getElementById('home-content')?.scrollIntoView({ behavior: (prefersReduced ? 'instant' : 'smooth') as ScrollBehavior });
   });
+
+  const heroImg = document.querySelector<HTMLImageElement>('.hero-img');
+  if (heroImg) {
+    if (heroImg.complete) heroImg.classList.add('loaded');
+    else heroImg.addEventListener('load', () => heroImg.classList.add('loaded'), { once: true });
+  }
 </script>
