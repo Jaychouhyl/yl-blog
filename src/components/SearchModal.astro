@@ -1,0 +1,47 @@
+<dialog id="search-modal">
+  <div id="search-box"></div>
+  <p class="muted hint" id="search-hint" hidden>搜索索引仅在构建产物中可用：先 npm run build && npm run preview</p>
+</dialog>
+<style>
+  #search-modal {
+    width: min(640px, 92vw); margin: 10vh auto 0;
+    border: 1px solid var(--card-border); border-radius: 14px; padding: 18px;
+    background: var(--bg-paper);
+  }
+  #search-modal::backdrop { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px); }
+  .hint { text-align: center; }
+</style>
+<script>
+  import { withBase } from '../config';
+  const modal = document.getElementById('search-modal') as HTMLDialogElement;
+  const hint = document.getElementById('search-hint')!;
+  let loaded = false;
+
+  async function openSearch() {
+    modal.showModal();
+    if (loaded) return;
+    loaded = true;
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = withBase('/pagefind/pagefind-ui.css');
+    document.head.appendChild(css);
+    const js = document.createElement('script');
+    js.src = withBase('/pagefind/pagefind-ui.js');
+    js.onload = () => {
+      // @ts-expect-error PagefindUI 由外部脚本注入
+      new PagefindUI({ element: '#search-box', showSubResults: true, translations: { placeholder: '搜索文章…' } });
+      (document.querySelector('#search-box input') as HTMLInputElement | null)?.focus();
+    };
+    js.onerror = () => { hint.hidden = false; };
+    document.body.appendChild(js);
+  }
+
+  document.getElementById('search-btn')?.addEventListener('click', openSearch);
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (modal.open) { modal.close(); } else { openSearch(); }
+    }
+  });
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.close(); });
+</script>
