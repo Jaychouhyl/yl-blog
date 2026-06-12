@@ -13,16 +13,29 @@ if (!reduced) {
   const petals: Petal[] = [];
   const MAX_AMBIENT = 12; // 克制的密度
 
+  // 1. 缓存 --sakura 颜色，主题切换时通过 MutationObserver 刷新
+  function readSakura() {
+    return getComputedStyle(document.documentElement).getPropertyValue('--sakura').trim() || '#f08aa0';
+  }
+  let sakura = readSakura();
+  new MutationObserver(() => { sakura = readSakura(); })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  // 3. devicePixelRatio 适配
   function resize() {
-    canvas.width = innerWidth;
-    canvas.height = innerHeight;
+    const dpr = devicePixelRatio || 1;
+    canvas.width = innerWidth * dpr;
+    canvas.height = innerHeight * dpr;
+    canvas.style.width = innerWidth + 'px';
+    canvas.style.height = innerHeight + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize();
   addEventListener('resize', resize);
 
   function spawnAmbient(): Petal {
     return {
-      x: Math.random() * canvas.width, y: -20,
+      x: Math.random() * innerWidth, y: -20,
       size: 5 + Math.random() * 6,
       vx: -0.4 - Math.random() * 0.6, vy: 0.7 + Math.random() * 0.9,
       rot: Math.random() * Math.PI, vr: (Math.random() - 0.5) * 0.04,
@@ -31,6 +44,7 @@ if (!reduced) {
   }
 
   document.addEventListener('click', (e) => {
+    if (e.detail === 0) return; // 键盘触发的合成 click 无有效坐标
     for (let i = 0; i < 6; i++) {
       const angle = Math.random() * Math.PI * 2;
       const speed = 1 + Math.random() * 2;
@@ -44,16 +58,18 @@ if (!reduced) {
   });
 
   function tick() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // 使用逻辑坐标（CSS 像素）清除画布
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
     const ambient = petals.filter((p) => p.life < 0).length;
     if (ambient < MAX_AMBIENT && Math.random() < 0.03) petals.push(spawnAmbient());
 
-    const sakura = getComputedStyle(document.documentElement).getPropertyValue('--sakura').trim() || '#f08aa0';
+    // 1. 使用缓存的 sakura 变量，不再每帧读取 getComputedStyle
     for (let i = petals.length - 1; i >= 0; i--) {
       const p = petals[i]!;
       p.x += p.vx; p.y += p.vy; p.rot += p.vr;
       if (p.life > 0) { p.life--; p.vy += 0.04; }
-      if ((p.life === 0) || p.y > canvas.height + 30 || p.x < -30) { petals.splice(i, 1); continue; }
+      // 3. 出界判断改用逻辑坐标（CSS 像素）
+      if ((p.life === 0) || p.y > innerHeight + 30 || p.x < -30) { petals.splice(i, 1); continue; }
       ctx.save();
       ctx.translate(p.x, p.y);
       ctx.rotate(p.rot);
