@@ -18,6 +18,10 @@ const recent = (await publishedPosts()).slice(0, 5);
       <p class="hero-motto">{SITE.motto}</p>
     </div>
     <button class="hero-down" aria-label="向下滚动查看内容">⌄</button>
+    <svg class="hero-wave" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true">
+      <path class="wave-back" d="M0,38 C320,86 640,8 960,40 C1180,62 1320,34 1440,46 L1440,100 L0,100 Z" />
+      <path class="wave-front" d="M0,60 C300,24 660,92 1020,58 C1240,38 1360,62 1440,52 L1440,100 L0,100 Z" />
+    </svg>
   </section>
 
   <div class="container columns" id="home-content">
@@ -44,10 +48,10 @@ const recent = (await publishedPosts()).slice(0, 5);
   @media (prefers-reduced-motion: reduce) { .hero-img { transition: none; opacity: 1; } }
   .hero-veil {
     position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,.08) 70%, var(--bg-paper) 100%);
+    background: linear-gradient(180deg, rgba(0,0,0,.20) 0%, rgba(0,0,0,0) 34%, rgba(0,0,0,.06) 74%, rgba(0,0,0,.16) 100%);
   }
   :global(html[data-theme='dark']) .hero-veil {
-    background: linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.15) 30%, rgba(0,0,0,.45) 78%, var(--bg-paper) 100%);
+    background: linear-gradient(180deg, rgba(0,0,0,.40) 0%, rgba(0,0,0,.18) 34%, rgba(0,0,0,.30) 74%, rgba(0,0,0,.45) 100%);
   }
   .hero-text { position: relative; text-align: center; color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.35); padding: 0 24px; }
   .hero-eyebrow { letter-spacing: 4px; font-size: 12px; text-transform: uppercase; opacity: .9; }
@@ -55,10 +59,16 @@ const recent = (await publishedPosts()).slice(0, 5);
   .hero-motto { font-size: clamp(16px, 2.4vw, 22px); letter-spacing: 6px; opacity: .95; }
   .hero-down {
     position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
-    background: none; border: none; cursor: pointer;
+    background: none; border: none; cursor: pointer; z-index: 3;
     color: #fff; font-size: 34px; line-height: 1; text-shadow: 0 2px 12px rgba(0,0,0,.4);
     animation: bob 2s ease-in-out infinite;
   }
+  .hero-wave {
+    position: absolute; left: 0; right: 0; bottom: -1px; z-index: 2;
+    width: 100%; height: clamp(72px, 9vw, 130px); display: block;
+  }
+  .hero-wave .wave-front { fill: var(--bg-paper); }
+  .hero-wave .wave-back { fill: var(--bg-paper); opacity: .5; }
   @keyframes bob { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 10px); } }
   @media (prefers-reduced-motion: reduce) { .hero-down { animation: none; } }
 
