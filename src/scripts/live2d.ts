@@ -1,7 +1,7 @@
 const KEY = 'live2d';
 
 async function initLive2d() {
-  if (innerWidth <= 768) return; // 移动端不加载
+  if (innerWidth <= 768) return; // 移动端不加载；与 base.css/Nav 的 768px 响应断点保持一致
   if (localStorage.getItem(KEY) === 'off') return;
   try {
     const { loadOml2d } = await import('oh-my-live2d');
@@ -33,7 +33,7 @@ async function initLive2d() {
       },
     });
   } catch {
-    // 模型或脚本加载失败时静默跳过，不影响页面其他部分
+    // 脚本拉取失败时静默跳过；模型 CDN 404 属 oml2d 内部异步行为，仅表现为看板娘不显示，不影响页面
   }
 }
 
@@ -43,4 +43,9 @@ document.getElementById('live2d-toggle')?.addEventListener('click', () => {
   location.reload();
 });
 
-initLive2d();
+const run = () => { void initLive2d(); };
+if ('requestIdleCallback' in window) {
+  requestIdleCallback(run, { timeout: 3000 });
+} else {
+  setTimeout(run, 200);
+}
