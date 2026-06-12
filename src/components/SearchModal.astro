@@ -10,6 +10,13 @@
   }
   #search-modal::backdrop { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px); }
   .hint { text-align: center; }
+  :global(html[data-theme='dark']) #search-modal {
+    --pagefind-ui-background: #2a2420;
+    --pagefind-ui-text: #e8e2d8;
+    --pagefind-ui-border: #4a4038;
+    --pagefind-ui-primary: #d4738c;
+    --pagefind-ui-tag: #3a2c22;
+  }
 </style>
 <script>
   import { withBase } from '../config';
@@ -24,6 +31,7 @@
     const css = document.createElement('link');
     css.rel = 'stylesheet';
     css.href = withBase('/pagefind/pagefind-ui.css');
+    css.onerror = () => { hint.hidden = false; };
     document.head.appendChild(css);
     const js = document.createElement('script');
     js.src = withBase('/pagefind/pagefind-ui.js');
