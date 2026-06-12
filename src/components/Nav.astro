@@ -17,6 +17,7 @@ const current = Astro.url.pathname;
     display: flex; align-items: center; gap: 20px;
     padding: 10px 26px; border-radius: 99px; z-index: 100;
     font-size: 14px; white-space: nowrap;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   }
   .brand { font-family: var(--serif); font-size: 17px; }
   .dot { color: var(--sakura); }

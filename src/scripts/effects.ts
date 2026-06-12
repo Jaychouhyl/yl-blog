@@ -57,6 +57,8 @@ if (!reduced) {
     }
   });
 
+  let rafId = 0;
+
   function tick() {
     // 使用逻辑坐标（CSS 像素）清除画布
     ctx.clearRect(0, 0, innerWidth, innerHeight);
@@ -80,7 +82,16 @@ if (!reduced) {
       ctx.fill();
       ctx.restore();
     }
-    requestAnimationFrame(tick);
+    rafId = requestAnimationFrame(tick);
   }
-  tick();
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      cancelAnimationFrame(rafId);
+    } else {
+      rafId = requestAnimationFrame(tick);
+    }
+  });
+
+  rafId = requestAnimationFrame(tick);
 }
