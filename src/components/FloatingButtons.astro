@@ -1,0 +1,48 @@
+---
+---
+<div class="float-btns" aria-hidden="false">
+  <button id="float-top" class="fbtn glass" aria-label="回到顶部" hidden>↑</button>
+  <button id="float-theme" class="fbtn glass" aria-label="切换深浅色"></button>
+</div>
+<style>
+  .float-btns {
+    position: fixed; right: 18px; bottom: 18px; z-index: 90;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .fbtn {
+    width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+    font-size: 18px; color: var(--ink); display: flex; align-items: center; justify-content: center;
+    transition: transform .2s, opacity .3s;
+  }
+  .fbtn:hover { transform: translateY(-2px); color: var(--sakura); }
+  #float-top[hidden] { display: none; }
+  :global(html[data-theme='light']) #float-theme::before { content: '🌙'; }
+  :global(html[data-theme='dark']) #float-theme::before { content: '☀️'; }
+  @media (max-width: 768px) { .float-btns { right: 12px; bottom: 12px; } }
+</style>
+<script>
+  const topBtn = document.getElementById('float-top') as HTMLButtonElement;
+  const themeBtn = document.getElementById('float-theme') as HTMLButtonElement;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(() => {
+      topBtn.hidden = scrollY < innerHeight * 0.6;
+      ticking = false;
+    });
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  topBtn.addEventListener('click', () => {
+    scrollTo({ top: 0, behavior: (reduced ? 'instant' : 'smooth') as ScrollBehavior });
+  });
+  themeBtn.addEventListener('click', () => {
+    const html = document.documentElement;
+    const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+    html.dataset.theme = next;
+    localStorage.setItem('theme', next);
+  });
+</script>

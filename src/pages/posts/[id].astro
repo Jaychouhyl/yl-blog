@@ -3,6 +3,7 @@ import type { InferGetStaticPropsType } from 'astro';
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Giscus from '../../components/Giscus.astro';
+import ReadingProgress from '../../components/ReadingProgress.astro';
 import { withBase } from '../../config';
 import { publishedPosts } from '../../lib/posts';
 import { formatDate, readingMinutes } from '../../lib/text';
@@ -22,6 +23,7 @@ const { Content, headings } = await render(post);
 const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 ---
 <BaseLayout title={post.data.title} description={post.data.summary ?? post.data.title}>
+  <ReadingProgress />
   <article class="container dense" style="padding-top:var(--page-top);max-width:760px;">
     <header class="head">
       <h1 class="page-title" style="font-size:clamp(28px,4vw,40px);">{post.data.title}</h1>

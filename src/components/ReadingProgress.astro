@@ -1,0 +1,26 @@
+---
+---
+<div id="reading-progress" aria-hidden="true"></div>
+<style>
+  #reading-progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0;
+    background: var(--sakura); z-index: 101;
+    transition: width .1s linear;
+  }
+</style>
+<script>
+  const bar = document.getElementById('reading-progress')!;
+  let ticking = false;
+  function update() {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(() => {
+      const h = document.documentElement;
+      const max = h.scrollHeight - innerHeight;
+      bar.style.width = max > 0 ? `${(h.scrollTop / max) * 100}%` : '0';
+      ticking = false;
+    });
+  }
+  addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', update, { passive: true });
+  update();
+</script>
