@@ -12,19 +12,19 @@ const recent = (await publishedPosts()).slice(0, 5);
   <section class="hero-screen">
     <img class="hero-img" src={withBase(SITE.heroImage)} alt="" fetchpriority="high" loading="eager" width="1920" height="1080" />
     <div class="hero-veil"></div>
-    <div class="hero-text">
-      <p class="hero-eyebrow">ESSAYS · PROJECTS · OTAKU LIFE — EST. 2026</p>
-      <h1 class="hero-name">{SITE.name}</h1>
-      <p class="hero-motto">{SITE.motto}</p>
-    </div>
     <button class="hero-down" aria-label="向下滚动查看内容">⌄</button>
-    <svg class="hero-wave" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true">
-      <path class="wave-back" d="M0,38 C320,86 640,8 960,40 C1180,62 1320,34 1440,46 L1440,100 L0,100 Z" />
-      <path class="wave-front" d="M0,60 C300,24 660,92 1020,58 C1240,38 1360,62 1440,52 L1440,100 L0,100 Z" />
-    </svg>
+    <div class="hero-wave" aria-hidden="true">
+      <svg class="wave wave-back" viewBox="0 0 2880 100" preserveAspectRatio="none"><path d="M0,68 C180,90 540,90 720,68 C900,46 1260,46 1440,68 C1620,90 1980,90 2160,68 C2340,46 2700,46 2880,68 L2880,100 L0,100 Z" /></svg>
+      <svg class="wave wave-front" viewBox="0 0 2880 100" preserveAspectRatio="none"><path d="M0,58 C180,34 540,34 720,58 C900,82 1260,82 1440,58 C1620,34 1980,34 2160,58 C2340,82 2700,82 2880,58 L2880,100 L0,100 Z" /></svg>
+    </div>
   </section>
 
-  <div class="container columns" id="home-content">
+  <section class="intro container" id="home-content">
+    <p class="page-sub">ESSAYS · PROJECTS · OTAKU LIFE — EST. 2026</p>
+    <h1 class="intro-motto">{SITE.motto}</h1>
+  </section>
+
+  <div class="container columns">
     <aside class="side">
       <AvatarCard />
       <SiteStats />
@@ -53,10 +53,9 @@ const recent = (await publishedPosts()).slice(0, 5);
   :global(html[data-theme='dark']) .hero-veil {
     background: linear-gradient(180deg, rgba(0,0,0,.40) 0%, rgba(0,0,0,.18) 34%, rgba(0,0,0,.30) 74%, rgba(0,0,0,.45) 100%);
   }
-  .hero-text { position: relative; text-align: center; color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.35); padding: 0 24px; }
-  .hero-eyebrow { letter-spacing: 4px; font-size: 12px; text-transform: uppercase; opacity: .9; }
-  .hero-name { font-size: clamp(64px, 11vw, 120px); margin: 8px 0 6px; font-weight: 700; }
-  .hero-motto { font-size: clamp(16px, 2.4vw, 22px); letter-spacing: 6px; opacity: .95; }
+  /* 飛べ 图独占首屏；slogan 移到滚下来的纸色区做过渡 */
+  .intro { text-align: center; padding: 60px 24px 0; }
+  .intro-motto { font-size: clamp(28px, 4vw, 44px); margin: 10px 0 0; font-weight: 700; }
   .hero-down {
     position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
     background: none; border: none; cursor: pointer; z-index: 3;
@@ -65,14 +64,18 @@ const recent = (await publishedPosts()).slice(0, 5);
   }
   .hero-wave {
     position: absolute; left: 0; right: 0; bottom: -1px; z-index: 2;
-    width: 100%; height: clamp(72px, 9vw, 130px); display: block;
+    width: 100%; height: clamp(72px, 9vw, 130px); overflow: hidden;
   }
-  .hero-wave .wave-front { fill: var(--bg-paper); }
-  .hero-wave .wave-back { fill: var(--bg-paper); opacity: .5; }
+  .wave { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; }
+  .wave path { fill: var(--bg-paper); }
+  .wave-back { opacity: .5; animation: waveX 15s linear infinite; }
+  .wave-front { animation: waveX 10s linear infinite reverse; }
+  @keyframes waveX { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .wave { animation: none; } }
   @keyframes bob { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 10px); } }
   @media (prefers-reduced-motion: reduce) { .hero-down { animation: none; } }
 
-  .columns { display: flex; gap: 22px; padding-top: 48px; padding-bottom: 80px; }
+  .columns { display: flex; gap: 22px; padding-top: 40px; padding-bottom: 80px; }
   .side { width: 230px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
   .feed { flex: 1; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
   .more { text-align: center; padding: 8px; }
