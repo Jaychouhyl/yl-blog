@@ -10,7 +10,7 @@ const recent = (await publishedPosts()).slice(0, 5);
 ---
 <BaseLayout>
   <section class="hero-screen">
-    <img class="hero-img" src={withBase(SITE.heroImage)} alt="" fetchpriority="high" />
+    <img class="hero-img" src={withBase(SITE.heroImage)} alt="" fetchpriority="high" loading="eager" width="1920" height="1080" />
     <div class="hero-veil"></div>
     <div class="hero-text">
       <p class="hero-eyebrow">ESSAYS · PROJECTS · OTAKU LIFE — EST. 2026</p>
@@ -42,7 +42,7 @@ const recent = (await publishedPosts()).slice(0, 5);
   .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .hero-veil {
     position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,.22) 78%, var(--bg-paper) 100%);
+    background: linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,.08) 70%, var(--bg-paper) 100%);
   }
   :global(html[data-theme='dark']) .hero-veil {
     background: linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.15) 30%, rgba(0,0,0,.45) 78%, var(--bg-paper) 100%);
@@ -71,6 +71,7 @@ const recent = (await publishedPosts()).slice(0, 5);
 </style>
 <script>
   document.querySelector('.hero-down')?.addEventListener('click', () => {
-    document.getElementById('home-content')?.scrollIntoView({ behavior: 'smooth' });
+    const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.getElementById('home-content')?.scrollIntoView({ behavior: (prefersReduced ? 'instant' : 'smooth') as ScrollBehavior });
   });
 </script>

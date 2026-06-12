@@ -89,6 +89,7 @@ if (!reduced) {
     if (document.hidden) {
       cancelAnimationFrame(rafId);
     } else {
+      cancelAnimationFrame(rafId); // 防竞态双循环
       rafId = requestAnimationFrame(tick);
     }
   });
