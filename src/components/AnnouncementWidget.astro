@@ -1,0 +1,14 @@
+---
+import { SITE } from '../config';
+import Widget from './Widget.astro';
+---
+<Widget title="站点公告">
+  <p class="announcement">{SITE.announcement}</p>
+</Widget>
+<style>
+  .announcement {
+    margin: 0;
+    color: var(--ink-2);
+    line-height: 1.7;
+  }
+</style>

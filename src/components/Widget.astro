@@ -1,0 +1,25 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+<section class="glass widget">
+  <h3 class="widget-title">{title}</h3>
+  <slot />
+</section>
+<style>
+  .widget {
+    padding: 16px;
+    font-size: 13px;
+  }
+
+  .widget-title {
+    margin: 0 0 10px;
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+</style>

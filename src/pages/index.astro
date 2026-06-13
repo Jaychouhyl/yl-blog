@@ -1,8 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import AnnouncementWidget from '../components/AnnouncementWidget.astro';
 import AvatarCard from '../components/AvatarCard.astro';
 import SiteStats from '../components/SiteStats.astro';
 import PostCard from '../components/PostCard.astro';
+import RecentPostsWidget from '../components/RecentPostsWidget.astro';
+import TagCloudWidget from '../components/TagCloudWidget.astro';
 import { SITE, withBase } from '../config';
 import { publishedPosts } from '../lib/posts';
 
@@ -34,7 +37,10 @@ const recent = (await publishedPosts()).slice(0, 5);
   <div class="container columns">
     <aside class="side">
       <AvatarCard />
+      <AnnouncementWidget />
       <SiteStats />
+      <TagCloudWidget />
+      <RecentPostsWidget />
     </aside>
     <div class="feed">
       {recent.map((post) => <PostCard post={post} />)}

@@ -1,0 +1,51 @@
+---
+import { withBase } from '../config';
+import { publishedPosts } from '../lib/posts';
+import { formatDate } from '../lib/text';
+import Widget from './Widget.astro';
+
+const posts = (await publishedPosts()).slice(0, 5);
+---
+<Widget title="最近文章">
+  <div class="recent-posts-widget">
+    {posts.length > 0 ? posts.map((post) => (
+      <a class="recent-link" href={withBase(`/posts/${post.id}/`)}>
+        <span class="recent-title">{post.data.title}</span>
+        <time class="muted" datetime={formatDate(post.data.date)}>{formatDate(post.data.date).slice(5)}</time>
+      </a>
+    )) : <p class="muted empty">还没有发布文章</p>}
+  </div>
+</Widget>
+<style>
+  .recent-posts-widget {
+    display: grid;
+    gap: 8px;
+  }
+
+  .recent-link {
+    display: grid;
+    gap: 2px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--line);
+    color: var(--ink-2);
+  }
+
+  .recent-link:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .recent-link:hover {
+    color: var(--sakura);
+  }
+
+  .recent-title {
+    font-family: var(--serif);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .empty {
+    margin: 0;
+  }
+</style>

@@ -2,25 +2,25 @@
 import { publishedPosts, allTags } from '../lib/posts';
 import { countWords } from '../lib/text';
 import { SITE } from '../config';
+import Widget from './Widget.astro';
 
 const posts = await publishedPosts();
 // allTags 返回 [tagName, posts[]] 元组数组，.length 即唯一标签数
 const tagCount = allTags(posts).length;
 const totalWords = posts.reduce((sum, p) => sum + countWords(p.body ?? ''), 0);
 ---
-<div class="glass card">
-  <div class="head">▍站点数据</div>
-  <div class="row"><span>📄 文章</span><b>{posts.length}</b></div>
-  <div class="row"><span>🏷 标签</span><b>{tagCount}</b></div>
-  <div class="row"><span>✑ 总字数</span><b>{totalWords.toLocaleString()}</b></div>
-  <div class="row" id="pv-row" hidden>
-    <span>👀 全站浏览</span><b id="busuanzi_value_site_pv"></b>
+<Widget title="站点数据">
+  <div class="card">
+    <div class="row"><span>📄 文章</span><b>{posts.length}</b></div>
+    <div class="row"><span>🏷 标签</span><b>{tagCount}</b></div>
+    <div class="row"><span>✑ 总字数</span><b>{totalWords.toLocaleString()}</b></div>
+    <div class="row" id="pv-row" hidden>
+      <span>👀 全站浏览</span><b id="busuanzi_value_site_pv"></b>
+    </div>
+    <div class="row"><span>⏳ 运行时长</span><b id="run-days" data-start={SITE.startDate}></b></div>
   </div>
-  <div class="row"><span>⏳ 运行时长</span><b id="run-days" data-start={SITE.startDate}></b></div>
-</div>
+</Widget>
 <style>
-  .card { padding: 16px; font-size: 13px; }
-  .head { font-family: var(--serif); margin-bottom: 8px; }
   .row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed var(--line); color: var(--ink-2); }
   .row:last-child { border-bottom: none; }
 </style>

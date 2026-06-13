@@ -1,0 +1,42 @@
+---
+import { withBase } from '../config';
+import { allTags, publishedPosts } from '../lib/posts';
+import Widget from './Widget.astro';
+
+const tags = allTags(await publishedPosts());
+const maxCount = Math.max(1, ...tags.map(([, posts]) => posts.length));
+---
+<Widget title="标签云">
+  <div class="tag-cloud-widget" aria-label="标签云">
+    {tags.length > 0 ? tags.map(([tag, posts]) => {
+      const weight = posts.length / maxCount;
+      const size = 12 + Math.round(weight * 4);
+      const fontWeight = weight > 0.65 ? 700 : 500;
+      return (
+        <a
+          class="chip tag-link"
+          href={withBase(`/tags/${tag}/`)}
+          style={`font-size:${size}px;font-weight:${fontWeight};`}
+          aria-label={`${tag} 标签，共 ${posts.length} 篇`}
+        >
+          #{tag}
+        </a>
+      );
+    }) : <p class="muted empty">暂时还没有标签</p>}
+  </div>
+</Widget>
+<style>
+  .tag-cloud-widget {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag-link {
+    line-height: 1.5;
+  }
+
+  .empty {
+    margin: 0;
+  }
+</style>

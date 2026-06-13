@@ -1,7 +1,9 @@
 ---
 import { SITE, withBase } from '../config';
+import Widget from './Widget.astro';
 ---
-<div class="glass card">
+<Widget title="忆霖 · 小筑">
+  <div class="card">
   <img class="avatar" src={withBase('/avatar.png')} alt="头像" width="84" height="84" />
   <div class="name">{SITE.name}</div>
   <div class="muted">写字 · 做项目 · 追番</div>
@@ -9,9 +11,10 @@ import { SITE, withBase } from '../config';
     <a class="chip" href={SITE.github} target="_blank" rel="noopener noreferrer">GitHub</a>
     <a class="chip" href={withBase('/rss.xml')}>RSS</a>
   </div>
-</div>
+  </div>
+</Widget>
 <style>
-  .card { padding: 22px 16px; text-align: center; }
+  .card { text-align: center; }
   .avatar { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; margin: 0 auto;
     border: 3px solid var(--card-border); box-shadow: var(--shadow); }
   .name { font-family: var(--serif); font-size: 18px; margin-top: 10px; }
