@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { withBase } from '../../config';
 import { publishedPosts, groupByYear, allTags } from '../../lib/posts';
@@ -24,7 +25,12 @@ const tags = allTags(posts);
           {list.map((p) => (
             <li>
               <time class="muted date" datetime={formatDate(p.data.date)}>{formatDate(p.data.date).slice(5)/* MM-DD */}</time>
-              <a href={withBase(`/posts/${p.id}/`)}>{p.data.title}</a>
+              <a class:list={['archive-link', { 'has-cover': p.data.cover }]} href={withBase(`/posts/${p.id}/`)}>
+                {p.data.cover && (
+                  <Image class="archive-cover" src={p.data.cover} alt="" width={72} height={48} densities={[1, 2]} loading="lazy" decoding="async" />
+                )}
+                <span>{p.data.title}</span>
+              </a>
             </li>
           ))}
         </ul>
@@ -38,4 +44,14 @@ const tags = allTags(posts);
   .timeline { list-style: none; padding: 0; margin: 0; }
   .timeline li { display: flex; gap: 16px; padding: 7px 0; border-bottom: 1px dashed var(--line); }
   .date { font-family: var(--mono); flex-shrink: 0; }
+  .archive-link { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
+  .archive-cover {
+    width: 72px; height: 48px; flex: 0 0 72px;
+    object-fit: cover; border-radius: 6px;
+    background: var(--sakura-soft);
+  }
+  @media (max-width: 520px) {
+    .timeline li { gap: 10px; }
+    .archive-cover { width: 58px; height: 38px; flex-basis: 58px; }
+  }
 </style>
