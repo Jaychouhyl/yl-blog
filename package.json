@@ -17,7 +17,6 @@
     "d3-force": "^3.0.0",
     "katex": "^0.17.0",
     "marked": "^18.0.5",
-    "oh-my-live2d": "^0.19.3",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0"
   },
