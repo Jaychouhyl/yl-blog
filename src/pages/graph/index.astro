@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GraphView from '../../components/GraphView.astro';
+import { withBase } from '../../config';
+import { allTags, publishedPosts } from '../../lib/posts';
+
+const posts = await publishedPosts();
+const tags = allTags(posts);
+
+const nodes = [
+  ...posts.map((post) => ({
+    id: `post:${post.id}`,
+    title: post.data.title,
+    type: 'post' as const,
+    href: withBase(`/posts/${post.id}/`),
+    size: 20,
+  })),
+  ...tags.map(([tag, list]) => ({
+    id: `tag:${tag}`,
+    title: `#${tag}`,
+    type: 'tag' as const,
+    href: withBase(`/tags/${tag}/`),
+    size: Math.min(18, 12 + list.length * 2),
+  })),
+];
+
+const links = posts.flatMap((post) =>
+  post.data.tags.map((tag) => ({
+    source: `post:${post.id}`,
+    target: `tag:${tag}`,
+    value: 1,
+  })),
+);
+---
+<BaseLayout title="关系图谱">
+  <div class="container dense graph-page" style="padding-top:var(--page-top);">
+    <p class="page-sub">LINK MAP</p>
+    <h1 class="page-title">关系图谱</h1>
+    <GraphView graph={{ nodes, links }} />
+  </div>
+</BaseLayout>
+<style>
+  .graph-page { max-width: 980px; }
+</style>
