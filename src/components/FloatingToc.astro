@@ -1,0 +1,399 @@
+---
+interface TocHeading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings?: TocHeading[];
+}
+
+const { headings = [] } = Astro.props;
+const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 3 && heading.slug);
+const drawerId = `floating-toc-drawer-${toc
+  .map((heading) => heading.slug)
+  .join('-')
+  .replace(/[^a-zA-Z0-9_-]/g, '-')
+  .replace(/-+/g, '-')
+  .replace(/^-|-$/g, '')
+  .slice(0, 64) || 'article'}`;
+---
+{toc.length > 0 && (
+  <div class="floating-toc-wrapper" data-floating-toc>
+    <nav class="floating-toc-panel glass" aria-label="目录">
+      <div class="floating-toc-head">目录</div>
+      <div class="floating-toc-list">
+        {toc.map((heading) => (
+          <a
+            class:list={['floating-toc-link', `d${heading.depth}`]}
+            href={`#${heading.slug}`}
+            data-toc-link
+            data-toc-target={heading.slug}
+          >
+            {heading.text}
+          </a>
+        ))}
+      </div>
+    </nav>
+
+    <div class="floating-toc-mobile">
+      <button
+        class="floating-toc-toggle glass"
+        type="button"
+        aria-label="打开目录"
+        aria-expanded="false"
+        aria-controls={drawerId}
+        data-open-label="打开目录"
+        data-close-label="关闭目录"
+      >
+        目录
+      </button>
+      <div class="floating-toc-backdrop" data-toc-close hidden></div>
+      <nav id={drawerId} class="floating-toc-drawer glass" aria-label="目录" hidden>
+        <div class="floating-toc-drawer-head">
+          <span>目录</span>
+          <button class="floating-toc-close" type="button" aria-label="关闭目录" data-toc-close>×</button>
+        </div>
+        <div class="floating-toc-list">
+          {toc.map((heading) => (
+            <a
+              class:list={['floating-toc-link', `d${heading.depth}`]}
+              href={`#${heading.slug}`}
+              data-toc-link
+              data-toc-target={heading.slug}
+            >
+              {heading.text}
+            </a>
+          ))}
+        </div>
+      </nav>
+    </div>
+  </div>
+)}
+
+<style>
+  .floating-toc-wrapper {
+    position: relative;
+    z-index: 91;
+  }
+
+  .floating-toc-panel {
+    display: none;
+  }
+
+  .floating-toc-mobile {
+    display: none;
+  }
+
+  .floating-toc-head,
+  .floating-toc-drawer-head {
+    font-family: var(--serif);
+    color: var(--ink);
+  }
+
+  .floating-toc-head {
+    margin-bottom: 8px;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .floating-toc-list {
+    display: grid;
+    gap: 2px;
+  }
+
+  .floating-toc-link {
+    display: block;
+    min-width: 0;
+    border-left: 3px solid transparent;
+    border-radius: 0 8px 8px 0;
+    padding: 5px 8px 5px 10px;
+    color: var(--ink-2);
+    font-size: 13px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+
+  .floating-toc-link:hover {
+    color: var(--sakura);
+    background: var(--sakura-soft);
+  }
+
+  .floating-toc-link.d3 {
+    margin-left: 12px;
+    font-size: 12px;
+  }
+
+  .floating-toc-link.active {
+    border-left-color: var(--sakura);
+    color: var(--ink);
+    background: var(--sakura-soft);
+    font-weight: 700;
+  }
+
+  .floating-toc-toggle,
+  .floating-toc-close {
+    color: var(--ink);
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .floating-toc-toggle {
+    position: fixed;
+    right: 18px;
+    bottom: 126px;
+    z-index: 91;
+    display: flex;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    transition: transform 0.2s, color 0.2s;
+  }
+
+  .floating-toc-toggle:hover {
+    color: var(--sakura);
+    transform: translateY(-2px);
+  }
+
+  .floating-toc-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 91;
+    background: rgba(28, 25, 22, 0.18);
+  }
+
+  .floating-toc-drawer {
+    position: fixed;
+    right: 12px;
+    bottom: 126px;
+    z-index: 92;
+    width: min(320px, calc(100vw - 24px));
+    max-height: 60vh;
+    padding: 14px 14px 16px;
+    overflow: auto;
+  }
+
+  .floating-toc-drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .floating-toc-close {
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 50%;
+    background: var(--sakura-soft);
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .floating-toc-close:hover {
+    color: var(--sakura);
+  }
+
+  .floating-toc-backdrop[hidden],
+  .floating-toc-drawer[hidden] {
+    display: none;
+  }
+
+  @media (min-width: 1100px) {
+    .floating-toc-panel {
+      position: fixed;
+      top: calc(var(--page-top) + 28px);
+      right: 18px;
+      z-index: 91;
+      display: block;
+      width: clamp(132px, calc((100vw - 760px) / 2 - 32px), 240px);
+      max-height: 60vh;
+      padding: 14px;
+      overflow: auto;
+      backdrop-filter: blur(14px);
+    }
+  }
+
+  @media (max-width: 1099.98px) {
+    .floating-toc-mobile {
+      display: block;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .floating-toc-toggle,
+    .floating-toc-drawer {
+      right: 12px;
+      bottom: 118px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .floating-toc-link,
+    .floating-toc-toggle {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const tocRoots = document.querySelectorAll<HTMLElement>('[data-floating-toc]');
+
+  tocRoots.forEach((root) => {
+    const links = Array.from(root.querySelectorAll<HTMLAnchorElement>('[data-toc-link]'));
+    const toggle = root.querySelector<HTMLButtonElement>('.floating-toc-toggle');
+    const drawer = root.querySelector<HTMLElement>('.floating-toc-drawer');
+    const backdrop = root.querySelector<HTMLElement>('.floating-toc-backdrop');
+    const closeControls = root.querySelectorAll<HTMLElement>('[data-toc-close]');
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    const visibleHeadings = new Set<HTMLElement>();
+    let restoreTarget: HTMLElement | null = null;
+
+    if (links.length === 0) return;
+
+    function setActive(id: string) {
+      links.forEach((link) => {
+        const active = link.dataset.tocTarget === id;
+        link.classList.toggle('active', active);
+        if (active) {
+          link.setAttribute('aria-current', 'true');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    function setToggleState(open: boolean) {
+      if (!toggle) return;
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open
+        ? toggle.dataset.closeLabel ?? '关闭目录'
+        : toggle.dataset.openLabel ?? '打开目录');
+    }
+
+    function openDrawer() {
+      if (!drawer || !backdrop || !toggle) return;
+      restoreTarget = document.activeElement instanceof HTMLElement ? document.activeElement : toggle;
+      drawer.hidden = false;
+      backdrop.hidden = false;
+      setToggleState(true);
+      const firstFocusTarget = drawer.querySelector<HTMLElement>('[data-toc-link], .floating-toc-close');
+      requestAnimationFrame(() => {
+        firstFocusTarget?.focus({ preventScroll: true });
+      });
+    }
+
+    function closeDrawer() {
+      if (!drawer || !backdrop || !toggle) return;
+      if (drawer.hidden) return;
+      drawer.hidden = true;
+      backdrop.hidden = true;
+      setToggleState(false);
+      const fallback = restoreTarget && root.contains(restoreTarget) ? restoreTarget : toggle;
+      (fallback ?? toggle).focus({ preventScroll: true });
+      restoreTarget = null;
+    }
+
+    function pageTopOffset() {
+      const raw = getComputedStyle(document.documentElement).getPropertyValue('--page-top');
+      const offset = Number.parseFloat(raw);
+      return Number.isFinite(offset) ? offset + 12 : 0;
+    }
+
+    function chooseActiveHeading() {
+      const threshold = pageTopOffset();
+      const visibleBelowThreshold = Array.from(visibleHeadings)
+        .map((heading) => ({ heading, top: heading.getBoundingClientRect().top }))
+        .filter((item) => item.top >= threshold)
+        .sort((a, b) => a.top - b.top);
+
+      if (visibleBelowThreshold[0]) return visibleBelowThreshold[0].heading;
+
+      const nearestAboveThreshold = articleHeadings
+        .map((heading) => ({ heading, top: heading.getBoundingClientRect().top }))
+        .filter((item) => item.top < threshold)
+        .sort((a, b) => b.top - a.top);
+
+      return nearestAboveThreshold[0]?.heading ?? articleHeadings[0] ?? null;
+    }
+
+    function refreshActiveHeading() {
+      const activeHeading = chooseActiveHeading();
+      if (activeHeading) setActive(activeHeading.id);
+    }
+
+    toggle?.addEventListener('click', () => {
+      if (!drawer) return;
+      if (drawer.hidden) {
+        openDrawer();
+      } else {
+        closeDrawer();
+      }
+    });
+
+    root.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && drawer && !drawer.hidden) {
+        event.preventDefault();
+        closeDrawer();
+      }
+    });
+
+    closeControls.forEach((control) => {
+      control.addEventListener('click', closeDrawer);
+    });
+
+    links.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const targetId = link.dataset.tocTarget;
+        const target = targetId ? document.getElementById(targetId) : null;
+        if (!target) return;
+
+        event.preventDefault();
+        target.scrollIntoView({
+          behavior: (reducedMotion.matches ? 'instant' : 'smooth') as ScrollBehavior,
+          block: 'start',
+        });
+        history.pushState(null, '', `#${target.id}`);
+        setActive(target.id);
+        closeDrawer();
+      });
+    });
+
+    const articleHeadings = Array.from(document.querySelectorAll<HTMLElement>('article h2, article h3'))
+      .filter((heading) => heading.id && links.some((link) => link.dataset.tocTarget === heading.id));
+
+    if (articleHeadings.length === 0) return;
+
+    refreshActiveHeading();
+
+    if (!('IntersectionObserver' in window)) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          visibleHeadings.add(entry.target as HTMLElement);
+        } else {
+          visibleHeadings.delete(entry.target as HTMLElement);
+        }
+      });
+      refreshActiveHeading();
+    }, {
+      rootMargin: '-20% 0px -65% 0px',
+      threshold: 0,
+    });
+
+    articleHeadings.forEach((heading) => observer.observe(heading));
+  });
+</script>
