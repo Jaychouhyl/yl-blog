@@ -10,10 +10,22 @@ import { SITE, withBase } from '../config';
 import { publishedPosts } from '../lib/posts';
 
 const recent = (await publishedPosts()).slice(0, 5);
+const heroImages = SITE.heroImages.map((image) => withBase(image));
+const firstHeroImage = heroImages[0] ?? withBase('/hero.webp');
 ---
 <BaseLayout>
   <section class="hero-screen">
-    <img class="hero-img" src={withBase(SITE.heroImage)} alt="" fetchpriority="high" loading="eager" width="1920" height="1080" />
+    <img
+      class="hero-img"
+      src={firstHeroImage}
+      data-hero-image
+      data-hero-images={JSON.stringify(heroImages)}
+      alt=""
+      fetchpriority="high"
+      loading="eager"
+      width="1920"
+      height="1080"
+    />
     <div class="hero-veil"></div>
     <button class="hero-down" aria-label="向下滚动查看内容">⌄</button>
     <div class="hero-wave" aria-hidden="true">
@@ -106,9 +118,40 @@ const recent = (await publishedPosts()).slice(0, 5);
     document.getElementById('home-content')?.scrollIntoView({ behavior: (prefersReduced ? 'instant' : 'smooth') as ScrollBehavior });
   });
 
-  const heroImg = document.querySelector<HTMLImageElement>('.hero-img');
+  const heroImg = document.querySelector<HTMLImageElement>('[data-hero-image]');
   if (heroImg) {
-    if (heroImg.complete) heroImg.classList.add('loaded');
-    else heroImg.addEventListener('load', () => heroImg.classList.add('loaded'), { once: true });
+    const showLoaded = () => heroImg.classList.add('loaded');
+    const parseImages = () => {
+      try {
+        const value = JSON.parse(heroImg.dataset.heroImages || '[]');
+        return Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string' && item.length > 0) : [];
+      } catch {
+        return [];
+      }
+    };
+
+    const images = parseImages();
+    const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let current = 0;
+
+    heroImg.dataset.currentHero = heroImg.currentSrc || heroImg.src;
+    heroImg.addEventListener('load', showLoaded);
+    if (heroImg.complete) showLoaded();
+
+    const setHero = (index: number) => {
+      const next = images[index];
+      if (!next || heroImg.dataset.currentHero === next) return;
+      current = index;
+      heroImg.classList.remove('loaded');
+      heroImg.dataset.currentHero = next;
+      heroImg.src = next;
+      if (heroImg.complete) requestAnimationFrame(showLoaded);
+    };
+
+    if (!prefersReduced && images.length > 1) {
+      const start = Math.floor(Math.random() * images.length);
+      setHero(start);
+      setInterval(() => setHero((current + 1) % images.length), 6000);
+    }
   }
 </script>

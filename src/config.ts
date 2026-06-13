@@ -14,8 +14,8 @@ export const SITE = {
     { label: '友链', href: '/friends/' },
     { label: '关于', href: '/about/' },
   ],
-  // 首屏全屏插画：把图片放到 public/ 后改这里的文件名即可（如 '/hero.jpg'）
-  heroImage: '/hero.webp',
+  // 首屏全屏插画：把图片放到 public/ 后追加到数组即可（如 '/hero-2.jpg'）
+  heroImages: ['/hero.webp'],
   giscus: {
     repo: 'Jaychouhyl/yl-blog',
     repoId: 'R_kgDOS2WxiQ',
