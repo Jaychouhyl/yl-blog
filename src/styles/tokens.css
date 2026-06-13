@@ -32,3 +32,27 @@ html[data-theme='dark'] {
   --line: #332d26;
   --shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
 }
+
+html[data-accent='sky'] {
+  --sakura: #5f9edb;
+  --sakura-soft: #e8f3ff;
+  --warm: #8fc0e8;
+}
+
+html[data-theme='dark'][data-accent='sky'] {
+  --sakura: #89c7ff;
+  --sakura-soft: #223546;
+  --warm: #6aa6d8;
+}
+
+html[data-accent='matcha'] {
+  --sakura: #7aa66a;
+  --sakura-soft: #edf6e7;
+  --warm: #a6bc72;
+}
+
+html[data-theme='dark'][data-accent='matcha'] {
+  --sakura: #9fc58c;
+  --sakura-soft: #263626;
+  --warm: #91ac68;
+}

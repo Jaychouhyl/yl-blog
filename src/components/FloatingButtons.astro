@@ -2,6 +2,7 @@
 ---
 <div class="float-btns" aria-hidden="false">
   <button id="float-top" class="fbtn glass" aria-label="回到顶部" hidden>↑</button>
+  <button id="float-accent" class="fbtn glass" aria-label="切换强调色" title="切换强调色"></button>
   <button id="float-theme" class="fbtn glass" aria-label="切换深浅色"></button>
 </div>
 <style>
@@ -16,14 +17,17 @@
   }
   .fbtn:hover { transform: translateY(-2px); color: var(--sakura); }
   #float-top[hidden] { display: none; }
+  #float-accent::before { content: '🎨'; }
   :global(html[data-theme='light']) #float-theme::before { content: '🌙'; }
   :global(html[data-theme='dark']) #float-theme::before { content: '☀️'; }
   @media (max-width: 768px) { .float-btns { right: 12px; bottom: 12px; } }
 </style>
 <script>
   const topBtn = document.getElementById('float-top') as HTMLButtonElement;
+  const accentBtn = document.getElementById('float-accent') as HTMLButtonElement;
   const themeBtn = document.getElementById('float-theme') as HTMLButtonElement;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const accents = ['sakura', 'sky', 'matcha'];
 
   let ticking = false;
   function onScroll() {
@@ -44,5 +48,12 @@
     const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
     html.dataset.theme = next;
     localStorage.setItem('theme', next);
+  });
+  accentBtn.addEventListener('click', () => {
+    const html = document.documentElement;
+    const current = html.dataset.accent || 'sakura';
+    const next = accents[(accents.indexOf(current) + 1) % accents.length];
+    html.dataset.accent = next;
+    localStorage.setItem('accent', next);
   });
 </script>
