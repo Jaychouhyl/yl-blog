@@ -2,6 +2,7 @@
 title: 你好，世界
 date: 2026-06-10
 tags: [随笔]
+category: 随笔
 summary: 这里是忆霖的第一篇随笔，也是这个小站的起点。
 cover: ./cover.webp
 ---

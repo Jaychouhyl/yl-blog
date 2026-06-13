@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../config';
+import { publishedPosts, allCategories } from '../../lib/posts';
+
+const categories = allCategories(await publishedPosts());
+---
+<BaseLayout title="分类">
+  <div class="container roomy" style="padding-top:var(--page-top);max-width:760px;">
+    <p class="page-sub">CATEGORIES</p>
+    <h1 class="page-title">分类</h1>
+    <div class="category-grid">
+      {categories.map(([category, posts]) => (
+        <a class="glass category-card" href={withBase(`/categories/${category}/`)}>
+          <span class="category-name">{category}</span>
+          <span class="category-count">{posts.length} 篇</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+<style>
+  .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 24px; }
+  .category-card {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    min-height: 72px; padding: 18px 20px;
+    border-radius: 8px; transition: transform 0.2s, border-color 0.2s;
+  }
+  .category-card:hover { transform: translateY(-2px); border-color: var(--sakura); color: inherit; }
+  .category-name { font-family: var(--serif); font-size: 18px; color: var(--ink); }
+  .category-count { font-family: var(--mono); font-size: 12px; color: var(--sakura); }
+  @media (prefers-reduced-motion: reduce) {
+    .category-card { transition: none; }
+    .category-card:hover { transform: none; }
+  }
+</style>

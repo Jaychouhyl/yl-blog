@@ -2,12 +2,13 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { withBase } from '../../config';
-import { publishedPosts, groupByYear, allTags } from '../../lib/posts';
+import { publishedPosts, groupByYear, allTags, allCategories } from '../../lib/posts';
 import { formatDate } from '../../lib/text';
 
 const posts = await publishedPosts();
 const byYear = groupByYear(posts);
 const tags = allTags(posts);
+const categories = allCategories(posts);
 ---
 <BaseLayout title="随笔归档">
   <div class="container dense" style="padding-top:var(--page-top);max-width:760px;">
@@ -18,6 +19,17 @@ const tags = allTags(posts);
         <a class="chip" href={withBase(`/tags/${t}/`)} aria-label={`${t} 标签，共 ${list.length} 篇`}>#{t} {list.length}</a>
       ))}
     </nav>
+    {categories.length > 0 && (
+      <nav class="category-bar" aria-label="分类">
+        <a class="category-chip category-index" href={withBase('/categories/')}>Categories</a>
+        {categories.map(([category, list]) => (
+          <a class="category-chip" href={withBase(`/categories/${category}/`)}>
+            <span>{category}</span>
+            <span class="count">{list.length}</span>
+          </a>
+        ))}
+      </nav>
+    )}
     {byYear.map(([year, list]) => (
       <section>
         <h2 class="year">{year}</h2>
@@ -25,6 +37,7 @@ const tags = allTags(posts);
           {list.map((p) => (
             <li>
               <time class="muted date" datetime={formatDate(p.data.date)}>{formatDate(p.data.date).slice(5)/* MM-DD */}</time>
+              {p.data.category && <a class="archive-category" href={withBase(`/categories/${p.data.category}/`)}>{p.data.category}</a>}
               <a class:list={['archive-link', { 'has-cover': p.data.cover }]} href={withBase(`/posts/${p.id}/`)}>
                 {p.data.cover && (
                   <Image class="archive-cover" src={p.data.cover} alt="" width={72} height={48} densities={[1, 2]} loading="lazy" decoding="async" />
@@ -40,10 +53,27 @@ const tags = allTags(posts);
 </BaseLayout>
 <style>
   .tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 8px; }
+  .category-bar { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 26px; }
+  .category-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    min-height: 30px; padding: 4px 12px;
+    border: 1px solid var(--line); border-radius: 8px;
+    background: color-mix(in srgb, var(--card) 82%, transparent);
+    color: var(--ink-2); font-size: 13px;
+  }
+  .category-chip:hover { border-color: var(--sakura); color: var(--sakura); }
+  .category-index { font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; }
+  .count { color: var(--sakura); font-family: var(--mono); }
   .year { font-size: 28px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
   .timeline { list-style: none; padding: 0; margin: 0; }
   .timeline li { display: flex; gap: 16px; padding: 7px 0; border-bottom: 1px dashed var(--line); }
   .date { font-family: var(--mono); flex-shrink: 0; }
+  .archive-category {
+    align-self: flex-start; flex: 0 0 auto;
+    padding: 1px 8px; border-radius: 6px;
+    color: var(--sakura); background: var(--sakura-soft);
+    font-size: 12px; line-height: 1.7;
+  }
   .archive-link { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
   .archive-cover {
     width: 72px; height: 48px; flex: 0 0 72px;

@@ -24,6 +24,7 @@ const { post } = Astro.props;
     <h2 class="title">{post.data.title}</h2>
     {post.data.summary && <p class="muted summary">{post.data.summary}</p>}
     <div class="meta">
+      {post.data.category && <span class="category-pill">{post.data.category}</span>}
       {post.data.tags.map((t) => <span class="chip">#{t}</span>)}
       <span class="muted">{formatDate(post.data.date)} · 约 {readingMinutes(post.body ?? '')} 分钟</span>
     </div>
@@ -41,6 +42,13 @@ const { post } = Astro.props;
   .title { font-family: var(--serif); font-size: 17px; margin: 0; }
   .summary { margin: 6px 0 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .meta { margin-top: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .category-pill {
+    display: inline-flex; align-items: center; height: 22px;
+    padding: 0 10px; border-radius: 6px;
+    border: 1px solid color-mix(in srgb, var(--sakura) 36%, transparent);
+    color: var(--sakura); background: color-mix(in srgb, var(--sakura-soft) 68%, transparent);
+    font-size: 12px; line-height: 1;
+  }
   @media (max-width: 640px) {
     .card { flex-direction: column; padding: 16px; }
     .cover { width: 100%; height: auto; aspect-ratio: 16 / 9; flex-basis: auto; }

@@ -1,0 +1,26 @@
+---
+import type { InferGetStaticPropsType } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { publishedPosts, allCategories } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const categories = allCategories(await publishedPosts());
+  return categories.map(([category, posts]) => ({ params: { category }, props: { posts } }));
+}
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { category } = Astro.params;
+const { posts } = Astro.props as Props;
+---
+<BaseLayout title={`分类：${category}`}>
+  <div class="container dense" style="padding-top:var(--page-top);max-width:760px;">
+    <p class="page-sub">CATEGORY</p>
+    <h1 class="page-title">{category}</h1>
+    <div class="post-list">
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </div>
+</BaseLayout>
+<style>
+  .post-list { display: flex; flex-direction: column; gap: 14px; }
+</style>

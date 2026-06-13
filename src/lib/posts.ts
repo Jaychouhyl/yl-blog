@@ -25,3 +25,13 @@ export function allTags(posts: Post[]): [string, Post[]][] {
   }
   return [...map.entries()].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0], 'zh'));
 }
+
+export function allCategories(posts: Post[]): [string, Post[]][] {
+  const map = new Map<string, Post[]>();
+  for (const p of posts) {
+    if (!p.data.category) continue;
+    if (!map.has(p.data.category)) map.set(p.data.category, []);
+    map.get(p.data.category)!.push(p);
+  }
+  return [...map.entries()].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0], 'zh'));
+}
