@@ -151,7 +151,12 @@ const firstHeroImage = heroImages[0] ?? withBase('/hero.webp');
     if (!prefersReduced && images.length > 1) {
       const start = Math.floor(Math.random() * images.length);
       setHero(start);
-      setInterval(() => setHero((current + 1) % images.length), 6000);
+      const advance = () => setHero((current + 1) % images.length);
+      let timer = setInterval(advance, 6000);
+      document.addEventListener('visibilitychange', () => {
+        clearInterval(timer);
+        if (!document.hidden) timer = setInterval(advance, 6000);
+      });
     }
   }
 </script>

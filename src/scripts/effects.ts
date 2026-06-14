@@ -6,22 +6,23 @@ if (!reduced) {
   document.body.appendChild(canvas);
   const ctx = canvas.getContext('2d')!;
 
-  interface Petal {
+  interface Feather {
     x: number; y: number; size: number; vx: number; vy: number;
-    rot: number; vr: number; life: number; // life<0 表示常驻飘落瓣
+    rot: number; vr: number; swing: number; swingSpeed: number;
+    life: number; // life<0 表示常驻飘落
   }
-  const petals: Petal[] = [];
-  const MAX_AMBIENT = 6; // 参考站常驻 5 片的克制密度
+  const feathers: Feather[] = [];
+  const MAX_AMBIENT = 5; // 克制密度，符合专业基调
 
-  // 1. 缓存 --sakura 颜色，主题切换时通过 MutationObserver 刷新
-  function readSakura() {
-    return getComputedStyle(document.documentElement).getPropertyValue('--sakura').trim() || '#f08aa0';
+  // 羽毛颜色取自 --feather，随主题（亮/暗）切换刷新
+  function readFeather() {
+    return getComputedStyle(document.documentElement).getPropertyValue('--feather').trim()
+      || 'rgba(48,44,39,0.42)';
   }
-  let sakura = readSakura();
-  new MutationObserver(() => { sakura = readSakura(); })
-    .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  let feather = readFeather();
+  new MutationObserver(() => { feather = readFeather(); })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-accent'] });
 
-  // 3. devicePixelRatio 适配
   function resize() {
     const dpr = devicePixelRatio || 1;
     canvas.width = innerWidth * dpr;
@@ -33,26 +34,42 @@ if (!reduced) {
   resize();
   addEventListener('resize', resize);
 
-  function spawnAmbient(): Petal {
+  function spawnAmbient(): Feather {
     return {
-      x: Math.random() * innerWidth, y: -20,
-      size: 5 + Math.random() * 6,
-      vx: -0.4 - Math.random() * 0.6, vy: 0.7 + Math.random() * 0.9,
-      rot: Math.random() * Math.PI, vr: (Math.random() - 0.5) * 0.04,
+      x: Math.random() * innerWidth, y: -24,
+      size: 6 + Math.random() * 5,
+      vx: -0.3 - Math.random() * 0.4, vy: 0.4 + Math.random() * 0.5,
+      rot: Math.random() * Math.PI, vr: (Math.random() - 0.5) * 0.03,
+      swing: Math.random() * Math.PI * 2, swingSpeed: 0.015 + Math.random() * 0.02,
       life: -1,
     };
   }
 
+  // 画一片羽毛：沿 y 轴的柳叶形 + 中脉
+  function drawFeather(len: number) {
+    ctx.beginPath();
+    ctx.moveTo(0, -len);
+    ctx.quadraticCurveTo(len * 0.55, 0, 0, len);
+    ctx.quadraticCurveTo(-len * 0.55, 0, 0, -len);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.lineWidth = Math.max(0.5, len * 0.07);
+    ctx.moveTo(0, -len);
+    ctx.lineTo(0, len * 0.88);
+    ctx.stroke();
+  }
+
   document.addEventListener('click', (e) => {
-    if (e.detail === 0) return; // 键盘触发的合成 click 无有效坐标
+    if (e.detail === 0) return; // 键盘合成 click 无有效坐标
     for (let i = 0; i < 6; i++) {
       const angle = Math.random() * Math.PI * 2;
       const speed = 1 + Math.random() * 2;
-      petals.push({
-        x: e.clientX, y: e.clientY, size: 4 + Math.random() * 4,
+      feathers.push({
+        x: e.clientX, y: e.clientY, size: 5 + Math.random() * 4,
         vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed - 1,
-        rot: Math.random() * Math.PI, vr: (Math.random() - 0.5) * 0.2,
-        life: 60,
+        rot: Math.random() * Math.PI, vr: (Math.random() - 0.5) * 0.18,
+        swing: Math.random() * Math.PI * 2, swingSpeed: 0.03 + Math.random() * 0.03,
+        life: 70,
       });
     }
   });
@@ -60,26 +77,23 @@ if (!reduced) {
   let rafId = 0;
 
   function tick() {
-    // 使用逻辑坐标（CSS 像素）清除画布
     ctx.clearRect(0, 0, innerWidth, innerHeight);
-    const ambient = petals.filter((p) => p.life < 0).length;
-    if (ambient < MAX_AMBIENT && Math.random() < 0.02) petals.push(spawnAmbient());
+    const ambient = feathers.filter((f) => f.life < 0).length;
+    if (ambient < MAX_AMBIENT && Math.random() < 0.02) feathers.push(spawnAmbient());
 
-    // 1. 使用缓存的 sakura 变量，不再每帧读取 getComputedStyle
-    for (let i = petals.length - 1; i >= 0; i--) {
-      const p = petals[i]!;
-      p.x += p.vx; p.y += p.vy; p.rot += p.vr;
-      if (p.life > 0) { p.life--; p.vy += 0.04; }
-      // 3. 出界判断改用逻辑坐标（CSS 像素）
-      if ((p.life === 0) || p.y > innerHeight + 30 || p.x < -30) { petals.splice(i, 1); continue; }
+    ctx.fillStyle = feather;
+    ctx.strokeStyle = feather;
+    for (let i = feathers.length - 1; i >= 0; i--) {
+      const f = feathers[i]!;
+      f.x += f.vx; f.y += f.vy; f.rot += f.vr; f.swing += f.swingSpeed;
+      if (f.life > 0) { f.life--; f.vy += 0.03; }
+      const drawX = f.x + Math.sin(f.swing) * 6; // 水平摆动，更像羽毛飘
+      if ((f.life === 0) || f.y > innerHeight + 30 || f.x < -40) { feathers.splice(i, 1); continue; }
       ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rot);
-      ctx.globalAlpha = p.life > 0 ? Math.min(1, p.life / 30) : 0.7;
-      ctx.fillStyle = sakura;
-      ctx.beginPath();
-      ctx.ellipse(0, 0, p.size, p.size * 0.6, 0, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.translate(drawX, f.y);
+      ctx.rotate(f.rot + Math.sin(f.swing) * 0.3);
+      ctx.globalAlpha = f.life > 0 ? Math.min(1, f.life / 35) : 1;
+      drawFeather(f.size);
       ctx.restore();
     }
     rafId = requestAnimationFrame(tick);

@@ -94,6 +94,11 @@ async function initGraph(root: HTMLElement): Promise<void> {
     .on('tick', view.update);
 
   view.attachDrag(simulation);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) simulation.stop();
+    else simulation.restart();
+  });
 }
 
 function parsePayload(root: HTMLElement): GraphPayload {

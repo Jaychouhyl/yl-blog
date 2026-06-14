@@ -27,7 +27,7 @@
   const accentBtn = document.getElementById('float-accent') as HTMLButtonElement;
   const themeBtn = document.getElementById('float-theme') as HTMLButtonElement;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const accents = ['sakura', 'sky', 'matcha'];
+  const accents = ['default', 'sakura', 'sky', 'matcha']; // default = tokens.css :root 专业靛蓝
 
   let ticking = false;
   function onScroll() {
@@ -51,9 +51,14 @@
   });
   accentBtn.addEventListener('click', () => {
     const html = document.documentElement;
-    const current = html.dataset.accent || 'sakura';
+    const current = html.dataset.accent || 'default';
     const next = accents[(accents.indexOf(current) + 1) % accents.length];
-    html.dataset.accent = next;
-    localStorage.setItem('accent', next);
+    if (next === 'default') {
+      html.removeAttribute('data-accent');
+      localStorage.removeItem('accent');
+    } else {
+      html.dataset.accent = next;
+      localStorage.setItem('accent', next);
+    }
   });
 </script>

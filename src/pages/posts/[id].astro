@@ -30,6 +30,7 @@ const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
       <h1 class="page-title" style="font-size:clamp(28px,4vw,40px);">{post.data.title}</h1>
       <div class="meta muted">
         <time datetime={formatDate(post.data.date)}>{formatDate(post.data.date)}</time> · 约 {readingMinutes(post.body ?? '')} 分钟 ·
+        {post.data.category && <a class="chip" href={withBase(`/categories/${post.data.category}/`)}>分类：{post.data.category}</a>}
         {post.data.tags.map((t) => <a class="chip" href={withBase(`/tags/${t}/`)}>#{t}</a>)}
       </div>
     </header>

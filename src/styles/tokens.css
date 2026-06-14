@@ -1,44 +1,50 @@
 :root {
   --page-top: 110px; /* fixed 导航高度 + 页首留白 */
-  --bg-paper: #faf6ef;
-  --banner-1: #ffb98a;
-  --banner-2: #ffe9d2;
-  --ink: #3a3228;
-  --ink-2: #7a6e5d;
-  --ink-3: #a89a85;
-  --sakura: #f08aa0;
-  --sakura-soft: #fdeef1;
-  --warm: #ffb98a;
+  --bg-paper: #f5f4f1;
+  --banner-1: #2a2a30;
+  --banner-2: #1c1c20;
+  --ink: #1f1e1c;
+  --ink-2: #58544e;
+  --ink-3: #98938b;
+  --sakura: #44607e;       /* 默认强调：低饱和靛蓝，专业克制（变量名沿用 sakura，语义为强调色） */
+  --sakura-soft: #e9edf3;
+  --warm: #b6a78c;
+  --feather: rgba(92, 84, 72, 0.55); /* 点击/飘落羽毛色：墨灰，兼顾纸白区与黑底首屏的可见度 */
   --card: rgba(255, 255, 255, 0.72);
   --card-border: rgba(255, 255, 255, 0.85);
-  --line: #ece2d0;
-  --shadow: 0 4px 20px rgba(140, 100, 80, 0.1);
+  --line: #e6e3dc;
+  --shadow: 0 4px 20px rgba(40, 38, 34, 0.08);
   --serif: 'Noto Serif SC', Georgia, 'Source Han Serif SC', STSong, serif;
   --sans: system-ui, 'Segoe UI', 'Microsoft YaHei', sans-serif;
   --mono: Consolas, 'Cascadia Code', monospace;
 }
 html[data-theme='dark'] {
-  --bg-paper: #1c1916;
-  --banner-1: #3a2c22;
-  --banner-2: #241e18;
-  --ink: #e8e2d8;
-  --ink-2: #b0a490;
-  --ink-3: #7a6e5d;
-  --sakura: #d4738c;
-  --sakura-soft: #3a2a30;
-  --warm: #b8845f;
-  --card: rgba(40, 36, 32, 0.72);
+  --bg-paper: #16161a;
+  --banner-1: #23232a;
+  --banner-2: #16161a;
+  --ink: #e7e5e0;
+  --ink-2: #ABA59B;
+  --ink-3: #6f6a61;
+  --sakura: #7e9cc0;
+  --sakura-soft: #222a36;
+  --warm: #8f8068;
+  --feather: rgba(222, 218, 208, 0.4);
+  --card: rgba(36, 36, 42, 0.72);
   --card-border: rgba(255, 255, 255, 0.08);
-  --line: #332d26;
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  --line: #2c2c31;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
+
+/* ── 可选强调色（右下悬浮 🎨 切换，写入 data-accent，localStorage 记忆）── */
+/* 樱粉：原萌系配色，降级为可选 */
+html[data-accent='sakura'] { --sakura: #f08aa0; --sakura-soft: #fdeef1; --warm: #ffb98a; }
+html[data-theme='dark'][data-accent='sakura'] { --sakura: #d4738c; --sakura-soft: #3a2a30; --warm: #b8845f; }
 
 html[data-accent='sky'] {
   --sakura: #5f9edb;
   --sakura-soft: #e8f3ff;
   --warm: #8fc0e8;
 }
-
 html[data-theme='dark'][data-accent='sky'] {
   --sakura: #89c7ff;
   --sakura-soft: #223546;
@@ -50,7 +56,6 @@ html[data-accent='matcha'] {
   --sakura-soft: #edf6e7;
   --warm: #a6bc72;
 }
-
 html[data-theme='dark'][data-accent='matcha'] {
   --sakura: #9fc58c;
   --sakura-soft: #263626;

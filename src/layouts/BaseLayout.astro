@@ -24,10 +24,12 @@ const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · ${SITE.m
       (function () {
         var saved = localStorage.getItem('theme');
         var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-        var accent = localStorage.getItem('accent') || 'sakura';
-        if (['sakura', 'sky', 'matcha'].indexOf(accent) === -1) accent = 'sakura';
         document.documentElement.dataset.theme = dark ? 'dark' : 'light';
-        document.documentElement.dataset.accent = accent;
+        // 默认（无存储）使用 tokens.css :root 的专业靛蓝，不设 data-accent；仅当选了可选配色时才写属性
+        var accent = localStorage.getItem('accent');
+        if (accent && ['sakura', 'sky', 'matcha'].indexOf(accent) !== -1) {
+          document.documentElement.dataset.accent = accent;
+        }
       })();
     </script>
   </head>
