@@ -11,7 +11,7 @@ import { SITE, withBase } from '../config';
 
 interface Props { title?: string; description?: string; }
 const { title, description = SITE.description } = Astro.props;
-const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · ${SITE.motto}`;
+const fullTitle = title ? `${title} · ${SITE.name}` : SITE.name;
 ---
 <html lang="zh-CN">
   <head>

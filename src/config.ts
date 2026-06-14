@@ -1,6 +1,5 @@
 export const SITE = {
   name: '忆霖',
-  motto: '字句之间，自有天地。',
   description: '忆霖的个人博客 —— 随笔、项目与生活',
   announcement: '欢迎来到忆霖的小站。这里记录随笔、项目和一些喜欢的生活片段。',
   startDate: '2026-06-10',

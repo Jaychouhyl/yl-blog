@@ -41,12 +41,7 @@ const firstHeroImage = heroImages[0] ?? withBase('/hero.webp');
     </div>
   </section>
 
-  <section class="intro container" id="home-content">
-    <p class="page-sub">ESSAYS · PROJECTS · OTAKU LIFE — EST. 2026</p>
-    <h1 class="intro-motto">{SITE.motto}</h1>
-  </section>
-
-  <div class="container columns">
+  <div class="container columns" id="home-content">
     <aside class="side">
       <AvatarCard />
       <AnnouncementWidget />
@@ -79,9 +74,6 @@ const firstHeroImage = heroImages[0] ?? withBase('/hero.webp');
   :global(html[data-theme='dark']) .hero-veil {
     background: linear-gradient(180deg, rgba(0,0,0,.40) 0%, rgba(0,0,0,.18) 34%, rgba(0,0,0,.30) 74%, rgba(0,0,0,.45) 100%);
   }
-  /* 飛べ 图独占首屏；slogan 移到滚下来的纸色区做过渡 */
-  .intro { text-align: center; padding: 60px 24px 0; }
-  .intro-motto { font-size: clamp(28px, 4vw, 44px); margin: 10px 0 0; font-weight: 700; }
   .hero-down {
     position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
     background: none; border: none; cursor: pointer; z-index: 3;
@@ -103,7 +95,7 @@ const firstHeroImage = heroImages[0] ?? withBase('/hero.webp');
   @keyframes bob { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 10px); } }
   @media (prefers-reduced-motion: reduce) { .hero-down { animation: none; } }
 
-  .columns { display: flex; gap: 22px; padding-top: 40px; padding-bottom: 80px; }
+  .columns { display: flex; gap: 22px; padding-top: 56px; padding-bottom: 80px; scroll-margin-top: var(--page-top); }
   .side { width: 230px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
   .feed { flex: 1; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
   .more { text-align: center; padding: 8px; }
