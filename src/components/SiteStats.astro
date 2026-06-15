@@ -11,13 +11,10 @@ const totalWords = posts.reduce((sum, p) => sum + countWords(p.body ?? ''), 0);
 ---
 <Widget title="站点数据">
   <div class="card">
-    <div class="row"><span>📄 文章</span><b>{posts.length}</b></div>
-    <div class="row"><span>🏷 标签</span><b>{tagCount}</b></div>
-    <div class="row"><span>✑ 总字数</span><b>{totalWords.toLocaleString()}</b></div>
-    <div class="row" id="pv-row" hidden>
-      <span>👀 全站浏览</span><b id="busuanzi_value_site_pv"></b>
-    </div>
-    <div class="row"><span>⏳ 运行时长</span><b id="run-days" data-start={SITE.startDate}></b></div>
+    <div class="row"><span>文章</span><b>{posts.length}</b></div>
+    <div class="row"><span>标签</span><b>{tagCount}</b></div>
+    <div class="row"><span>总字数</span><b>{totalWords.toLocaleString()}</b></div>
+    <div class="row"><span>运行天数</span><b id="run-days" data-start={SITE.startDate}></b></div>
   </div>
 </Widget>
 <style>
@@ -28,14 +25,4 @@ const totalWords = posts.reduce((sum, p) => sum + countWords(p.body ?? ''), 0);
   const el = document.getElementById('run-days')!;
   const days = Math.floor((Date.now() - new Date(el.dataset.start!).getTime()) / 86400000);
   el.textContent = `${Math.max(0, days)} 天`;
-  // 不蒜子脚本由生产构建注入（Task 14）；取到数字才显示该行
-  const pvRow = document.getElementById('pv-row')!;
-  const pv = document.getElementById('busuanzi_value_site_pv')!;
-  const timer = setInterval(() => {
-    if (pv.textContent && pv.textContent.trim() !== '') {
-      pvRow.hidden = false;
-      clearInterval(timer);
-    }
-  }, 500);
-  setTimeout(() => clearInterval(timer), 8000);
 </script>

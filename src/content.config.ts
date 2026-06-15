@@ -2,6 +2,11 @@ import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob, file } from 'astro/loaders';
 
+const webUrl = z.url().refine((value) => {
+  const { protocol } = new URL(value);
+  return protocol === 'https:' || protocol === 'http:';
+}, 'Only http(s) URLs are allowed');
+
 const posts = defineCollection({
   loader: glob({
     pattern: '**/index.md',
@@ -26,7 +31,7 @@ const projects = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      repo: z.url().optional(),
+      repo: webUrl.optional(),
       tech: z.array(z.string()).default([]),
       cover: image().optional(),
       order: z.number().default(99),
@@ -49,9 +54,9 @@ const friends = defineCollection({
   schema: z.object({
     id: z.string(),
     name: z.string(),
-    url: z.url(),
+    url: webUrl,
     desc: z.string().default(''),
-    avatar: z.url().optional(),
+    avatar: webUrl.optional(),
   }),
 });
 

@@ -3,20 +3,45 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../config';
 ---
 <BaseLayout title="关于">
-  <div class="container roomy" style="padding-top:var(--page-top);max-width:680px;">
+  <div class="container roomy" style="padding-top:var(--page-top);max-width:760px;">
     <p class="page-sub">ABOUT</p>
     <h1 class="page-title">关于我</h1>
-    <div class="bio">
-      <p>你好，我是 {SITE.name}。</p>
-      <p>平时写写随笔、做点小项目，最近在学习量化交易，偶尔追番。</p>
-      <p>这个小站用来收留那些不想丢掉的字句和念头。</p>
-      <h2>联系我</h2>
-      <p>GitHub：<a class="link" href={SITE.github} target="_blank" rel="noopener noreferrer">@Jaychouhyl</a></p>
-    </div>
+    <section class="bio" aria-labelledby="profile-heading">
+      <h2 id="profile-heading">个人简介</h2>
+      <p>
+        你好，我是 {SITE.name}。这个站点用于整理学习记录、项目说明与长期写作材料，也作为求职、考研复试和公开交流时可以引用的个人资料入口。
+      </p>
+
+      <dl class="profile-list">
+        <div>
+          <dt>当前定位</dt>
+          <dd>计算机相关方向的学习者与个人项目实践者，持续补齐工程基础、数据分析和技术表达能力。</dd>
+        </div>
+        <div>
+          <dt>关注方向</dt>
+          <dd>软件工程基础、数据处理与量化研究入门、知识管理、项目复盘和面向读者的技术写作。</dd>
+        </div>
+        <div>
+          <dt>项目与写作用途</dt>
+          <dd>用项目页记录问题背景、技术栈、实现思路和阶段计划；用文章页沉淀学习过程、复盘结论和可持续更新的公开材料。</dd>
+        </div>
+        <div>
+          <dt>联系方式</dt>
+          <dd>
+            GitHub：<a class="link" href={SITE.github} target="_blank" rel="noopener noreferrer">@Jaychouhyl</a>
+          </dd>
+        </div>
+      </dl>
+    </section>
   </div>
 </BaseLayout>
 <style>
-  .bio { font-size: 16px; line-height: 2; }
-  .bio h2 { font-size: 22px; margin-top: 2em; }
+  .bio { font-size: 16px; line-height: 1.9; color: var(--ink-2); }
+  .bio h2 { margin: 0 0 14px; color: var(--ink); font-size: 22px; }
+  .bio p { margin: 0 0 24px; }
+  .profile-list { display: grid; gap: 18px; margin: 0; }
+  .profile-list div { border-top: 1px solid rgba(68, 53, 58, 0.12); padding-top: 16px; }
+  .profile-list dt { color: var(--ink); font-weight: 700; margin-bottom: 6px; }
+  .profile-list dd { margin: 0; }
   .link { color: var(--sakura); }
 </style>

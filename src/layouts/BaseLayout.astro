@@ -12,13 +12,26 @@ import { SITE, withBase } from '../config';
 interface Props { title?: string; description?: string; }
 const { title, description = SITE.description } = Astro.props;
 const fullTitle = title ? `${title} · ${SITE.name}` : SITE.name;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+const socialImageUrl = new URL(withBase('/hero.webp'), Astro.site ?? Astro.url).href;
 ---
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <link rel="icon" href={withBase('/avatar.png')} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href={withBase('/favicon.png')} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
     <title>{fullTitle}</title>
     <script is:inline>
       (function () {
@@ -40,8 +53,5 @@ const fullTitle = title ? `${title} · ${SITE.name}` : SITE.name;
     <FloatingButtons />
     <SearchModal />
     <script src="../scripts/effects.ts"></script>
-    {import.meta.env.PROD && (
-      <script is:inline async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    )}
   </body>
 </html>

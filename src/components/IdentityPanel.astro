@@ -1,0 +1,124 @@
+---
+import { SITE, withBase } from '../config';
+---
+<section class="identity-panel glass" aria-labelledby="identity-title">
+  <div class="identity-copy">
+    <p class="page-sub">PROFILE</p>
+    <h1 id="identity-title">写作、项目与长期复盘</h1>
+    <p>
+      这个站点用于整理可公开的学习记录、项目说明和阶段性复盘。内容会尽量保留问题背景、思考路径和取舍过程，而不只展示结果。
+    </p>
+    <div class="identity-actions" aria-label="主要入口">
+      <a class="primary" href={withBase('/projects/')}>查看项目</a>
+      <a href={withBase('/about/')}>了解我</a>
+      <a href={SITE.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+  <div class="identity-grid" aria-label="站点内容方向">
+    <article>
+      <span>01</span>
+      <h2>项目展示</h2>
+      <p>记录项目目标、技术栈、实现边界和后续计划，方便在交流场景中快速说明做过什么。</p>
+    </article>
+    <article>
+      <span>02</span>
+      <h2>学习笔记</h2>
+      <p>沉淀技术、量化研究和复试准备中的知识点，重视可复查、可延展的写法。</p>
+    </article>
+    <article>
+      <span>03</span>
+      <h2>个人复盘</h2>
+      <p>把阶段性想法写成结构化文字，用公开作品倒逼表达和长期积累。</p>
+    </article>
+  </div>
+</section>
+<style>
+  .identity-panel {
+    max-width: 1100px;
+    margin: 42px auto 0;
+    padding: clamp(22px, 4vw, 34px);
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr);
+    gap: clamp(22px, 4vw, 38px);
+    border-radius: 8px;
+  }
+
+  .identity-copy h1 {
+    margin: 4px 0 12px;
+    font-size: clamp(28px, 4vw, 42px);
+  }
+
+  .identity-copy p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 15px;
+  }
+
+  .identity-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .identity-actions a {
+    min-height: 34px;
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 13px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    color: var(--ink-2);
+    font-size: 13px;
+  }
+
+  .identity-actions .primary {
+    border-color: color-mix(in srgb, var(--sakura) 45%, var(--line));
+    background: var(--sakura-soft);
+    color: var(--sakura);
+  }
+
+  .identity-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .identity-grid article {
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--card) 70%, transparent);
+  }
+
+  .identity-grid span {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--sakura);
+  }
+
+  .identity-grid h2 {
+    margin: 8px 0 6px;
+    font-size: 17px;
+  }
+
+  .identity-grid p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  @media (max-width: 860px) {
+    .identity-panel {
+      margin: 30px 24px 0;
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .identity-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

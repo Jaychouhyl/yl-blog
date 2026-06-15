@@ -2,11 +2,11 @@
 import { SITE, withBase } from '../config';
 import Widget from './Widget.astro';
 ---
-<Widget title="忆霖 · 小筑">
+<Widget title="忆霖 · 个人站">
   <div class="card">
-  <img class="avatar" src={withBase('/avatar.png')} alt="头像" width="84" height="84" />
+  <img class="avatar" src={withBase('/avatar.webp')} alt="个人标识" width="84" height="84" />
   <div class="name">{SITE.name}</div>
-  <div class="muted">随笔 · 项目 · 笔记</div>
+  <div class="muted">写作 · 项目 · 复盘</div>
   <div class="links">
     <a class="chip" href={SITE.github} target="_blank" rel="noopener noreferrer">GitHub</a>
     <a class="chip" href={withBase('/rss.xml')}>RSS</a>

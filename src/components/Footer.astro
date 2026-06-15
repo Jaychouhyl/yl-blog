@@ -3,11 +3,15 @@ import { SITE, withBase } from '../config';
 const year = new Date().getFullYear();
 ---
 <footer>
-  <span>© {year} {SITE.name}·小筑</span>
-  <span>
-    <a href={withBase('/rss.xml')}>RSS</a> ·
+  <span>© {year} {SITE.name}</span>
+  <nav aria-label="页脚导航">
+    <a href={withBase('/categories/')}>分类</a>
+    <a href={withBase('/graph/')}>图谱</a>
+    <a href={withBase('/albums/')}>相册</a>
+    <a href={withBase('/friends/')}>友链</a>
+    <a href={withBase('/rss.xml')}>RSS</a>
     <a href={SITE.github} target="_blank" rel="noopener noreferrer">GitHub</a>
-  </span>
+  </nav>
 </footer>
 <style>
   footer {
@@ -16,5 +20,6 @@ const year = new Date().getFullYear();
     display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
     font-size: 12px; color: var(--ink-3);
   }
+  nav { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   footer a:hover { color: var(--sakura); }
 </style>

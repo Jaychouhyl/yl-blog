@@ -10,10 +10,10 @@ const byYear = groupByYear(posts);
 const tags = allTags(posts);
 const categories = allCategories(posts);
 ---
-<BaseLayout title="随笔归档">
+<BaseLayout title="文章归档">
   <div class="container dense" style="padding-top:var(--page-top);max-width:760px;">
     <p class="page-sub">ARCHIVE</p>
-    <h1 class="page-title">随笔归档</h1>
+    <h1 class="page-title">文章归档</h1>
     <nav class="tag-cloud" aria-label="标签云">
       {tags.map(([t, list]) => (
         <a class="chip" href={withBase(`/tags/${t}/`)} aria-label={`${t} 标签，共 ${list.length} 篇`}>#{t} {list.length}</a>

@@ -5,7 +5,7 @@ import { withBase } from '../config';
 <BaseLayout title="404">
   <div class="container roomy" style="padding-top:calc(var(--page-top) + 50px);text-align:center;">
     <h1 class="big">404</h1>
-    <p class="kaomoji">(´；ω；`) 这一页被樱花吹走了…</p>
+    <p class="message">这个页面暂时不存在，可能已经移动或尚未发布。</p>
     <p class="actions">
       <a class="chip chip-lg" href={withBase('/')}>回到首页</a>
       <button class="chip chip-lg search" id="search-404">搜索一下</button>
@@ -14,7 +14,7 @@ import { withBase } from '../config';
 </BaseLayout>
 <style>
   .big { font-size: 88px; margin: 0; font-family: var(--serif); }
-  .kaomoji { font-size: 18px; }
+  .message { font-size: 16px; color: var(--ink-2); }
   .actions { display: flex; gap: 10px; justify-content: center; }
   .search { border: none; cursor: pointer; font-family: inherit; }
 </style>

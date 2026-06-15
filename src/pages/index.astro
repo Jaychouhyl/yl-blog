@@ -2,10 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AnnouncementWidget from '../components/AnnouncementWidget.astro';
 import AvatarCard from '../components/AvatarCard.astro';
-import SiteStats from '../components/SiteStats.astro';
+import IdentityPanel from '../components/IdentityPanel.astro';
 import PostCard from '../components/PostCard.astro';
+import ProfileSummaryWidget from '../components/ProfileSummaryWidget.astro';
 import RecentPostsWidget from '../components/RecentPostsWidget.astro';
-import TagCloudWidget from '../components/TagCloudWidget.astro';
 import { SITE, withBase } from '../config';
 import { publishedPosts } from '../lib/posts';
 
@@ -41,17 +41,18 @@ const firstHeroImage = heroImages[0] ?? withBase('/hero.webp');
     </div>
   </section>
 
+  <IdentityPanel />
+
   <div class="container columns" id="home-content">
     <aside class="side">
       <AvatarCard />
       <AnnouncementWidget />
-      <SiteStats />
-      <TagCloudWidget />
+      <ProfileSummaryWidget />
       <RecentPostsWidget />
     </aside>
     <div class="feed">
       {recent.map((post) => <PostCard post={post} />)}
-      <a class="more muted" href={withBase('/posts/')}>查看全部随笔 →</a>
+      <a class="more muted" href={withBase('/posts/')}>查看全部文章 →</a>
     </div>
   </div>
 </BaseLayout>

@@ -1,28 +1,109 @@
 ---
 import { SITE } from '../config';
 const g = SITE.giscus;
+const giscusConfig = {
+  'data-repo': g.repo,
+  'data-repo-id': g.repoId,
+  'data-category': g.category,
+  'data-category-id': g.categoryId,
+  'data-mapping': 'pathname',
+  'data-reactions-enabled': '1',
+  'data-input-position': 'top',
+  'data-theme': 'preferred_color_scheme',
+  'data-lang': 'zh-CN',
+  'data-loading': 'lazy',
+};
 ---
 {g.repoId && g.categoryId ? (
-  <div class="giscus-wrap">
-    <script
-      is:inline
-      src="https://giscus.app/client.js"
-      data-repo={g.repo}
-      data-repo-id={g.repoId}
-      data-category={g.category}
-      data-category-id={g.categoryId}
-      data-mapping="pathname"
-      data-reactions-enabled="1"
-      data-input-position="top"
-      data-theme="preferred_color_scheme"
-      data-lang="zh-CN"
-      data-loading="lazy"
-      crossorigin="anonymous"
-      async
-    ></script>
+  <div class="giscus-wrap" data-giscus-container data-giscus-config={JSON.stringify(giscusConfig)}>
+    <div class="giscus-prompt">
+      <p>评论由 GitHub Discussions 与 giscus 提供，点击后才会连接第三方评论服务。</p>
+      <button type="button" data-giscus-loader>加载评论</button>
+    </div>
+    <div data-giscus-thread></div>
   </div>
 ) : (
   <p class="muted" style="text-align:center;padding:16px;border:1px dashed var(--line);border-radius:10px;">
     评论区尚未开通（待 giscus 配置完成）
   </p>
 )}
+<style>
+  .giscus-wrap {
+    margin-top: 28px;
+  }
+
+  .giscus-prompt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--card);
+  }
+
+  .giscus-prompt p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 14px;
+  }
+
+  .giscus-prompt button {
+    min-height: 34px;
+    flex: 0 0 auto;
+    padding: 4px 12px;
+    border: 1px solid color-mix(in srgb, var(--sakura) 45%, var(--line));
+    border-radius: 6px;
+    background: var(--sakura-soft);
+    color: var(--sakura);
+    cursor: pointer;
+  }
+
+  .giscus-prompt button:disabled {
+    cursor: wait;
+    opacity: .7;
+  }
+
+  @media (max-width: 620px) {
+    .giscus-prompt {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  }
+</style>
+<script is:inline>
+  (() => {
+    const root = document.querySelector('[data-giscus-container]');
+    if (!root) return;
+
+    const button = root.querySelector('[data-giscus-loader]');
+    const target = root.querySelector('[data-giscus-thread]');
+    let loaded = false;
+
+    button?.addEventListener('click', () => {
+      if (loaded || !target) return;
+      loaded = true;
+      button.disabled = true;
+      button.textContent = '正在加载评论';
+
+      const script = document.createElement('script');
+      const config = JSON.parse(root.getAttribute('data-giscus-config') || '{}');
+      Object.entries(config).forEach(([name, value]) => {
+        script.setAttribute(name, String(value));
+      });
+      script.src = 'https://giscus.app/client.js';
+      script.crossOrigin = 'anonymous';
+      script.async = true;
+      script.addEventListener('load', () => {
+        button.closest('.giscus-prompt')?.remove();
+      });
+      script.addEventListener('error', () => {
+        loaded = false;
+        button.disabled = false;
+        button.textContent = '重新加载评论';
+      });
+      target.appendChild(script);
+    });
+  })();
+</script>

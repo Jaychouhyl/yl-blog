@@ -1,0 +1,58 @@
+---
+import Widget from './Widget.astro';
+---
+<Widget title="当前方向">
+  <div class="summary-list">
+    <p>以写作、项目和复盘整理公开材料。</p>
+    <dl>
+      <div>
+        <dt>关注</dt>
+        <dd>数据分析、量化研究、Web 展示</dd>
+      </div>
+      <div>
+        <dt>输出</dt>
+        <dd>项目说明、技术笔记、阶段复盘</dd>
+      </div>
+      <div>
+        <dt>用途</dt>
+        <dd>求职沟通、复试展示、长期积累</dd>
+      </div>
+    </dl>
+  </div>
+</Widget>
+<style>
+  .summary-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  p {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  dl {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+  }
+
+  dl > div {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--line);
+  }
+
+  dt {
+    color: var(--sakura);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--ink-2);
+  }
+</style>

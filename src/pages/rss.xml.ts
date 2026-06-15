@@ -1,8 +1,11 @@
 import rss from '@astrojs/rss';
-import { marked } from 'marked';
+import { marked, Renderer } from 'marked';
 import type { APIContext } from 'astro';
 import { SITE, withBase } from '../config';
 import { publishedPosts } from '../lib/posts';
+
+const rssRenderer = new Renderer();
+rssRenderer.html = () => '';
 
 export async function GET(context: APIContext) {
   const posts = await publishedPosts();
@@ -17,8 +20,8 @@ export async function GET(context: APIContext) {
         pubDate: post.data.date,
         description: post.data.summary ?? '',
         link: withBase(`/posts/${post.id}/`),
-        // RSS 用 marked 渲染纯 Markdown：KaTeX 公式在阅读器中显示为 LaTeX 源码，属已知取舍
-        content: await marked.parse(post.body ?? ''),
+        // RSS 用 marked 渲染纯 Markdown，并丢弃原始 HTML。
+        content: await marked.parse(post.body ?? '', { renderer: rssRenderer }),
       }))
     ),
   });

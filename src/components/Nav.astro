@@ -2,14 +2,21 @@
 import { SITE, withBase } from '../config';
 const current = Astro.url.pathname;
 ---
-<nav class="glass nav">
-  <a class="brand" href={withBase('/')}>{SITE.name}<span class="dot">·</span>小筑</a>
-  {SITE.nav.map((item) => (
-    <a class:list={['link', { active: current === withBase(item.href) }]} href={withBase(item.href)}>{item.label}</a>
-  ))}
+<nav class="glass nav" data-nav>
+  <a class="brand" href={withBase('/')}>{SITE.name}</a>
+  <button id="menu-btn" class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="打开导航">
+    <span></span><span></span><span></span>
+  </button>
+  <div id="nav-links" class="links" data-nav-links>
+    {SITE.nav.map((item) => (
+      <a class:list={['link', { active: current === withBase(item.href) }]} href={withBase(item.href)}>{item.label}</a>
+    ))}
+  </div>
   <span class="sep">|</span>
-  <button id="search-btn" class="icon-btn" title="搜索 (Ctrl+K)" aria-label="搜索">🔍</button>
-  <button id="theme-btn" class="icon-btn" aria-label="切换深浅色"></button>
+  <div class="actions">
+    <button id="search-btn" class="icon-btn" title="搜索 (Ctrl+K)" aria-label="搜索">⌕</button>
+    <button id="theme-btn" class="icon-btn" aria-label="切换深浅色"></button>
+  </div>
 </nav>
 <style>
   .nav {
@@ -20,16 +27,52 @@ const current = Astro.url.pathname;
     backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   }
   .brand { font-family: var(--serif); font-size: 17px; }
-  .dot { color: var(--sakura); }
+  .links { display: flex; align-items: center; gap: 20px; }
   .link { color: var(--ink-2); }
   .link.active, .link:hover { color: var(--ink); }
   .sep { color: var(--line); }
-  .icon-btn { background: none; border: none; cursor: pointer; font-size: 15px; padding: 0; }
-  :global(html[data-theme='light']) #theme-btn::before { content: '🌙'; }
-  :global(html[data-theme='dark']) #theme-btn::before { content: '☀️'; }
+  .actions { display: flex; align-items: center; gap: 14px; }
+  .icon-btn { background: none; border: none; cursor: pointer; font-size: 16px; line-height: 1; padding: 0; color: inherit; }
+  .menu-btn { display: none; }
+  :global(html[data-theme='light']) #theme-btn::before { content: '◐'; }
+  :global(html[data-theme='dark']) #theme-btn::before { content: '◑'; }
   .nav::-webkit-scrollbar { display: none; }
   @media (max-width: 768px) {
-    .nav { gap: 12px; padding: 8px 16px; font-size: 13px; max-width: 94vw; overflow-x: auto; scrollbar-width: none; }
+    .nav {
+      top: 12px; left: 12px; right: 12px; transform: none;
+      justify-content: space-between; gap: 12px;
+      max-width: none; padding: 9px 14px; border-radius: 8px;
+      font-size: 13px; white-space: normal;
+    }
+    .brand { flex: 1 1 auto; min-width: 0; }
+    .menu-btn {
+      width: 32px; height: 32px; flex: 0 0 auto;
+      display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      border: 0; background: transparent; color: inherit; cursor: pointer;
+    }
+    .menu-btn span {
+      width: 16px; height: 1.5px; border-radius: 2px;
+      background: currentColor; transition: transform .2s, opacity .2s;
+    }
+    .nav.open .menu-btn span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+    .nav.open .menu-btn span:nth-child(2) { opacity: 0; }
+    .nav.open .menu-btn span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+    .links {
+      position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+      display: none; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;
+      padding: 12px; border: 1px solid var(--card-border); border-radius: 8px;
+      background: var(--card); box-shadow: var(--shadow);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    }
+    .nav.open .links { display: grid; }
+    .link {
+      min-height: 36px; display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid var(--line); border-radius: 6px;
+      background: color-mix(in srgb, var(--card) 82%, transparent);
+    }
+    .link.active { border-color: color-mix(in srgb, var(--sakura) 42%, var(--line)); }
+    .sep { display: none; }
+    .actions { gap: 12px; flex: 0 0 auto; }
   }
   .nav { transition: background .3s, box-shadow .3s, backdrop-filter .3s; }
   .nav.transparent {
@@ -39,13 +82,51 @@ const current = Astro.url.pathname;
   }
   .nav.transparent .brand,
   .nav.transparent .link,
+  .nav.transparent .menu-btn,
   .nav.transparent .icon-btn {
     color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.4);
   }
   .nav.transparent .link:hover { color: #ffd9e2; }
+  @media (max-width: 768px) {
+    .nav.transparent.open {
+      background: var(--card);
+      border-color: var(--card-border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    }
+    .nav.transparent.open .brand,
+    .nav.transparent.open .link,
+    .nav.transparent.open .icon-btn,
+    .nav.transparent.open .menu-btn {
+      color: var(--ink); text-shadow: none;
+    }
+  }
 </style>
 <script>
-  document.getElementById('theme-btn')!.addEventListener('click', () => {
+  const navRoot = document.querySelector<HTMLElement>('[data-nav]');
+  const menuBtn = document.getElementById('menu-btn') as HTMLButtonElement | null;
+  const navLinks = document.querySelector<HTMLElement>('[data-nav-links]');
+  const themeButton = document.getElementById('theme-btn') as HTMLButtonElement | null;
+
+  function setMenu(open: boolean) {
+    if (!navRoot || !menuBtn) return;
+    navRoot.classList.toggle('open', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? '关闭导航' : '打开导航');
+  }
+
+  menuBtn?.addEventListener('click', () => setMenu(!navRoot?.classList.contains('open')));
+  navLinks?.addEventListener('click', (event) => {
+    if ((event.target as HTMLElement).closest('a')) setMenu(false);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setMenu(false);
+  });
+  document.addEventListener('click', (event) => {
+    if (!navRoot?.contains(event.target as Node)) setMenu(false);
+  });
+
+  themeButton?.addEventListener('click', () => {
     const html = document.documentElement;
     const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
     html.dataset.theme = next;
