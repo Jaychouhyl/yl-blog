@@ -103,6 +103,24 @@ describe('site hardening', () => {
     expect(heroSection).toContain("href={withBase('/about/')}");
   });
 
+  test('homepage hero frames the source artwork for a formal first impression', () => {
+    const source = readSource('src/pages/index.astro');
+    const heroImageRule = source.slice(source.indexOf('.hero-img'), source.indexOf('.hero-img.loaded'));
+    const heroVeilRule = source.slice(source.indexOf('.hero-veil'), source.indexOf(':global(html[data-theme'));
+
+    expect(heroImageRule).toContain('object-fit: cover');
+    expect(heroImageRule).toContain('object-position: 42% center');
+    expect(heroVeilRule).toContain('linear-gradient(115deg');
+    expect(heroVeilRule).toContain('rgba(0,0,0,.62) 100%');
+    expect(source).toContain('.hero-veil::after');
+    expect(source).toContain('inset: 0');
+    expect(source).toContain('radial-gradient(ellipse at 84% 76%');
+    expect(source).toContain('rgba(0,0,0,.92) 0%');
+    expect(source).toContain('rgba(0,0,0,.18) 68%');
+    expect(source).not.toContain('inset: 52% 0 0 46%');
+    expect(source).not.toContain('background: linear-gradient(135deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.78) 100%);');
+  });
+
   test('secondary personal-blog pages are not promoted to search or sitemap indexes', () => {
     const layout = readSource('src/layouts/BaseLayout.astro');
     const sitemapConfig = readSource('astro.config.mjs');
