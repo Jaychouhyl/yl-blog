@@ -1,4 +1,4 @@
-import { readFileSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
@@ -128,5 +128,21 @@ describe('site hardening', () => {
     }
 
     expect(readSource('src/pages/friends/index.astro')).not.toContain('想交换友链');
+  });
+
+  test('decorative motion is scoped to the homepage hero only', () => {
+    const effects = readSource('src/scripts/effects.ts');
+
+    expect(effects).toContain("document.querySelector<HTMLElement>('.hero-screen')");
+    expect(effects).toContain('hero.appendChild(canvas)');
+    expect(effects).toContain("canvas.style.cssText = 'position:absolute;");
+    expect(effects).toContain("hero.addEventListener('click'");
+    expect(effects).not.toContain('document.body.appendChild(canvas)');
+    expect(effects).not.toContain("document.addEventListener('click'");
+  });
+
+  test('stale identity panel component is removed after hero takes over first-screen identity', () => {
+    expect(readSource('src/pages/index.astro')).not.toContain('IdentityPanel');
+    expect(existsSync(resolve(root, 'src/components/IdentityPanel.astro'))).toBe(false);
   });
 });
