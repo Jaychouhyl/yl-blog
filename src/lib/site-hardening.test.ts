@@ -121,6 +121,22 @@ describe('site hardening', () => {
     expect(source).not.toContain('background: linear-gradient(135deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.78) 100%);');
   });
 
+  test('homepage lower content acts as a formal material index', () => {
+    const source = readSource('src/pages/index.astro');
+
+    expect(source).toContain('class="portfolio-index glass"');
+    expect(source).toContain('公开材料索引');
+    expect(source).toContain("href={withBase('/projects/')}");
+    expect(source).toContain("href={withBase('/posts/')}");
+    expect(source).toContain("href={withBase('/about/')}");
+    expect(source).toContain('求职沟通');
+    expect(source).toContain('考研复试');
+    expect(source).toContain('border-top: 1px solid var(--line);');
+    expect(source).not.toContain('background: rgba(255,255,255,.44);');
+    expect(source).not.toContain('音乐播放器');
+    expect(source).not.toContain('番剧');
+  });
+
   test('secondary personal-blog pages are not promoted to search or sitemap indexes', () => {
     const layout = readSource('src/layouts/BaseLayout.astro');
     const sitemapConfig = readSource('astro.config.mjs');

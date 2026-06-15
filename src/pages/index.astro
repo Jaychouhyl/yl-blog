@@ -65,6 +65,29 @@ const firstHeroImage = heroImages[0] ?? withBase('/hero.webp');
       <RecentPostsWidget />
     </aside>
     <div class="feed">
+      <section class="portfolio-index glass" aria-labelledby="materials-heading">
+        <div>
+          <p class="section-kicker">PUBLIC MATERIALS</p>
+          <h2 id="materials-heading">公开材料索引</h2>
+          <p>
+            面向求职沟通、考研复试和长期作品沉淀，把项目说明、写作记录和个人简介放在同一组入口里，方便快速判断当前材料是否匹配场景。
+          </p>
+        </div>
+        <div class="material-links" aria-label="公开材料入口">
+          <a href={withBase('/projects/')}>
+            <span>项目说明</span>
+            <small>项目定位、技术栈、当前进度与后续计划</small>
+          </a>
+          <a href={withBase('/posts/')}>
+            <span>写作记录</span>
+            <small>学习过程、阶段复盘和可持续更新的公开材料</small>
+          </a>
+          <a href={withBase('/about/')}>
+            <span>个人简介</span>
+            <small>当前定位、关注方向和公开联系方式</small>
+          </a>
+        </div>
+      </section>
       {recent.map((post) => <PostCard post={post} />)}
       <a class="more muted" href={withBase('/posts/')}>查看全部文章 →</a>
     </div>
@@ -205,10 +228,38 @@ const firstHeroImage = heroImages[0] ?? withBase('/hero.webp');
   .columns { display: flex; gap: 22px; padding-top: 56px; padding-bottom: 80px; scroll-margin-top: var(--page-top); }
   .side { width: 230px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
   .feed { flex: 1; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .portfolio-index {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+    gap: 22px;
+    padding: 24px 26px;
+  }
+  .section-kicker {
+    margin: 0 0 8px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--sakura);
+  }
+  .portfolio-index h2 { margin: 0; font-size: 24px; }
+  .portfolio-index p { max-width: 560px; margin: 12px 0 0; color: var(--ink-2); line-height: 1.8; }
+  .material-links { display: grid; gap: 10px; }
+  .material-links a {
+    display: grid;
+    gap: 4px;
+    padding: 10px 0 0;
+    border-top: 1px solid var(--line);
+    color: var(--ink);
+  }
+  .material-links a:hover {
+    color: var(--sakura);
+  }
+  .material-links span { font-family: var(--serif); font-size: 16px; font-weight: 700; }
+  .material-links small { color: var(--ink-2); line-height: 1.6; }
   .more { text-align: center; padding: 8px; }
   @media (max-width: 768px) {
     .columns { flex-direction: column; }
     .side { width: 100%; }
+    .portfolio-index { grid-template-columns: 1fr; padding: 20px; }
     .hero-img { object-position: 42% center; }
     .hero-veil {
       background:
