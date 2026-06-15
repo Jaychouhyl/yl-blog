@@ -74,4 +74,19 @@ describe('site hardening', () => {
     expect(source).toContain('rssRenderer.html = () =>');
     expect(source).toContain('{ renderer: rssRenderer }');
   });
+
+  test('public navigation surface stays formal and focused', () => {
+    const footer = readSource('src/components/Footer.astro');
+    const firstPost = readSource('src/content/posts/hello-world/index.md');
+
+    expect(footer).toContain("withBase('/categories/')");
+    expect(footer).toContain("withBase('/rss.xml')");
+    expect(footer).not.toContain("withBase('/graph/')");
+    expect(footer).not.toContain("withBase('/albums/')");
+    expect(footer).not.toContain("withBase('/friends/')");
+    expect(firstPost).toContain('tags: [站点记录]');
+    expect(firstPost).toContain('category: 站点记录');
+    expect(firstPost).not.toContain('tags: [随笔]');
+    expect(firstPost).not.toContain('category: 随笔');
+  });
 });
