@@ -89,4 +89,44 @@ describe('site hardening', () => {
     expect(firstPost).not.toContain('tags: [随笔]');
     expect(firstPost).not.toContain('category: 随笔');
   });
+
+  test('homepage hero carries the formal first-screen identity', () => {
+    const source = readSource('src/pages/index.astro');
+    const heroSection = source.slice(source.indexOf('<section class="hero-screen"'), source.indexOf('</section>') + 10);
+
+    expect(heroSection).toContain('aria-labelledby="hero-title"');
+    expect(heroSection).toContain('id="hero-title"');
+    expect(heroSection).toContain('写作、项目与长期复盘');
+    expect(heroSection).toContain('求职沟通');
+    expect(heroSection).toContain('考研复试');
+    expect(heroSection).toContain("href={withBase('/projects/')}");
+    expect(heroSection).toContain("href={withBase('/about/')}");
+  });
+
+  test('secondary personal-blog pages are not promoted to search or sitemap indexes', () => {
+    const layout = readSource('src/layouts/BaseLayout.astro');
+    const sitemapConfig = readSource('astro.config.mjs');
+    const secondaryPages = [
+      'src/pages/albums/index.astro',
+      'src/pages/friends/index.astro',
+      'src/pages/graph/index.astro',
+    ];
+
+    expect(layout).toContain('noindex');
+    expect(layout).toContain('searchable');
+    expect(layout).toContain('name="robots"');
+    expect(layout).toContain('data-pagefind-body={searchable');
+
+    expect(sitemapConfig).toContain('FORMAL_PUBLIC_PATHS');
+    expect(sitemapConfig).toContain('sitemap({');
+    expect(sitemapConfig).toContain('filter:');
+
+    for (const page of secondaryPages) {
+      const source = readSource(page);
+      expect(source).toContain('noindex={true}');
+      expect(source).toContain('searchable={false}');
+    }
+
+    expect(readSource('src/pages/friends/index.astro')).not.toContain('想交换友链');
+  });
 });

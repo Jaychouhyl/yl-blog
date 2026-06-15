@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 const friends = await getCollection('friends');
 ---
-<BaseLayout title="友链">
+<BaseLayout title="友链" noindex={true} searchable={false}>
   <div class="container roomy" style="padding-top:var(--page-top);">
     <p class="page-sub">FRIENDS</p>
     <h1 class="page-title">友链</h1>
@@ -17,7 +17,7 @@ const friends = await getCollection('friends');
       ))}
     </div>
     {friends.length === 0 && <p class="muted" style="margin-top:24px;">还没有友链。</p>}
-    <p class="muted" style="margin-top:32px;">想交换友链？到任意文章评论区留言即可。</p>
+    <p class="muted" style="margin-top:32px;">这个页面暂不作为正式公开入口，主要保留给后续整理外部链接时使用。</p>
   </div>
 </BaseLayout>
 <style>

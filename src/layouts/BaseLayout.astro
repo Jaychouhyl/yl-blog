@@ -9,8 +9,19 @@ import SearchModal from '../components/SearchModal.astro';
 import FloatingButtons from '../components/FloatingButtons.astro';
 import { SITE, withBase } from '../config';
 
-interface Props { title?: string; description?: string; }
-const { title, description = SITE.description } = Astro.props;
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+  searchable?: boolean;
+}
+const {
+  title,
+  description = SITE.description,
+  noindex = false,
+  searchable: searchableProp,
+} = Astro.props;
+const searchable = searchableProp ?? !noindex;
 const fullTitle = title ? `${title} · ${SITE.name}` : SITE.name;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
 const socialImageUrl = new URL(withBase('/hero.webp'), Astro.site ?? Astro.url).href;
@@ -20,6 +31,7 @@ const socialImageUrl = new URL(withBase('/hero.webp'), Astro.site ?? Astro.url).
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href={withBase('/favicon.png')} />
     <meta property="og:site_name" content={SITE.name} />
@@ -48,7 +60,7 @@ const socialImageUrl = new URL(withBase('/hero.webp'), Astro.site ?? Astro.url).
   </head>
   <body>
     <Nav />
-    <main data-pagefind-body><slot /></main>
+    <main data-pagefind-body={searchable ? true : undefined}><slot /></main>
     <Footer />
     <FloatingButtons />
     <SearchModal />

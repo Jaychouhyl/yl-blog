@@ -16,7 +16,7 @@ const albumsWithFull = await Promise.all(
   }))
 );
 ---
-<BaseLayout title="相册">
+<BaseLayout title="相册" noindex={true} searchable={false}>
   <div class="container roomy" style="padding-top:var(--page-top);">
     <p class="page-sub">GALLERY</p>
     <h1 class="page-title">相册</h1>
