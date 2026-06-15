@@ -132,6 +132,8 @@ describe('site hardening', () => {
 
   test('decorative motion is scoped to the homepage hero only', () => {
     const effects = readSource('src/scripts/effects.ts');
+    const layout = readSource('src/layouts/BaseLayout.astro');
+    const home = readSource('src/pages/index.astro');
 
     expect(effects).toContain("document.querySelector<HTMLElement>('.hero-screen')");
     expect(effects).toContain('hero.appendChild(canvas)');
@@ -139,6 +141,8 @@ describe('site hardening', () => {
     expect(effects).toContain("hero.addEventListener('click'");
     expect(effects).not.toContain('document.body.appendChild(canvas)');
     expect(effects).not.toContain("document.addEventListener('click'");
+    expect(layout).not.toContain('scripts/effects.ts');
+    expect(home).toContain('scripts/effects.ts');
   });
 
   test('stale identity panel component is removed after hero takes over first-screen identity', () => {
