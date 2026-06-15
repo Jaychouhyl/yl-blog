@@ -137,6 +137,22 @@ describe('site hardening', () => {
     expect(source).not.toContain('番剧');
   });
 
+  test('project entries surface status and audience for formal review', () => {
+    const schema = readSource('src/content.config.ts');
+    const page = readSource('src/pages/projects/index.astro');
+    const project = readSource('src/content/projects/oracle-alpha.md');
+
+    expect(schema).toContain('status: z.string()');
+    expect(schema).toContain('audience: z.array(z.string())');
+    expect(project).toContain('status: 建设中');
+    expect(project).toContain('audience: [求职沟通, 考研复试]');
+    expect(page).toContain('class="project-meta"');
+    expect(page).toContain('当前状态');
+    expect(page).toContain('适用场景');
+    expect(page).toContain('p.data.status');
+    expect(page).toContain('p.data.audience');
+  });
+
   test('secondary personal-blog pages are not promoted to search or sitemap indexes', () => {
     const layout = readSource('src/layouts/BaseLayout.astro');
     const sitemapConfig = readSource('astro.config.mjs');

@@ -16,6 +16,18 @@ const rendered = await Promise.all(projects.map(async (p) => ({ p, Content: (awa
           <header class="card-head">
             <p class="eyebrow">Portfolio Item</p>
             <h2 class="name">{p.data.title}</h2>
+            <dl class="project-meta" aria-label={`${p.data.title} 项目元信息`}>
+              <div>
+                <dt>当前状态</dt>
+                <dd>{p.data.status}</dd>
+              </div>
+              {p.data.audience.length > 0 && (
+                <div>
+                  <dt>适用场景</dt>
+                  <dd>{p.data.audience.join(' / ')}</dd>
+                </div>
+              )}
+            </dl>
           </header>
           {p.data.tech.length > 0 && (
             <section class="block" aria-label={`${p.data.title} 技术栈`}>
@@ -45,6 +57,10 @@ const rendered = await Promise.all(projects.map(async (p) => ({ p, Content: (awa
   .card-head { border-bottom: 1px solid rgba(68, 53, 58, 0.12); padding-bottom: 14px; }
   .eyebrow { margin: 0 0 6px; color: var(--ink-3); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
   .name { margin: 0; font-size: 24px; }
+  .project-meta { display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 14px 0 0; }
+  .project-meta div { display: grid; gap: 3px; min-width: 120px; }
+  .project-meta dt { color: var(--ink-3); font-size: 12px; }
+  .project-meta dd { margin: 0; color: var(--ink-2); font-size: 13px; }
   .block h3 { margin: 0 0 8px; font-size: 15px; }
   .tech { display: flex; gap: 6px; flex-wrap: wrap; }
   .desc { color: var(--ink-2); font-size: 14px; line-height: 1.8; }

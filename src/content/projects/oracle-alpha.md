@@ -1,6 +1,8 @@
 ---
 title: OracleAlpha
 repo: https://github.com/Jaychouhyl
+status: 建设中
+audience: [求职沟通, 考研复试]
 tech: [Python, pandas]
 order: 1
 ---

@@ -32,6 +32,8 @@ const projects = defineCollection({
     z.object({
       title: z.string(),
       repo: webUrl.optional(),
+      status: z.string().default('整理中'),
+      audience: z.array(z.string()).default([]),
       tech: z.array(z.string()).default([]),
       cover: image().optional(),
       order: z.number().default(99),
