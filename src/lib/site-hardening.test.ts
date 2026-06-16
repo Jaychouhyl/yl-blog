@@ -153,6 +153,21 @@ describe('site hardening', () => {
     expect(page).toContain('p.data.audience');
   });
 
+  test('personal factual copy stays marked for owner review', () => {
+    const about = readSource('src/pages/about.astro');
+    const project = readSource('src/content/projects/oracle-alpha.md');
+
+    expect(about).toContain('待补充：站主确认后补入学校、经历、技能和研究方向。');
+    expect(about).not.toContain('计算机相关方向');
+    expect(about).not.toContain('量化研究入门');
+    expect(project).toContain('tech: []');
+    expect(project).toContain('待补充');
+    expect(project).toContain('不描述为已上线交易系统');
+    expect(project).toContain('不声称已经产生可验证的稳定收益');
+    expect(project).not.toContain('数据处理、因子实验、回测记录');
+    expect(project).not.toContain('建立一套清晰的研究流程');
+  });
+
   test('secondary personal-blog pages are not promoted to search or sitemap indexes', () => {
     const layout = readSource('src/layouts/BaseLayout.astro');
     const sitemapConfig = readSource('astro.config.mjs');
