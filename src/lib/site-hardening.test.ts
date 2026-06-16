@@ -252,6 +252,18 @@ describe('site hardening', () => {
     expect(source).not.toContain('#3a2c22');
   });
 
+  test('search modal has an accessible title and close control', () => {
+    const source = readSource('src/components/SearchModal.astro');
+
+    expect(source).toContain('<dialog id="search-modal" aria-labelledby="search-title">');
+    expect(source).toContain('<header class="search-head">');
+    expect(source).toContain('<h2 id="search-title">搜索站内内容</h2>');
+    expect(source).toContain('id="search-close"');
+    expect(source).toContain('aria-label="关闭搜索"');
+    expect(source).toContain("const closeButton = document.getElementById('search-close')");
+    expect(source).toContain("closeButton?.addEventListener('click', () => modal.close());");
+  });
+
   test('secondary personal-blog pages are not promoted to search or sitemap indexes', () => {
     const layout = readSource('src/layouts/BaseLayout.astro');
     const sitemapConfig = readSource('astro.config.mjs');
