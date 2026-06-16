@@ -6,7 +6,7 @@ import { describe, expect, test } from 'vitest';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 
 function readSource(path: string) {
-  return readFileSync(resolve(root, path), 'utf8');
+  return readFileSync(resolve(root, path), 'utf8').replace(/\r\n/g, '\n');
 }
 
 describe('site hardening', () => {
