@@ -180,19 +180,29 @@ describe('site hardening', () => {
     expect(readSource('src/pages/friends/index.astro')).not.toContain('想交换友链');
   });
 
-  test('decorative motion is scoped to the homepage hero only', () => {
+  test('feather motion is loaded globally and listens for page clicks', () => {
     const effects = readSource('src/scripts/effects.ts');
     const layout = readSource('src/layouts/BaseLayout.astro');
     const home = readSource('src/pages/index.astro');
 
-    expect(effects).toContain("document.querySelector<HTMLElement>('.hero-screen')");
-    expect(effects).toContain('hero.appendChild(canvas)');
-    expect(effects).toContain("canvas.style.cssText = 'position:absolute;");
-    expect(effects).toContain("hero.addEventListener('click'");
-    expect(effects).not.toContain('document.body.appendChild(canvas)');
-    expect(effects).not.toContain("document.addEventListener('click'");
-    expect(layout).not.toContain('scripts/effects.ts');
-    expect(home).toContain('scripts/effects.ts');
+    expect(effects).not.toContain("document.querySelector<HTMLElement>('.hero-screen')");
+    expect(effects).toContain('if (!reduced) {');
+    expect(effects).toContain('document.body.appendChild(canvas)');
+    expect(effects).toContain("canvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9999;'");
+    expect(effects).toContain("document.addEventListener('click'");
+    expect(effects).toContain('if (e.detail === 0) return;');
+    expect(effects).toContain('x: e.clientX, y: e.clientY');
+    expect(effects).toContain('innerWidth');
+    expect(effects).toContain('innerHeight');
+    expect(effects).toContain('Math.random() * innerWidth');
+    expect(effects).toContain('drawFeather');
+    expect(effects).toContain("attributeFilter: ['data-theme', 'data-accent']");
+    expect(effects).toContain('ctx.setTransform(dpr, 0, 0, dpr, 0, 0)');
+    expect(effects).toContain("document.addEventListener('visibilitychange'");
+    expect(effects).not.toContain("hero.addEventListener('click'");
+    expect(effects).not.toContain('getBoundingClientRect()');
+    expect(layout).toContain('scripts/effects.ts');
+    expect(home).not.toContain('scripts/effects.ts');
   });
 
   test('stale identity panel component is removed after hero takes over first-screen identity', () => {
