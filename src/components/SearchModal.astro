@@ -7,16 +7,14 @@
     width: min(640px, 92vw); margin: 10vh auto 0;
     border: 1px solid var(--card-border); border-radius: 8px; padding: 18px;
     background: var(--bg-paper); color: var(--ink);
-  }
-  #search-modal::backdrop { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px); }
-  .hint { text-align: center; }
-  :global(html[data-theme='dark']) #search-modal {
     --pagefind-ui-background: var(--card);
     --pagefind-ui-text: var(--ink);
     --pagefind-ui-border: var(--line);
     --pagefind-ui-primary: var(--sakura);
     --pagefind-ui-tag: var(--sakura-soft);
   }
+  #search-modal::backdrop { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px); }
+  .hint { text-align: center; }
 </style>
 <script>
   import { withBase } from '../config';

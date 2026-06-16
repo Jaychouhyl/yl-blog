@@ -235,13 +235,15 @@ describe('site hardening', () => {
 
   test('search modal follows formal design tokens', () => {
     const source = readSource('src/components/SearchModal.astro');
+    const modalRule = source.slice(source.indexOf('#search-modal {'), source.indexOf('#search-modal::backdrop'));
 
     expect(source).toContain('border-radius: 8px');
-    expect(source).toContain('--pagefind-ui-background: var(--card);');
-    expect(source).toContain('--pagefind-ui-text: var(--ink);');
-    expect(source).toContain('--pagefind-ui-border: var(--line);');
-    expect(source).toContain('--pagefind-ui-primary: var(--sakura);');
-    expect(source).toContain('--pagefind-ui-tag: var(--sakura-soft);');
+    expect(modalRule).toContain('--pagefind-ui-background: var(--card);');
+    expect(modalRule).toContain('--pagefind-ui-text: var(--ink);');
+    expect(modalRule).toContain('--pagefind-ui-border: var(--line);');
+    expect(modalRule).toContain('--pagefind-ui-primary: var(--sakura);');
+    expect(modalRule).toContain('--pagefind-ui-tag: var(--sakura-soft);');
+    expect(source).not.toContain(":global(html[data-theme='dark']) #search-modal");
     expect(source).not.toContain('border-radius: 14px');
     expect(source).not.toContain('#2a2420');
     expect(source).not.toContain('#e8e2d8');
