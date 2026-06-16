@@ -181,6 +181,13 @@ describe('site hardening', () => {
     expect(about).not.toContain('rgba(68, 53, 58, 0.12)');
   });
 
+  test('project card separators use theme line token', () => {
+    const projects = readSource('src/pages/projects/index.astro');
+
+    expect(projects).toContain('.card-head { border-bottom: 1px solid var(--line);');
+    expect(projects).not.toContain('rgba(68, 53, 58, 0.12)');
+  });
+
   test('secondary personal-blog pages are not promoted to search or sitemap indexes', () => {
     const layout = readSource('src/layouts/BaseLayout.astro');
     const sitemapConfig = readSource('astro.config.mjs');
