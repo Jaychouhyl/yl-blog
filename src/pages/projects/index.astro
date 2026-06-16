@@ -14,7 +14,7 @@ const rendered = await Promise.all(projects.map(async (p) => ({ p, Content: (awa
       {rendered.map(({ p, Content }) => (
         <article class="glass card">
           <header class="card-head">
-            <p class="eyebrow">Portfolio Item</p>
+            <p class="eyebrow">公开项目</p>
             <h2 class="name">{p.data.title}</h2>
             <dl class="project-meta" aria-label={`${p.data.title} 项目元信息`}>
               <div>

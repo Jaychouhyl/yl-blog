@@ -21,7 +21,7 @@ const categories = allCategories(posts);
     </nav>
     {categories.length > 0 && (
       <nav class="category-bar" aria-label="分类">
-        <a class="category-chip category-index" href={withBase('/categories/')}>Categories</a>
+        <a class="category-chip category-index" href={withBase('/categories/')}>全部分类</a>
         {categories.map(([category, list]) => (
           <a class="category-chip" href={withBase(`/categories/${category}/`)}>
             <span>{category}</span>

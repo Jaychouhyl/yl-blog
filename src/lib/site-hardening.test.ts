@@ -188,6 +188,16 @@ describe('site hardening', () => {
     expect(projects).not.toContain('rgba(68, 53, 58, 0.12)');
   });
 
+  test('reader-facing archive and project labels stay in Chinese', () => {
+    const posts = readSource('src/pages/posts/index.astro');
+    const projects = readSource('src/pages/projects/index.astro');
+
+    expect(posts).toContain('>全部分类</a>');
+    expect(posts).not.toContain('>Categories</a>');
+    expect(projects).toContain('>公开项目</p>');
+    expect(projects).not.toContain('>Portfolio Item</p>');
+  });
+
   test('secondary personal-blog pages are not promoted to search or sitemap indexes', () => {
     const layout = readSource('src/layouts/BaseLayout.astro');
     const sitemapConfig = readSource('astro.config.mjs');
