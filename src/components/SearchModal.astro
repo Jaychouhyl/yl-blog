@@ -5,17 +5,17 @@
 <style>
   #search-modal {
     width: min(640px, 92vw); margin: 10vh auto 0;
-    border: 1px solid var(--card-border); border-radius: 14px; padding: 18px;
-    background: var(--bg-paper);
+    border: 1px solid var(--card-border); border-radius: 8px; padding: 18px;
+    background: var(--bg-paper); color: var(--ink);
   }
   #search-modal::backdrop { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px); }
   .hint { text-align: center; }
   :global(html[data-theme='dark']) #search-modal {
-    --pagefind-ui-background: #2a2420;
-    --pagefind-ui-text: #e8e2d8;
-    --pagefind-ui-border: #4a4038;
-    --pagefind-ui-primary: #d4738c;
-    --pagefind-ui-tag: #3a2c22;
+    --pagefind-ui-background: var(--card);
+    --pagefind-ui-text: var(--ink);
+    --pagefind-ui-border: var(--line);
+    --pagefind-ui-primary: var(--sakura);
+    --pagefind-ui-tag: var(--sakura-soft);
   }
 </style>
 <script>

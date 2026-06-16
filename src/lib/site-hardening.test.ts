@@ -233,6 +233,23 @@ describe('site hardening', () => {
     expect(projectEyebrowRule).not.toContain('text-transform');
   });
 
+  test('search modal follows formal design tokens', () => {
+    const source = readSource('src/components/SearchModal.astro');
+
+    expect(source).toContain('border-radius: 8px');
+    expect(source).toContain('--pagefind-ui-background: var(--card);');
+    expect(source).toContain('--pagefind-ui-text: var(--ink);');
+    expect(source).toContain('--pagefind-ui-border: var(--line);');
+    expect(source).toContain('--pagefind-ui-primary: var(--sakura);');
+    expect(source).toContain('--pagefind-ui-tag: var(--sakura-soft);');
+    expect(source).not.toContain('border-radius: 14px');
+    expect(source).not.toContain('#2a2420');
+    expect(source).not.toContain('#e8e2d8');
+    expect(source).not.toContain('#4a4038');
+    expect(source).not.toContain('#d4738c');
+    expect(source).not.toContain('#3a2c22');
+  });
+
   test('secondary personal-blog pages are not promoted to search or sitemap indexes', () => {
     const layout = readSource('src/layouts/BaseLayout.astro');
     const sitemapConfig = readSource('astro.config.mjs');
