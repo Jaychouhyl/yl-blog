@@ -216,6 +216,23 @@ describe('site hardening', () => {
     expect(projects).not.toContain('>PROJECTS</p>');
   });
 
+  test('reader-facing Chinese labels avoid uppercase tracking styles', () => {
+    const base = readSource('src/styles/base.css');
+    const posts = readSource('src/pages/posts/index.astro');
+    const projects = readSource('src/pages/projects/index.astro');
+
+    const pageSubRule = base.slice(base.indexOf('.page-sub'), base.indexOf(':focus-visible'));
+    const categoryIndexRule = posts.slice(posts.indexOf('.category-index'), posts.indexOf('.count'));
+    const projectEyebrowRule = projects.slice(projects.indexOf('.eyebrow'), projects.indexOf('.name'));
+
+    expect(pageSubRule).not.toContain('letter-spacing');
+    expect(pageSubRule).not.toContain('text-transform');
+    expect(categoryIndexRule).not.toContain('letter-spacing');
+    expect(categoryIndexRule).not.toContain('text-transform');
+    expect(projectEyebrowRule).not.toContain('letter-spacing');
+    expect(projectEyebrowRule).not.toContain('text-transform');
+  });
+
   test('secondary personal-blog pages are not promoted to search or sitemap indexes', () => {
     const layout = readSource('src/layouts/BaseLayout.astro');
     const sitemapConfig = readSource('astro.config.mjs');

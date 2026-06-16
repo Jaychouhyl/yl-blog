@@ -34,7 +34,7 @@ img { max-width: 100%; display: block; }
 }
 .muted { color: var(--ink-3); font-size: 13px; }
 .page-title { font-size: clamp(34px, 5vw, 52px); margin: 0 0 8px; }
-.page-sub { color: var(--ink-2); letter-spacing: 3px; font-size: 12px; text-transform: uppercase; }
+.page-sub { color: var(--ink-2); font-size: 12px; font-weight: 600; }
 
 :focus-visible { outline: 2px solid var(--sakura); outline-offset: 3px; }
 a.chip:hover { opacity: 0.75; }
