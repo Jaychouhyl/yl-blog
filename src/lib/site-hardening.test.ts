@@ -155,11 +155,17 @@ describe('site hardening', () => {
 
   test('personal factual copy stays marked for owner review', () => {
     const about = readSource('src/pages/about.astro');
+    const summaryWidget = readSource('src/components/ProfileSummaryWidget.astro');
     const project = readSource('src/content/projects/oracle-alpha.md');
 
     expect(about).toContain('待补充：站主确认后补入学校、经历、技能和研究方向。');
     expect(about).not.toContain('计算机相关方向');
     expect(about).not.toContain('量化研究入门');
+    expect(summaryWidget).toContain('公开材料');
+    expect(summaryWidget).toContain('待补充');
+    expect(summaryWidget).not.toContain('数据分析');
+    expect(summaryWidget).not.toContain('量化研究');
+    expect(summaryWidget).not.toContain('Web 展示');
     expect(project).toContain('tech: []');
     expect(project).toContain('待补充');
     expect(project).toContain('不描述为已上线交易系统');
