@@ -198,6 +198,24 @@ describe('site hardening', () => {
     expect(projects).not.toContain('>Portfolio Item</p>');
   });
 
+  test('reader-facing page eyebrow labels stay in Chinese', () => {
+    const home = readSource('src/pages/index.astro');
+    const about = readSource('src/pages/about.astro');
+    const posts = readSource('src/pages/posts/index.astro');
+    const projects = readSource('src/pages/projects/index.astro');
+
+    expect(home).toContain('>忆霖 / 公开作品集</p>');
+    expect(home).toContain('>公开材料</p>');
+    expect(home).not.toContain('PUBLIC PORTFOLIO');
+    expect(home).not.toContain('PUBLIC MATERIALS');
+    expect(about).toContain('>关于</p>');
+    expect(about).not.toContain('>ABOUT</p>');
+    expect(posts).toContain('>文章归档</p>');
+    expect(posts).not.toContain('>ARCHIVE</p>');
+    expect(projects).toContain('>项目</p>');
+    expect(projects).not.toContain('>PROJECTS</p>');
+  });
+
   test('secondary personal-blog pages are not promoted to search or sitemap indexes', () => {
     const layout = readSource('src/layouts/BaseLayout.astro');
     const sitemapConfig = readSource('astro.config.mjs');
