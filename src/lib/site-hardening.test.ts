@@ -264,6 +264,13 @@ describe('site hardening', () => {
     expect(source).toContain("closeButton?.addEventListener('click', () => modal.close());");
   });
 
+  test('transparent nav hover keeps the formal hero palette', () => {
+    const source = readSource('src/components/Nav.astro');
+
+    expect(source).toContain('.nav.transparent .link:hover { color: rgba(255,255,255,.86); }');
+    expect(source).not.toContain('#ffd9e2');
+  });
+
   test('secondary personal-blog pages are not promoted to search or sitemap indexes', () => {
     const layout = readSource('src/layouts/BaseLayout.astro');
     const sitemapConfig = readSource('astro.config.mjs');
