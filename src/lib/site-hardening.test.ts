@@ -168,6 +168,13 @@ describe('site hardening', () => {
     expect(project).not.toContain('建立一套清晰的研究流程');
   });
 
+  test('about profile separators use theme line token', () => {
+    const about = readSource('src/pages/about.astro');
+
+    expect(about).toContain('border-top: 1px solid var(--line);');
+    expect(about).not.toContain('rgba(68, 53, 58, 0.12)');
+  });
+
   test('secondary personal-blog pages are not promoted to search or sitemap indexes', () => {
     const layout = readSource('src/layouts/BaseLayout.astro');
     const sitemapConfig = readSource('astro.config.mjs');
