@@ -32,7 +32,12 @@ const projects = defineCollection({
     z.object({
       title: z.string(),
       repo: webUrl.optional(),
+      demo: webUrl.optional(),
       status: z.string().default('整理中'),
+      summary: z.string().optional(),
+      role: z.string().optional(),
+      period: z.string().optional(),
+      featured: z.boolean().default(false),
       audience: z.array(z.string()).default([]),
       tech: z.array(z.string()).default([]),
       cover: image().optional(),

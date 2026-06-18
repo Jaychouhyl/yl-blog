@@ -1,0 +1,110 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+---
+<section class="glass project-hero">
+  <div class="project-title">
+    <p class="page-sub">PROJECT</p>
+    <h1>{data.title}</h1>
+    {data.summary && <p class="summary">{data.summary}</p>}
+  </div>
+
+  <dl class="project-facts" aria-label={`${data.title} 项目元信息`}>
+    <div>
+      <dt>状态</dt>
+      <dd>{data.status}</dd>
+    </div>
+    {data.role && (
+      <div>
+        <dt>角色</dt>
+        <dd>{data.role}</dd>
+      </div>
+    )}
+    {data.period && (
+      <div>
+        <dt>周期</dt>
+        <dd>{data.period}</dd>
+      </div>
+    )}
+  </dl>
+
+  {data.tech.length > 0 && (
+    <div class="tech-list" aria-label={`${data.title} 技术栈`}>
+      {data.tech.map((tech) => <span class="chip">{tech}</span>)}
+    </div>
+  )}
+
+  {(data.repo || data.demo) && (
+    <div class="project-actions">
+      {data.repo && <a href={data.repo} target="_blank" rel="noopener noreferrer">源码</a>}
+      {data.demo && <a href={data.demo} target="_blank" rel="noopener noreferrer">演示</a>}
+    </div>
+  )}
+</section>
+<style>
+  .project-hero {
+    display: grid;
+    gap: 18px;
+    padding: 26px 28px;
+    border-radius: 8px;
+  }
+  .project-title h1 {
+    margin: 4px 0 0;
+    font-size: clamp(30px, 5vw, 48px);
+  }
+  .summary {
+    max-width: 680px;
+    margin: 10px 0 0;
+    color: var(--ink-2);
+    line-height: 1.8;
+  }
+  .project-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 22px;
+    margin: 0;
+  }
+  .project-facts div {
+    display: grid;
+    gap: 3px;
+    min-width: 128px;
+  }
+  .project-facts dt {
+    color: var(--ink-3);
+    font-size: 12px;
+  }
+  .project-facts dd {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 14px;
+  }
+  .tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .project-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .project-actions a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 4px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--sakura);
+    font-size: 14px;
+  }
+  .project-actions a:hover {
+    border-color: var(--sakura);
+  }
+</style>
