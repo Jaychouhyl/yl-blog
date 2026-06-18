@@ -5,21 +5,28 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import FloatingToc from '../../components/FloatingToc.astro';
 import Giscus from '../../components/Giscus.astro';
 import ReadingProgress from '../../components/ReadingProgress.astro';
+import SeriesNav from '../../components/SeriesNav.astro';
 import { withBase } from '../../config';
-import { publishedPosts } from '../../lib/posts';
+import { allSeries, publishedPosts } from '../../lib/posts';
 import { formatDate, readingMinutes } from '../../lib/text';
 import '../../styles/prose.css';
 import 'katex/dist/katex.min.css';
 
 export async function getStaticPaths() {
   const posts = await publishedPosts();
+  const seriesMap = new Map(allSeries(posts));
   return posts.map((post, i) => ({
     params: { id: post.id },
-    props: { post, older: posts[i + 1] ?? null, newer: posts[i - 1] ?? null },
+    props: {
+      post,
+      older: posts[i + 1] ?? null,
+      newer: posts[i - 1] ?? null,
+      seriesPosts: post.data.series ? seriesMap.get(post.data.series) ?? [] : [],
+    },
   }));
 }
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
-const { post, older, newer } = Astro.props;
+const { post, older, newer, seriesPosts } = Astro.props;
 const { Content, headings } = await render(post);
 const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 ---
@@ -36,6 +43,7 @@ const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     </header>
     {toc.length > 2 && <FloatingToc headings={toc} />}
     <div class="prose"><Content /></div>
+    {post.data.series && <SeriesNav current={post} posts={seriesPosts} />}
     <nav class="pn" aria-label="文章导航">
       {older ? <a class="glass pn-card" href={withBase(`/posts/${older.id}/`)}>← {older.data.title}</a> : <span />}
       {newer ? <a class="glass pn-card" href={withBase(`/posts/${newer.id}/`)}>{newer.data.title} →</a> : <span />}

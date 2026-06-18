@@ -1,0 +1,36 @@
+---
+import type { InferGetStaticPropsType } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { allSeries, publishedPosts } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const seriesList = allSeries(await publishedPosts());
+  return seriesList.map(([series, posts]) => ({
+    params: { series },
+    props: { posts },
+  }));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { series } = Astro.params;
+const { posts } = Astro.props as Props;
+---
+<BaseLayout title={`专栏：${series}`} description={`“${series}”系列文章。`}>
+  <main class="container dense" style="padding-top:var(--page-top);max-width:760px;">
+    <p class="page-sub">专栏</p>
+    <h1 class="page-title">{series}</h1>
+    <div class="post-list">
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 26px;
+  }
+</style>

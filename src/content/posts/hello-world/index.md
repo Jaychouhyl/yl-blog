@@ -3,6 +3,8 @@ title: 你好，世界
 date: 2026-06-10
 tags: [站点记录]
 category: 站点记录
+series: 站点建设
+seriesOrder: 1
 summary: 这里是忆霖的第一篇站点记录，也是这个个人站的写作 charter。
 cover: ./cover.webp
 ---

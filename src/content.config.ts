@@ -20,6 +20,8 @@ const posts = defineCollection({
       date: z.coerce.date(),
       tags: z.array(z.string()).default([]),
       category: z.string().optional(),
+      series: z.string().optional(),
+      seriesOrder: z.number().optional(),
       summary: z.string().optional(),
       cover: image().optional(),
       draft: z.boolean().default(false),
