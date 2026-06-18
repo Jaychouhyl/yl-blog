@@ -4,6 +4,7 @@ export const SITE = {
   announcement: '这里整理长期写作、项目复盘和学习记录。内容会持续更新，优先保留能说明思考过程的材料。',
   startDate: '2026-06-10',
   github: 'https://github.com/Jaychouhyl',
+  resumeUrl: '',
   nav: [
     { label: '主页', href: '/' },
     { label: '文章', href: '/posts/' },
