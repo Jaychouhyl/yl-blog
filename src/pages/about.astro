@@ -7,55 +7,71 @@ import { SITE, withBase } from '../config';
     <p class="page-sub">关于</p>
     <header class="about-head">
       <h1 class="page-title">关于我</h1>
-      <p class="lead">待补充：站主确认后补入学校、经历、技能和研究方向。</p>
+      <p class="lead">本科阶段主要围绕前端工程、数据可视化、AI/RAG 应用和工程文档做项目。这个站点更像一个长期作品集：不追求把所有细节铺开，而是保留能说明技术判断、协作方式和成长轨迹的材料。</p>
       {SITE.resumeUrl && <a class="resume-button" href={withBase(SITE.resumeUrl)}>下载简历 PDF</a>}
     </header>
 
     <section class="resume-section" aria-labelledby="position-heading">
       <h2 id="position-heading">一句话定位</h2>
-      <!-- // 待站主填写真实信息：补充当前身份、方向和求职或复试场景。 -->
-      <p>待站主填写：用一句话说明当前身份、关注方向和公开作品集用途。</p>
+      <p>前端与工程表达为主的开发者：个人项目独立做全栈，团队项目主攻前端。关注企业后台、数据可视化、知识图谱、RAG 产品化和量化研究工具的落地。</p>
     </section>
 
     <section class="resume-section" aria-labelledby="education-heading">
       <h2 id="education-heading">教育背景</h2>
-      <!-- // 待站主填写真实信息：学校、专业、时间等必须由站主确认后填写。 -->
       <dl class="resume-list">
         <div>
-          <dt>学校 / 专业</dt>
-          <dd>待站主填写。</dd>
+          <dt>阶段</dt>
+          <dd>本科四年项目经历整理中；具体学校、专业和时间信息暂不公开。</dd>
         </div>
         <div>
-          <dt>时间</dt>
-          <dd>待站主填写。</dd>
+          <dt>主线</dt>
+          <dd>从前端页面、UI 与工程图，到企业系统、AI/RAG、知识图谱和量化研究工具，逐步把项目从“能做出来”推进到“能解释、能维护、能复盘”。</dd>
         </div>
         <div>
           <dt>补充说明</dt>
-          <dd>待站主填写。</dd>
+          <dd>站内内容会优先展示公开项目、工程复盘和学习记录；不把未经确认的学校、奖项或指标写成正式经历。</dd>
         </div>
       </dl>
     </section>
 
     <section class="resume-section" aria-labelledby="skills-heading">
       <h2 id="skills-heading">技能栈</h2>
-      <!-- // 待站主填写真实信息：只写能在面试中解释清楚的技能和熟悉程度。 -->
       <div class="skill-groups">
         <section aria-label="语言">
           <h3>语言</h3>
           <div class="skill-tags">
-            <span>待站主填写</span>
+            <span>TypeScript</span>
+            <span>JavaScript</span>
+            <span>Python</span>
+            <span>Java</span>
+            <span>SQL</span>
+            <span>Markdown</span>
           </div>
         </section>
         <section aria-label="框架与工具">
           <h3>框架与工具</h3>
           <div class="skill-tags">
-            <span>待站主填写</span>
+            <span>Vue 3</span>
+            <span>Astro</span>
+            <span>Vite</span>
+            <span>Element Plus</span>
+            <span>Ant Design Vue</span>
+            <span>FastAPI</span>
+            <span>Spring Boot</span>
+            <span>ECharts</span>
+            <span>Cytoscape.js</span>
+            <span>Docker</span>
           </div>
         </section>
         <section aria-label="方向">
           <h3>方向</h3>
           <div class="skill-tags">
-            <span>待站主填写</span>
+            <span>前端工程</span>
+            <span>企业后台 UI</span>
+            <span>数据可视化</span>
+            <span>工程图与文档</span>
+            <span>RAG / Agent</span>
+            <span>量化研究工具</span>
           </div>
         </section>
       </div>
@@ -63,15 +79,28 @@ import { SITE, withBase } from '../config';
 
     <section class="resume-section" aria-labelledby="research-heading">
       <h2 id="research-heading">研究兴趣</h2>
-      <!-- // 待站主填写真实信息：研究兴趣、学习方向和材料边界都需要站主确认。 -->
-      <p>待站主填写：后续只写站主本人确认过的学习方向、项目边界和可公开材料。</p>
+      <p>我更关心“技术怎么变成可信的工具”：比如知识图谱如何被前端清楚地呈现，RAG/Agent 如何进入真实业务流程，量化研究如何从脚本变成可验证的系统，以及 UI、工程图、文档如何帮助团队理解复杂系统。</p>
     </section>
 
     <section class="resume-section" aria-labelledby="projects-heading">
       <h2 id="projects-heading">代表项目</h2>
-      <div class="project-link">
-        <a href={withBase('/projects/oracle-alpha/')}>OracleAlpha</a>
-        <p>待站主补充真实项目边界、技术栈、负责内容和可展示材料。</p>
+      <div class="project-list">
+        <div class="project-link">
+          <a href={withBase('/projects/oracle-alpha/')}>OracleAlpha</a>
+          <p>自托管美股量化研究工作台，重点是研究、回测、风控、纸面交易和人在环上的安全边界。</p>
+        </div>
+        <div class="project-link">
+          <a href={withBase('/projects/smartx-erp/')}>SmartX ERP Knowledge Graph System</a>
+          <p>我独立开发的全栈项目：ERP 业务、知识图谱、RAG 助手和 MCP 工具化，覆盖前端、后端、图谱、权限与审计。</p>
+        </div>
+        <div class="project-link">
+          <a href={withBase('/projects/neokg/')}>NeoKG</a>
+          <p>团队的知识图谱管理系统，我是前端主力，负责前端页面与图谱可视化（Cytoscape.js）。</p>
+        </div>
+        <div class="project-link">
+          <a href={withBase('/projects/easyhome/')}>EasyHome</a>
+          <p>团队的二手房推荐系统（LLM + RAG），我负责用户端/管理端前端和 SSE 流式响应。</p>
+        </div>
       </div>
     </section>
 
@@ -84,7 +113,7 @@ import { SITE, withBase } from '../config';
         </div>
         <div>
           <dt>邮箱</dt>
-          <dd>待站主填写。</dd>
+          <dd>暂不公开，可先通过 GitHub 了解项目。</dd>
         </div>
       </dl>
     </section>
@@ -167,6 +196,10 @@ import { SITE, withBase } from '../config';
   .project-link {
     display: grid;
     gap: 8px;
+  }
+  .project-list {
+    display: grid;
+    gap: 16px;
   }
   .project-link a,
   .link {
