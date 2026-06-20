@@ -8,7 +8,6 @@ import { SITE, withBase } from '../config';
     <header class="about-head">
       <h1 class="page-title">关于我</h1>
       <p class="lead">本科阶段主要围绕前端工程、数据可视化、AI/RAG 应用和工程文档做项目。这个站点更像一个长期作品集：不追求把所有细节铺开，而是保留能说明技术判断、协作方式和成长轨迹的材料。</p>
-      {SITE.resumeUrl && <a class="resume-button" href={withBase(SITE.resumeUrl)}>下载简历 PDF</a>}
     </header>
 
     <section class="resume-section" aria-labelledby="position-heading">
@@ -132,15 +131,6 @@ import { SITE, withBase } from '../config';
     color: var(--ink-2);
     line-height: 1.85;
   }
-  .resume-button {
-    width: fit-content;
-    padding: 7px 14px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    color: var(--sakura);
-    font-size: 14px;
-  }
-  .resume-button:hover { border-color: var(--sakura); }
   .resume-section {
     border-top: 1px solid var(--line);
     padding: 22px 0;

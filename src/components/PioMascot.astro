@@ -1,0 +1,105 @@
+---
+import { SITE, withBase } from '../config';
+const messages = SITE.mascotMessages ?? [];
+---
+<div class="mascot" id="mascot" data-messages={JSON.stringify(messages)} hidden>
+  <button class="mascot-close" id="mascot-close" type="button" aria-label="关闭看板娘">×</button>
+  <div class="mascot-bubble" id="mascot-bubble" hidden></div>
+  <img
+    class="mascot-img"
+    id="mascot-img"
+    src={withBase('/mascot/idle-0.webp')}
+    alt="看板娘"
+    width="96"
+    height="104"
+    draggable="false"
+  />
+</div>
+<style>
+  .mascot {
+    position: fixed; left: 16px; bottom: 16px; z-index: 80;
+    width: 96px; user-select: none;
+  }
+  .mascot[hidden] { display: none; }
+  .mascot-img {
+    width: 96px; height: 104px; display: block; cursor: pointer;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.18));
+  }
+  .mascot-close {
+    position: absolute; top: -6px; left: -6px;
+    width: 20px; height: 20px; border-radius: 50%; border: none;
+    background: var(--card); color: var(--ink-2); box-shadow: var(--shadow);
+    font-size: 13px; line-height: 1; cursor: pointer;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .mascot:hover .mascot-close { opacity: 1; }
+  .mascot-bubble {
+    position: absolute; bottom: 100%; left: 0; margin-bottom: 8px;
+    background: var(--card); border: 1px solid var(--card-border); color: var(--ink);
+    padding: 6px 12px; border-radius: 12px; font-size: 13px;
+    box-shadow: var(--shadow); max-width: 200px; line-height: 1.5;
+  }
+  .mascot-bubble[hidden] { display: none; }
+  @media (max-width: 768px) { .mascot { display: none; } }
+</style>
+<script>
+  import { withBase } from '../config';
+
+  const FRAMES: Record<string, number> = { idle: 6, waving: 4, jumping: 5 };
+  const root = document.getElementById('mascot');
+  const img = document.getElementById('mascot-img') as HTMLImageElement | null;
+  const bubble = document.getElementById('mascot-bubble');
+  const closeBtn = document.getElementById('mascot-close');
+
+  if (root && img && bubble && closeBtn) {
+    const KEY = 'mascot';
+    // 移动端不显示；用户关过则记住
+    if (innerWidth > 768 && localStorage.getItem(KEY) !== 'off') root.hidden = false;
+
+    const messages: string[] = JSON.parse(root.dataset.messages || '[]');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let playing = false;
+    let loopId = 0;
+    let bubbleId = 0;
+
+    const setFrame = (state: string, i: number) => { img.src = withBase(`/mascot/${state}-${i}.webp`); };
+
+    // 预加载动作帧，点击时不卡
+    for (const state of Object.keys(FRAMES)) {
+      for (let i = 0; i < FRAMES[state]!; i++) { const im = new Image(); im.src = withBase(`/mascot/${state}-${i}.webp`); }
+    }
+
+    const stopLoop = () => { if (loopId) { clearInterval(loopId); loopId = 0; setFrame('idle', 0); } };
+
+    // 悬停：idle 轻轻循环
+    img.addEventListener('mouseenter', () => {
+      if (playing || reduced || loopId) return;
+      let i = 0;
+      loopId = window.setInterval(() => { setFrame('idle', i); i = (i + 1) % FRAMES.idle!; }, 170);
+    });
+    img.addEventListener('mouseleave', () => { if (!playing) stopLoop(); });
+
+    // 点击：随机播一个动作 + 气泡
+    img.addEventListener('click', () => {
+      if (playing) return;
+      stopLoop();
+      if (messages.length) {
+        bubble.textContent = messages[Math.floor(Math.random() * messages.length)]!;
+        bubble.hidden = false;
+        clearTimeout(bubbleId);
+        bubbleId = window.setTimeout(() => { bubble.hidden = true; }, 3000);
+      }
+      if (reduced) return; // 尊重减少动效：只弹气泡不播帧
+      playing = true;
+      const act = Math.random() < 0.5 ? 'waving' : 'jumping';
+      let i = 0;
+      const timer = window.setInterval(() => {
+        setFrame(act, i);
+        i++;
+        if (i >= FRAMES[act]!) { clearInterval(timer); setFrame('idle', 0); playing = false; }
+      }, 120);
+    });
+
+    closeBtn.addEventListener('click', () => { root.hidden = true; localStorage.setItem(KEY, 'off'); });
+  }
+</script>
