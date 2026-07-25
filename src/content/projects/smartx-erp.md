@@ -118,6 +118,10 @@ flowchart LR
 
 Docker Compose 提供 MySQL、Neo4j、Redis、Nacos、Sentinel、RocketMQ、Seata、Zipkin、Prometheus、Alertmanager 和 Grafana 等本地依赖。Prometheus 当前覆盖 Gateway、Auth、SCM、Sales、Finance、RAG Decision 和 MCP 七个服务。
 
+![SmartX ERP 经营分析工作台](/images/projects/smartx-erp/01-analysis-dashboard.png)
+
+*图 1：经营分析工作台将销售、采购、库存和财务信息收拢到统一的管理视图。*
+
 ## 4. 业务域与数据模型
 
 ### 4.1 业务域划分
@@ -133,6 +137,14 @@ Docker Compose 提供 MySQL、Neo4j、Redis、Nacos、Sentinel、RocketMQ、Seat
 | 系统治理 | 用户、角色、菜单、数据范围、MCP Key | 启用、撤销、授权、审计 |
 
 业务编号由统一编号生成逻辑产生，用于在 UI、RAG、MCP 和财务流水之间传递稳定的可读标识。状态字段表达单据生命周期，跨服务引用同时保留业务 ID 和业务编号，避免只依赖展示名称。
+
+![采购单据台账与状态筛选](/images/projects/smartx-erp/02-purchase-ledger.png)
+
+*图 2：采购台账同时呈现供应商、到货时间、付款状态和单据状态，并保留详情与草稿入口。*
+
+![库存与原材料台账](/images/projects/smartx-erp/03-inventory-ledger.png)
+
+*图 3：库存台账按物料、仓位和安全库存展示当前库存状态，预警颜色保留业务语义。*
 
 ### 4.2 关系模型与图谱模型的分工
 
@@ -153,6 +165,10 @@ erDiagram
 ```
 
 MySQL 负责“这条记录是什么、当前状态是什么、能否提交”的事务问题；Neo4j 负责“这些实体之间如何关联、从某个节点还能走到哪里”的关系问题。图谱不是主账数据库，图谱重建也不能覆盖事务数据的权威性。
+
+![客户、供应商与订单实体关系图谱](/images/projects/smartx-erp/04-knowledge-graph.png)
+
+*图 4：知识图谱以客户、供应商和订单为节点展示业务关系，搜索结果仍需回到事务页面核对。*
 
 ## 5. RAG：从问题到可操作实体
 
@@ -203,6 +219,10 @@ RAG 链路由 `RagChatController`、`RagPipelineService`、`RouterAgent`、`Tool
 
 这让前端可以分别处理文字、来源、实体卡片、草稿和建议动作。模型回答仍然可以以自然语言呈现，但关键业务对象已经被提取为结构化数据。
 
+![RAG 对安全库存预警的结构化回答](/images/projects/smartx-erp/05-rag-answer.png)
+
+*图 5：RAG 回答同时包含自然语言解释、结构化库存表格和可继续操作的业务实体链接。*
+
 ### 5.4 实体路由契约
 
 ```mermaid
@@ -239,6 +259,10 @@ RAG 可以帮助用户准备销售或采购草稿，但正式写入仍然经过�
 - RAG/图谱：关系探索、知识检索和辅助查询。
 
 MCP Server 独立运行，通过 `/mcp/sse` 和 `/mcp/message` 提供协议入口。管理员控制台集中展示工具目录、用户级 API Key、工具调用审计、模型调用审计和服务状态。
+
+![MCP 工具目录与业务域分类](/images/projects/smartx-erp/06-mcp-console.png)
+
+*图 6：MCP 控制台按业务域展示已注册工具、输入参数和用途，当前目录包含 28 个工具。*
 
 ### 6.2 Key 与真实用户身份
 
@@ -322,6 +346,10 @@ Finance 侧记录消费失败和死信状态，设置最大重试次数，并提
 ### 10.1 运行观测
 
 Nacos 和 Sentinel 负责服务注册、配置与流量治理；Zipkin 负责调用链；Prometheus 采集 8080–8087 服务指标；Grafana 提供看板；Alertmanager 负责告警分发。RocketMQ、Outbox、财务流水和 MCP 审计还保留业务层状态，避免只看基础设施指标而看不到业务失败。
+
+![MCP Server 运行状态与下游连通性](/images/projects/smartx-erp/07-mcp-runtime.png)
+
+*图 7：运行状态页集中展示 MCP Server、SSE、日志队列和下游服务连通性。*
 
 ### 10.2 当前可核对结果
 
