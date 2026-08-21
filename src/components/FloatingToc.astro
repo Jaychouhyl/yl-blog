@@ -22,7 +22,10 @@ const drawerId = `floating-toc-drawer-${toc
 {toc.length > 0 && (
   <div class="floating-toc-wrapper" data-floating-toc>
     <nav class="floating-toc-panel glass" aria-label="目录">
-      <div class="floating-toc-head">目录</div>
+      <div class="floating-toc-head">
+        <span>目录</span>
+        <span class="floating-toc-count" data-toc-progress>0</span>
+      </div>
       <div class="floating-toc-list">
         {toc.map((heading) => (
           <a
@@ -52,7 +55,7 @@ const drawerId = `floating-toc-drawer-${toc
       <div class="floating-toc-backdrop" data-toc-close hidden></div>
       <nav id={drawerId} class="floating-toc-drawer glass" aria-label="目录" hidden>
         <div class="floating-toc-drawer-head">
-          <span>目录</span>
+          <span>目录 <span class="floating-toc-count" data-toc-progress>0</span></span>
           <button class="floating-toc-close" type="button" aria-label="关闭目录" data-toc-close>×</button>
         </div>
         <div class="floating-toc-list">
@@ -93,6 +96,10 @@ const drawerId = `floating-toc-drawer-${toc
   }
 
   .floating-toc-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     margin-bottom: 8px;
     font-size: 15px;
     font-weight: 700;
@@ -211,22 +218,25 @@ const drawerId = `floating-toc-drawer-${toc
     display: none;
   }
 
-  @media (min-width: 1100px) {
+  @media (min-width: 769px) {
     .floating-toc-panel {
-      position: fixed;
-      top: calc(var(--page-top) + 28px);
-      right: 18px;
-      z-index: 91;
       display: block;
-      width: clamp(132px, calc((100vw - 760px) / 2 - 32px), 240px);
-      max-height: 60vh;
+      width: 100%;
+      max-height: none;
       padding: 14px;
       overflow: auto;
       backdrop-filter: blur(14px);
     }
   }
 
-  @media (max-width: 1099.98px) {
+  .floating-toc-count {
+    color: var(--ink-3);
+    font-size: 1.15em;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  @media (max-width: 768px) {
     .floating-toc-mobile {
       display: block;
     }
@@ -257,9 +267,12 @@ const drawerId = `floating-toc-drawer-${toc
     const drawer = root.querySelector<HTMLElement>('.floating-toc-drawer');
     const backdrop = root.querySelector<HTMLElement>('.floating-toc-backdrop');
     const closeControls = root.querySelectorAll<HTMLElement>('[data-toc-close]');
+    const progressLabels = root.querySelectorAll<HTMLElement>('[data-toc-progress]');
+    const article = document.querySelector<HTMLElement>('article');
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
     const visibleHeadings = new Set<HTMLElement>();
     let restoreTarget: HTMLElement | null = null;
+    let readingProgressFrame = 0;
 
     if (links.length === 0) return;
 
@@ -310,6 +323,26 @@ const drawerId = `floating-toc-drawer-${toc
       const raw = getComputedStyle(document.documentElement).getPropertyValue('--page-top');
       const offset = Number.parseFloat(raw);
       return Number.isFinite(offset) ? offset + 12 : 0;
+    }
+
+    function updateReadingProgress() {
+      readingProgressFrame = 0;
+      if (!article) return;
+
+      const articleTop = article.getBoundingClientRect().top + window.scrollY;
+      const start = articleTop - pageTopOffset();
+      const distance = Math.max(article.offsetHeight - window.innerHeight + pageTopOffset(), 1);
+      const percent = Math.round(Math.min(1, Math.max(0, (window.scrollY - start) / distance)) * 100);
+
+      progressLabels.forEach((label) => {
+        label.textContent = String(percent);
+        label.setAttribute('aria-label', `阅读进度 ${percent}%`);
+      });
+    }
+
+    function requestReadingProgressUpdate() {
+      if (readingProgressFrame) return;
+      readingProgressFrame = requestAnimationFrame(updateReadingProgress);
     }
 
     function chooseActiveHeading() {
@@ -377,6 +410,9 @@ const drawerId = `floating-toc-drawer-${toc
     if (articleHeadings.length === 0) return;
 
     refreshActiveHeading();
+    updateReadingProgress();
+    window.addEventListener('scroll', requestReadingProgressUpdate, { passive: true });
+    window.addEventListener('resize', requestReadingProgressUpdate);
 
     if (!('IntersectionObserver' in window)) return;
 

@@ -1,36 +1,35 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContentPageLayout from '../../components/ContentPageLayout.astro';
+import PageTitleHero from '../../components/PageTitleHero.astro';
 import { withBase } from '../../config';
 import { publishedPosts, allCategories } from '../../lib/posts';
 
 const categories = allCategories(await publishedPosts());
 ---
 <BaseLayout title="分类">
-  <div class="container roomy" style="padding-top:var(--page-top);max-width:760px;">
-    <p class="page-sub">CATEGORIES</p>
-    <h1 class="page-title">分类</h1>
-    <div class="category-grid">
-      {categories.map(([category, posts]) => (
-        <a class="glass category-card" href={withBase(`/categories/${category}/`)}>
-          <span class="category-name">{category}</span>
-          <span class="category-count">{posts.length} 篇</span>
-        </a>
-      ))}
-    </div>
-  </div>
+  <PageTitleHero title="分类" />
+  <ContentPageLayout compactTop>
+    <section class="glass category-panel">
+      <p class="muted intro">按内容领域查看公开文章。</p>
+      <div class="category-list">
+        {categories.map(([category, posts]) => (
+          <a class="category-row" href={withBase(`/categories/${category}/`)}>
+            <div><h2>{category}</h2><p>{posts[0]?.data.title}</p></div>
+            <span>{posts.length}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </ContentPageLayout>
 </BaseLayout>
 <style>
-  .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 24px; }
-  .category-card {
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    min-height: 72px; padding: 18px 20px;
-    border-radius: 8px; transition: transform 0.2s, border-color 0.2s;
-  }
-  .category-card:hover { transform: translateY(-2px); border-color: var(--sakura); color: inherit; }
-  .category-name { font-family: var(--serif); font-size: 18px; color: var(--ink); }
-  .category-count { font-family: var(--mono); font-size: 12px; color: var(--sakura); }
-  @media (prefers-reduced-motion: reduce) {
-    .category-card { transition: none; }
-    .category-card:hover { transform: none; }
-  }
+  .category-panel { padding: 30px 34px 38px; }
+  .intro { margin: 0 0 24px; }
+  .category-list { display: grid; gap: 12px; }
+  .category-row { display: grid; grid-template-columns: minmax(0, 1fr) 52px; gap: 18px; align-items: center; padding: 18px 20px; border: 1px solid var(--line); border-radius: 8px; background: color-mix(in srgb, var(--card) 84%, transparent); }
+  .category-row h2 { margin: 0 0 5px; font-size: 20px; }
+  .category-row p { margin: 0; color: var(--ink-3); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .category-row > span { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; background: var(--sakura-soft); color: var(--sakura); font-family: var(--serif); font-size: 17px; }
+  @media (max-width: 520px) { .category-panel { padding: 24px 20px 30px; } }
 </style>

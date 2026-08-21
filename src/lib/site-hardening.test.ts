@@ -17,7 +17,8 @@ describe('site hardening', () => {
     expect(source).toContain('property="og:title"');
     expect(source).toContain('property="og:description"');
     expect(source).toContain('property="og:url"');
-    expect(source).toContain('name="twitter:card"');
+    expect(source).toContain("withBase('/avatar.png')");
+    expect(source).toContain('name="twitter:card" content="summary"');
   });
 
   test('giscus is loaded only after an explicit reader action', () => {
@@ -58,12 +59,21 @@ describe('site hardening', () => {
     expect(lock.packages['node_modules/yaml-language-server/node_modules/yaml'].version).toBe('2.8.3');
   });
 
-  test('small generated avatar assets are used for chrome and profile UI', () => {
+  test('the approved avatar asset is used for profile and social previews', () => {
     expect(readSource('src/layouts/BaseLayout.astro')).toContain("withBase('/favicon.png')");
-    expect(readSource('src/components/AvatarCard.astro')).toContain("withBase('/avatar.webp')");
+    expect(readSource('src/components/AvatarCard.astro')).toContain("withBase('/avatar.png')");
 
-    expect(statSync(resolve(root, 'public/avatar.webp')).size).toBeLessThan(20_000);
+    expect(statSync(resolve(root, 'public/avatar.png')).size).toBeLessThan(200_000);
     expect(statSync(resolve(root, 'public/favicon.png')).size).toBeLessThan(120_000);
+  });
+
+  test('the public contact email is configured once and rendered as a mail link', () => {
+    const config = readSource('src/config.ts');
+    const about = readSource('src/pages/about.astro');
+
+    expect(config).toContain("email: 'hyl92186009@gmail.com'");
+    expect(about).toContain('href={`mailto:${SITE.email}`}');
+    expect(about).toContain('{SITE.email}');
   });
 
   test('rss rendering drops raw html before publishing feed content', () => {
@@ -96,11 +106,11 @@ describe('site hardening', () => {
 
     expect(heroSection).toContain('aria-labelledby="hero-title"');
     expect(heroSection).toContain('id="hero-title"');
-    expect(heroSection).toContain('写作、项目与长期复盘');
-    expect(heroSection).toContain('求职沟通');
-    expect(heroSection).toContain('考研复试');
-    expect(heroSection).toContain("href={withBase('/projects/')}");
-    expect(heroSection).toContain("href={withBase('/about/')}");
+    expect(heroSection).toContain('Yilin Blog');
+    expect(source).toContain('记录项目、琐碎、AI');
+    expect(source).toContain('微服务、前端、后端、AI 学习琐碎');
+    expect(heroSection).not.toContain('求职沟通');
+    expect(heroSection).not.toContain('考研复试');
   });
 
   test('homepage hero frames the source artwork for a formal first impression', () => {
@@ -110,29 +120,20 @@ describe('site hardening', () => {
 
     expect(heroImageRule).toContain('object-fit: cover');
     expect(heroImageRule).toContain('object-position: 42% center');
-    expect(heroVeilRule).toContain('linear-gradient(115deg');
-    expect(heroVeilRule).toContain('rgba(0,0,0,.62) 100%');
-    expect(source).toContain('.hero-veil::after');
-    expect(source).toContain('inset: 0');
-    expect(source).toContain('radial-gradient(ellipse at 84% 76%');
-    expect(source).toContain('rgba(0,0,0,.92) 0%');
-    expect(source).toContain('rgba(0,0,0,.18) 68%');
-    expect(source).not.toContain('inset: 52% 0 0 46%');
-    expect(source).not.toContain('background: linear-gradient(135deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.78) 100%);');
+    expect(heroVeilRule).toContain('radial-gradient(ellipse at center');
+    expect(heroVeilRule).toContain('rgba(0,0,0,.68) 0%');
+    expect(heroVeilRule).toContain('rgba(0,0,0,0) 74%');
+    expect(source).not.toContain('.hero-veil::after');
+    expect(source).not.toContain('text-shadow: 0 2px 18px');
   });
 
-  test('homepage lower content acts as a formal material index', () => {
+  test('homepage lower content starts directly with the article feed', () => {
     const source = readSource('src/pages/index.astro');
 
-    expect(source).toContain('class="portfolio-index glass"');
-    expect(source).toContain('公开材料索引');
-    expect(source).toContain("href={withBase('/projects/')}");
-    expect(source).toContain("href={withBase('/posts/')}");
-    expect(source).toContain("href={withBase('/about/')}");
-    expect(source).toContain('求职沟通');
-    expect(source).toContain('考研复试');
-    expect(source).toContain('border-top: 1px solid var(--line);');
-    expect(source).not.toContain('background: rgba(255,255,255,.44);');
+    expect(source).toContain('{recent.map((post) => <PostCard post={post} />)}');
+    expect(source).not.toContain('class="portfolio-index glass"');
+    expect(source).not.toContain('公开材料索引');
+    expect(source).not.toContain('<ProfileSummaryWidget />');
     expect(source).not.toContain('音乐播放器');
     expect(source).not.toContain('番剧');
   });
@@ -140,12 +141,12 @@ describe('site hardening', () => {
   test('project entries surface status and audience for formal review', () => {
     const schema = readSource('src/content.config.ts');
     const page = readSource('src/pages/projects/index.astro');
-    const project = readSource('src/content/projects/oracle-alpha.md');
+    const project = readSource('src/content/projects/smartx-erp.md');
 
     expect(schema).toContain('status: z.string()');
     expect(schema).toContain('audience: z.array(z.string())');
-    expect(project).toContain('status: 建设中');
-    expect(project).toContain('audience: [求职沟通, 考研复试]');
+    expect(project).toContain('status: 毕业设计系统');
+    expect(project).toContain('audience: [系统设计, AI 工程, 企业后台, 技术复盘]');
     expect(page).toContain('class="project-meta"');
     expect(page).toContain('当前状态');
     expect(page).toContain('适用场景');
@@ -156,22 +157,30 @@ describe('site hardening', () => {
   test('personal factual copy stays marked for owner review', () => {
     const about = readSource('src/pages/about.astro');
     const summaryWidget = readSource('src/components/ProfileSummaryWidget.astro');
-    const project = readSource('src/content/projects/oracle-alpha.md');
 
-    expect(about).toContain('待补充：站主确认后补入学校、经历、技能和研究方向。');
+    expect(about).toContain('具体学校、专业和时间信息暂不公开。');
     expect(about).not.toContain('计算机相关方向');
-    expect(about).not.toContain('量化研究入门');
     expect(summaryWidget).toContain('公开材料');
     expect(summaryWidget).toContain('待补充');
     expect(summaryWidget).not.toContain('数据分析');
-    expect(summaryWidget).not.toContain('量化研究');
     expect(summaryWidget).not.toContain('Web 展示');
-    expect(project).toContain('tech: []');
-    expect(project).toContain('待补充');
-    expect(project).toContain('不描述为已上线交易系统');
-    expect(project).toContain('不声称已经产生可验证的稳定收益');
-    expect(project).not.toContain('数据处理、因子实验、回测记录');
-    expect(project).not.toContain('建立一套清晰的研究流程');
+  });
+
+  test('SmartX image references preserve the GitHub Pages base path', () => {
+    const sources = [
+      readSource('src/content/projects/smartx-erp.md'),
+      readSource('src/content/posts/smartx-erp-graduation-closeout/index.md'),
+      readSource('src/content/posts/smartx-erp-rag-entity-routing/index.md'),
+    ];
+
+    for (const source of sources) {
+      expect(source).not.toContain('](/images/projects/smartx-erp/');
+      expect(source).not.toContain('](../../images/projects/smartx-erp/');
+    }
+
+    expect(sources[0]).toContain('](../../../public/images/projects/smartx-erp/');
+    expect(sources[1]).toContain('](../../../../public/images/projects/smartx-erp/');
+    expect(sources[2]).toContain('](../../../../public/images/projects/smartx-erp/');
   });
 
   test('about profile separators use theme line token', () => {
@@ -192,25 +201,24 @@ describe('site hardening', () => {
     const posts = readSource('src/pages/posts/index.astro');
     const projects = readSource('src/pages/projects/index.astro');
 
-    expect(posts).toContain('>全部分类</a>');
+    expect(posts).toContain('<PageTitleHero title="时间轴" />');
     expect(posts).not.toContain('>Categories</a>');
     expect(projects).toContain('>公开项目</p>');
     expect(projects).not.toContain('>Portfolio Item</p>');
   });
 
-  test('reader-facing page eyebrow labels stay in Chinese', () => {
+  test('main archive pages omit repeated eyebrow labels', () => {
     const home = readSource('src/pages/index.astro');
     const about = readSource('src/pages/about.astro');
     const posts = readSource('src/pages/posts/index.astro');
     const projects = readSource('src/pages/projects/index.astro');
 
-    expect(home).toContain('>忆霖 / 公开作品集</p>');
-    expect(home).toContain('>公开材料</p>');
+    expect(home).not.toContain('>公开材料</p>');
     expect(home).not.toContain('PUBLIC PORTFOLIO');
     expect(home).not.toContain('PUBLIC MATERIALS');
-    expect(about).toContain('>关于</p>');
+    expect(about).not.toContain('>关于</p>');
     expect(about).not.toContain('>ABOUT</p>');
-    expect(posts).toContain('>文章归档</p>');
+    expect(posts).not.toContain('>时间轴</p>');
     expect(posts).not.toContain('>ARCHIVE</p>');
     expect(projects).toContain('>项目</p>');
     expect(projects).not.toContain('>PROJECTS</p>');

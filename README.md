@@ -1,6 +1,6 @@
 # 忆霖
 
-个人博客 —— 随笔、项目与生活。
+个人博客 —— 随笔、项目与琐碎。
 
 基于 [Astro](https://astro.build) 构建，部署在 GitHub Pages。
 

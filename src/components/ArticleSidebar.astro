@@ -1,0 +1,138 @@
+---
+import AnnouncementWidget from './AnnouncementWidget.astro';
+import AvatarCard from './AvatarCard.astro';
+import FloatingToc from './FloatingToc.astro';
+import RecentPostsWidget from './RecentPostsWidget.astro';
+import SiteStats from './SiteStats.astro';
+
+interface TocHeading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings?: TocHeading[];
+}
+
+const { headings = [] } = Astro.props;
+---
+<aside class="article-sidebar" aria-label="文章辅助信息" data-pagefind-ignore>
+  <AvatarCard />
+  <AnnouncementWidget />
+  <div class="article-reading-tools">
+    {headings.length > 2 && <FloatingToc headings={headings} />}
+    <RecentPostsWidget limit={3} />
+    <SiteStats />
+  </div>
+</aside>
+<style>
+  .article-sidebar {
+    display: flex;
+    height: 100%;
+    min-width: 0;
+    flex-direction: column;
+    gap: 20px;
+    font-family: var(--sans);
+  }
+
+  .article-reading-tools {
+    position: sticky;
+    top: calc(var(--page-top) + 10px);
+    display: flex;
+    max-height: calc(100vh - var(--page-top) - 18px);
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+
+  .article-reading-tools::-webkit-scrollbar {
+    display: none;
+  }
+
+  .article-sidebar :global(.widget),
+  .article-sidebar :global(.floating-toc-panel) {
+    padding: 20px;
+    font-family: var(--sans);
+    font-size: 15px;
+  }
+
+  .article-sidebar :global(.widget-title),
+  .article-sidebar :global(.floating-toc-head) {
+    margin-bottom: 14px;
+    font-family: var(--sans);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .article-sidebar :global(.avatar) {
+    width: 104px;
+    height: 104px;
+  }
+
+  .article-sidebar :global(.name) {
+    font-family: var(--sans);
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .article-sidebar :global(.stats b) {
+    font-family: var(--sans);
+    font-size: 20px;
+  }
+
+  .article-sidebar :global(.stats span),
+  .article-sidebar :global(.muted) {
+    font-size: 13px;
+  }
+
+  .article-sidebar :global(.floating-toc-list) {
+    gap: 4px;
+  }
+
+  .article-sidebar :global(.floating-toc-link) {
+    padding: 8px 10px 8px 12px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .article-sidebar :global(.floating-toc-link.d3) {
+    font-size: 14px;
+  }
+
+  .article-sidebar :global(.recent-posts-widget) {
+    gap: 11px;
+  }
+
+  .article-sidebar :global(.recent-link) {
+    gap: 4px;
+    padding-bottom: 11px;
+  }
+
+  .article-sidebar :global(.recent-title) {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .article-sidebar :global(.row) {
+    padding: 7px 0;
+    font-size: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .article-sidebar { height: auto; }
+    .article-reading-tools {
+      position: static;
+      max-height: none;
+      overflow: visible;
+    }
+    .article-sidebar :global(.widget),
+    .article-sidebar :global(.floating-toc-panel) {
+      padding: 18px;
+    }
+  }
+</style>

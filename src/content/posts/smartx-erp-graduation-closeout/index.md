@@ -48,7 +48,7 @@ MCP 使用用户级 Key 映射真实员工，下游继续执行 RBAC 和部门�
 
 这条链路的价值不在于让模型拥有更多权限，而在于让模型使用的权限与用户原有权限一致。
 
-![MCP 工具目录与业务域分类](/images/projects/smartx-erp/06-mcp-console.png)
+![MCP 工具目录与业务域分类](../../../../public/images/projects/smartx-erp/06-mcp-console.png)
 
 ## 前端收尾：让系统看起来属于同一个产品
 

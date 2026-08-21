@@ -1,20 +1,60 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContentPageLayout from '../../components/ContentPageLayout.astro';
+import PageTitleHero from '../../components/PageTitleHero.astro';
 import { withBase } from '../../config';
 import { publishedPosts, allTags } from '../../lib/posts';
+
 const tags = allTags(await publishedPosts());
+const maxCount = Math.max(1, ...tags.map(([, posts]) => posts.length));
+const tagColors = ['#3d6f9e', '#c44863', '#7652ad', '#c66b24', '#23836d', '#a24492', '#4f78c7', '#9b641d', '#287d98', '#b44f3a'];
+const tagTilts = ['-4deg', '2.8deg', '-1.2deg', '4.5deg', '-3deg', '1.4deg'];
+const tagLifts = ['5px', '-6px', '1px', '-3px', '7px'];
+const tagShifts = ['-3px', '3px', '0px', '4px', '-2px'];
+const tagShapes = ['999px', '5px 14px', '14px 5px', '4px', '12px'];
 ---
 <BaseLayout title="标签">
-  <div class="container roomy" style="padding-top:var(--page-top);max-width:760px;">
-    <p class="page-sub">TAGS</p>
-    <h1 class="page-title">标签</h1>
-    <div class="cloud">
-      {tags.map(([t, list]) => (
-        <a class="chip chip-lg" href={withBase(`/tags/${t}/`)} aria-label={`${t} 标签，共 ${list.length} 篇`}>#{t} · {list.length}</a>
-      ))}
-    </div>
-  </div>
+  <PageTitleHero title="标签" />
+  <ContentPageLayout compactTop>
+    <section class="glass tag-panel">
+      <p class="muted intro">字号按文章数量分级，共 {tags.length} 个标签。</p>
+      <div class="tag-cloud-page">
+        {tags.map(([tag, posts], index) => {
+          const weight = 1 + ((posts.length - 1) / Math.max(1, maxCount - 1)) * 4;
+          return (
+            <a
+              href={withBase(`/tags/${tag}/`)}
+              style={`--tag-weight:${weight.toFixed(2)};--tag-color:${tagColors[index % tagColors.length]};--tag-tilt:${tagTilts[index % tagTilts.length]};--tag-lift:${tagLifts[index % tagLifts.length]};--tag-shift-x:${tagShifts[index % tagShifts.length]};--tag-shape:${tagShapes[index % tagShapes.length]}`}
+            >{tag}</a>
+          );
+        })}
+      </div>
+    </section>
+  </ContentPageLayout>
 </BaseLayout>
 <style>
-  .cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tag-panel { padding: 30px 34px 42px; }
+  .intro { margin: 0 0 26px; }
+  .tag-cloud-page { min-height: 340px; display: flex; flex-wrap: wrap; align-content: center; align-items: center; justify-content: center; gap: 16px 22px; padding: 24px 20px; overflow: hidden; }
+  .tag-cloud-page a {
+    margin: 5px 7px;
+    padding: 4px 9px;
+    border: 1px solid color-mix(in srgb, var(--tag-color) 24%, transparent);
+    border-radius: var(--tag-shape);
+    background: color-mix(in srgb, var(--tag-color) 11%, transparent);
+    color: var(--tag-color);
+    font-family: var(--serif);
+    font-size: calc(13px + var(--tag-weight) * 3px);
+    font-weight: calc(430 + var(--tag-weight) * 45);
+    line-height: 1.35;
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--tag-color) 9%, transparent);
+    transform: translate(var(--tag-shift-x), var(--tag-lift)) rotate(var(--tag-tilt));
+    transition: transform .18s ease, background-color .18s ease, color .18s ease, box-shadow .18s ease;
+  }
+  .tag-cloud-page a:nth-child(3n) { font-family: var(--sans); }
+  .tag-cloud-page a:nth-child(5n) { font-family: var(--mono); letter-spacing: -.03em; }
+  .tag-cloud-page a:nth-child(4n) { background: transparent; border-style: dashed; }
+  .tag-cloud-page a:nth-child(7n) { padding-inline: 13px; box-shadow: 3px 5px 0 color-mix(in srgb, var(--tag-color) 12%, transparent); }
+  .tag-cloud-page a:hover { background: color-mix(in srgb, var(--tag-color) 20%, transparent); color: var(--tag-color); box-shadow: 0 7px 18px color-mix(in srgb, var(--tag-color) 18%, transparent); transform: translateY(-4px) rotate(0deg) scale(1.08); }
+  @media (max-width: 520px) { .tag-panel { padding: 24px 20px 30px; } .tag-cloud-page { min-height: 260px; padding: 12px 4px; gap: 10px 8px; } .tag-cloud-page a { margin: 3px 2px; transform: translateY(var(--tag-lift)) rotate(var(--tag-tilt)); } }
 </style>

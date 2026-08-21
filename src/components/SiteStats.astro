@@ -1,20 +1,24 @@
 ---
-import { publishedPosts, allTags } from '../lib/posts';
-import { countWords } from '../lib/text';
+import { publishedPosts, allCategories, allTags } from '../lib/posts';
+import { countWords, formatDate } from '../lib/text';
 import { SITE } from '../config';
 import Widget from './Widget.astro';
 
 const posts = await publishedPosts();
 // allTags 返回 [tagName, posts[]] 元组数组，.length 即唯一标签数
 const tagCount = allTags(posts).length;
+const categoryCount = allCategories(posts).length;
 const totalWords = posts.reduce((sum, p) => sum + countWords(p.body ?? ''), 0);
+const latestDate = posts[0]?.data.date;
 ---
 <Widget title="站点数据">
   <div class="card">
     <div class="row"><span>文章</span><b>{posts.length}</b></div>
     <div class="row"><span>标签</span><b>{tagCount}</b></div>
+    <div class="row"><span>分类</span><b>{categoryCount}</b></div>
     <div class="row"><span>总字数</span><b>{totalWords.toLocaleString()}</b></div>
     <div class="row"><span>运行天数</span><b id="run-days" data-start={SITE.startDate}></b></div>
+    {latestDate && <div class="row"><span>最近更新</span><b>{formatDate(latestDate)}</b></div>}
   </div>
 </Widget>
 <style>

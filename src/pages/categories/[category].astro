@@ -1,6 +1,7 @@
 ---
 import type { InferGetStaticPropsType } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContentPageLayout from '../../components/ContentPageLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import { publishedPosts, allCategories } from '../../lib/posts';
 
@@ -13,14 +14,16 @@ const { category } = Astro.params;
 const { posts } = Astro.props as Props;
 ---
 <BaseLayout title={`分类：${category}`}>
-  <div class="container dense" style="padding-top:var(--page-top);max-width:760px;">
-    <p class="page-sub">CATEGORY</p>
-    <h1 class="page-title">{category}</h1>
-    <div class="post-list">
-      {posts.map((post) => <PostCard post={post} />)}
-    </div>
-  </div>
+  <ContentPageLayout>
+    <section class="glass list-panel">
+      <p class="page-sub">分类</p>
+      <h1 class="page-title">{category}</h1>
+      <div class="post-list">{posts.map((post) => <PostCard post={post} />)}</div>
+    </section>
+  </ContentPageLayout>
 </BaseLayout>
 <style>
-  .post-list { display: flex; flex-direction: column; gap: 14px; }
+  .list-panel { padding: 30px 34px 38px; }
+  .post-list { display: flex; flex-direction: column; gap: 14px; margin-top: 24px; }
+  @media (max-width: 520px) { .list-panel { padding: 24px 20px 30px; } }
 </style>

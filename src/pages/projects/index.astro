@@ -2,12 +2,14 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContentPageLayout from '../../components/ContentPageLayout.astro';
 import { withBase } from '../../config';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id));
 ---
 <BaseLayout title="项目">
-  <div class="container roomy" style="padding-top:var(--page-top);">
+  <ContentPageLayout>
+  <section class="glass projects-panel">
     <p class="page-sub">项目</p>
     <h1 class="page-title">项目作品集</h1>
     <p class="intro">这里整理适合公开展示的个人项目：优先说明项目定位、技术栈、当前进度和后续计划，避免把建设中的工作包装成已经完成的成果。</p>
@@ -67,9 +69,11 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
       ))}
     </div>
     {projects.length === 0 && <p class="muted" style="margin-top:24px;">暂无项目。</p>}
-  </div>
+  </section>
+  </ContentPageLayout>
 </BaseLayout>
 <style>
+  .projects-panel { padding: 30px 34px 38px; }
   .intro { max-width: 760px; margin: 12px 0 0; color: var(--ink-2); line-height: 1.8; }
   .portfolio-grid {
     display: grid;
@@ -122,6 +126,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
     .portfolio-card:hover { transform: none; }
   }
   @media (max-width: 680px) {
+    .projects-panel { padding: 24px 20px 30px; }
     .portfolio-card { flex-direction: column; padding: 18px; }
     .project-cover { width: 100%; height: auto; aspect-ratio: 16 / 9; flex-basis: auto; }
   }

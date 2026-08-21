@@ -1,0 +1,19 @@
+---
+import AnnouncementWidget from './AnnouncementWidget.astro';
+import AvatarCard from './AvatarCard.astro';
+import RecentPostsWidget from './RecentPostsWidget.astro';
+import SiteStats from './SiteStats.astro';
+---
+<aside class="content-sidebar" aria-label="站点介绍" data-pagefind-ignore>
+  <AvatarCard />
+  <AnnouncementWidget />
+  <RecentPostsWidget limit={3} />
+  <SiteStats />
+</aside>
+<style>
+  .content-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+</style>

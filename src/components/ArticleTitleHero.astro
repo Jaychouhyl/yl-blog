@@ -1,0 +1,131 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { SITE, withBase } from '../config';
+import { formatDate } from '../lib/text';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+  readingTime: number;
+}
+
+const { post, readingTime } = Astro.props;
+const background = withBase(SITE.heroImages[0] ?? '/hero.webp');
+---
+<section class="article-title-hero" aria-labelledby="article-title-heading">
+  <img src={background} alt="" width="1920" height="1080" loading="eager" />
+  <div class="article-title-veil"></div>
+  <div class="article-title-content">
+    <h1 id="article-title-heading">{post.data.title}</h1>
+    <div class="article-title-meta">
+      <time datetime={formatDate(post.data.date)}>发布于 {formatDate(post.data.date)}</time>
+      <span aria-hidden="true">·</span>
+      <span>约 {readingTime} 分钟</span>
+      {post.data.category && (
+        <>
+          <span aria-hidden="true">·</span>
+          <a href={withBase(`/categories/${post.data.category}/`)}>{post.data.category}</a>
+        </>
+      )}
+    </div>
+    {post.data.tags.length > 0 && (
+      <div class="article-title-tags" aria-label="文章标签">
+        {post.data.tags.map((tag) => <a href={withBase(`/tags/${tag}/`)}>#{tag}</a>)}
+      </div>
+    )}
+  </div>
+</section>
+<style>
+  .article-title-hero {
+    position: relative;
+    display: grid;
+    height: clamp(380px, 46vh, 500px);
+    place-items: center;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .article-title-hero img,
+  .article-title-veil {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .article-title-hero img {
+    object-fit: cover;
+    object-position: 42% center;
+  }
+
+  .article-title-veil {
+    background: rgba(0, 0, 0, 0.68);
+  }
+
+  .article-title-content {
+    position: relative;
+    z-index: 1;
+    width: min(1120px, calc(100% - 48px));
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+    transform: translateY(24px);
+  }
+
+  .article-title-content h1 {
+    max-width: 1100px;
+    margin: 0 auto;
+    font-family: var(--serif);
+    font-size: clamp(34px, 4.1vw, 58px);
+    line-height: 1.25;
+    letter-spacing: 0.025em;
+  }
+
+  .article-title-meta,
+  .article-title-tags {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .article-title-meta {
+    gap: 8px;
+    margin-top: 20px;
+    color: rgba(255, 255, 255, 0.88);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+
+  .article-title-meta a,
+  .article-title-tags a {
+    color: inherit;
+  }
+
+  .article-title-meta a:hover,
+  .article-title-tags a:hover {
+    color: #fff;
+  }
+
+  .article-title-tags {
+    gap: 8px;
+    margin-top: 14px;
+    font-family: var(--sans);
+    font-size: 13px;
+  }
+
+  .article-title-tags a {
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 999px;
+    padding: 4px 10px;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 520px) {
+    .article-title-hero { height: 340px; }
+    .article-title-content { width: min(100% - 32px, 1120px); }
+    .article-title-content h1 { font-size: 30px; }
+    .article-title-content { transform: translateY(18px); }
+    .article-title-meta { margin-top: 16px; font-size: 13px; }
+    .article-title-tags { display: none; }
+  }
+</style>

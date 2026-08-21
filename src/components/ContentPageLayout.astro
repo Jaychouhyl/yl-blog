@@ -1,0 +1,43 @@
+---
+import CommentSection from './CommentSection.astro';
+import ContentSidebar from './ContentSidebar.astro';
+
+interface Props {
+  compactTop?: boolean;
+}
+
+const { compactTop = false } = Astro.props;
+const hasCustomSidebar = Astro.slots.has('sidebar');
+---
+<div class:list={['container', 'content-layout', { 'compact-top': compactTop, 'custom-sidebar': hasCustomSidebar }]}>
+  <div class="sidebar-column">
+    <slot name="sidebar"><ContentSidebar /></slot>
+  </div>
+  <div class="content-column">
+    <slot />
+    <CommentSection />
+  </div>
+</div>
+<style>
+  .content-layout {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+    max-width: 1180px;
+    padding-top: var(--page-top);
+    padding-bottom: 80px;
+  }
+  .sidebar-column { min-width: 0; }
+  .content-column { min-width: 0; display: grid; gap: 18px; }
+  .content-layout.compact-top { padding-top: 38px; }
+  .content-layout.custom-sidebar { align-items: stretch; }
+  .content-layout.custom-sidebar .sidebar-column { height: 100%; }
+  @media (max-width: 768px) {
+    .content-layout { grid-template-columns: 1fr; padding-top: 92px; }
+    .content-layout.compact-top { padding-top: 28px; }
+    .content-column { grid-row: 1; }
+    .sidebar-column { grid-row: 2; }
+    .content-layout.custom-sidebar .sidebar-column { height: auto; }
+  }
+</style>

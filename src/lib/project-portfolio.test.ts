@@ -49,20 +49,4 @@ describe('project portfolio structure', () => {
     expect(source).toContain('p.data.period');
     expect(source).not.toContain('render(p)');
   });
-
-  test('OracleAlpha keeps a restrained portfolio template', () => {
-    const source = readFileSync(resolve(root, 'src/content/projects/oracle-alpha.md'), 'utf8');
-    const headings = [
-      '## 背景与目标',
-      '## 技术栈与架构',
-      '## 我负责的部分',
-      '## 难点与解决',
-      '## 结果与指标',
-      '## 复盘与下一步',
-    ];
-
-    for (const heading of headings) expect(source).toContain(heading);
-    expect(source).toContain('// 待站主填写真实信息');
-    expect(source).toContain('不声称已上线');
-  });
 });

@@ -1,87 +1,60 @@
 ---
-import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContentPageLayout from '../../components/ContentPageLayout.astro';
+import PageTitleHero from '../../components/PageTitleHero.astro';
 import { withBase } from '../../config';
-import { publishedPosts, groupByYear, allTags, allCategories } from '../../lib/posts';
+import { publishedPosts, groupByYear } from '../../lib/posts';
 import { formatDate } from '../../lib/text';
 
 const posts = await publishedPosts();
 const byYear = groupByYear(posts);
-const tags = allTags(posts);
-const categories = allCategories(posts);
 ---
-<BaseLayout title="文章归档">
-  <div class="container dense" style="padding-top:var(--page-top);max-width:760px;">
-    <p class="page-sub">文章归档</p>
-    <h1 class="page-title">文章归档</h1>
-    <nav class="tag-cloud" aria-label="标签云">
-      {tags.map(([t, list]) => (
-        <a class="chip" href={withBase(`/tags/${t}/`)} aria-label={`${t} 标签，共 ${list.length} 篇`}>#{t} {list.length}</a>
-      ))}
-    </nav>
-    {categories.length > 0 && (
-      <nav class="category-bar" aria-label="分类">
-        <a class="category-chip category-index" href={withBase('/categories/')}>全部分类</a>
-        {categories.map(([category, list]) => (
-          <a class="category-chip" href={withBase(`/categories/${category}/`)}>
-            <span>{category}</span>
-            <span class="count">{list.length}</span>
-          </a>
+<BaseLayout title="时间轴">
+  <PageTitleHero title="时间轴" />
+  <ContentPageLayout compactTop>
+    <section class="glass timeline-panel">
+      <p class="muted intro">按年份与日期查看全部 {posts.length} 篇公开文章。</p>
+      <div class="archive-timeline">
+        {byYear.map(([year, list]) => (
+          <section class="timeline-year">
+            <h2>{year}</h2>
+            <ul>
+              {list.map((post) => (
+                <li>
+                  <time datetime={formatDate(post.data.date)}>{formatDate(post.data.date).slice(5)}</time>
+                  <div class="timeline-entry">
+                    <a href={withBase(`/posts/${post.id}/`)}>{post.data.title}</a>
+                    {post.data.category && <a class="category" href={withBase(`/categories/${post.data.category}/`)}>{post.data.category}</a>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
         ))}
-      </nav>
-    )}
-    {byYear.map(([year, list]) => (
-      <section>
-        <h2 class="year">{year}</h2>
-        <ul class="timeline">
-          {list.map((p) => (
-            <li>
-              <time class="muted date" datetime={formatDate(p.data.date)}>{formatDate(p.data.date).slice(5)/* MM-DD */}</time>
-              {p.data.category && <a class="archive-category" href={withBase(`/categories/${p.data.category}/`)}>{p.data.category}</a>}
-              <a class:list={['archive-link', { 'has-cover': p.data.cover }]} href={withBase(`/posts/${p.id}/`)}>
-                {p.data.cover && (
-                  <Image class="archive-cover" src={p.data.cover} alt="" width={72} height={48} densities={[1, 2]} loading="lazy" decoding="async" />
-                )}
-                <span>{p.data.title}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    ))}
-  </div>
+      </div>
+    </section>
+  </ContentPageLayout>
 </BaseLayout>
 <style>
-  .tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 8px; }
-  .category-bar { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 26px; }
-  .category-chip {
-    display: inline-flex; align-items: center; gap: 8px;
-    min-height: 30px; padding: 4px 12px;
-    border: 1px solid var(--line); border-radius: 8px;
-    background: color-mix(in srgb, var(--card) 82%, transparent);
-    color: var(--ink-2); font-size: 13px;
-  }
-  .category-chip:hover { border-color: var(--sakura); color: var(--sakura); }
-  .category-index { font-weight: 600; }
-  .count { color: var(--sakura); font-family: var(--mono); }
-  .year { font-size: 28px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
-  .timeline { list-style: none; padding: 0; margin: 0; }
-  .timeline li { display: flex; gap: 16px; padding: 7px 0; border-bottom: 1px dashed var(--line); }
-  .date { font-family: var(--mono); flex-shrink: 0; }
-  .archive-category {
-    align-self: flex-start; flex: 0 0 auto;
-    padding: 1px 8px; border-radius: 6px;
-    color: var(--sakura); background: var(--sakura-soft);
-    font-size: 12px; line-height: 1.7;
-  }
-  .archive-link { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
-  .archive-cover {
-    width: 72px; height: 48px; flex: 0 0 72px;
-    object-fit: cover; border-radius: 6px;
-    background: var(--sakura-soft);
-  }
+  .timeline-panel { padding: 30px 34px 38px; }
+  .intro { margin: 0 0 28px; }
+  .archive-timeline { position: relative; padding-left: 28px; }
+  .archive-timeline::before { content: ''; position: absolute; left: 6px; top: 10px; bottom: 6px; width: 1px; background: color-mix(in srgb, var(--sakura) 55%, var(--line)); }
+  .timeline-year { position: relative; }
+  .timeline-year + .timeline-year { margin-top: 30px; }
+  .timeline-year h2 { margin: 0 0 20px; font-size: 26px; }
+  .timeline-year h2::before { content: ''; position: absolute; left: -28px; top: 10px; width: 13px; height: 13px; border: 3px solid var(--sakura); border-radius: 50%; background: var(--card); }
+  .timeline-year ul { list-style: none; padding: 0; margin: 0; }
+  .timeline-year li { position: relative; display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 14px; padding: 0 0 22px; }
+  .timeline-year li::before { content: ''; position: absolute; left: -26px; top: 8px; width: 8px; height: 8px; border: 2px solid var(--sakura); border-radius: 50%; background: var(--card); }
+  .timeline-year time { color: var(--ink-3); font-family: var(--mono); font-size: 12px; }
+  .timeline-entry { display: flex; align-items: flex-start; gap: 8px; min-width: 0; }
+  .timeline-entry > a:first-child { font-family: var(--serif); line-height: 1.55; }
+  .category { flex: 0 0 auto; padding: 1px 7px; border-radius: 99px; background: var(--sakura-soft); color: var(--sakura); font-size: 11px; }
   @media (max-width: 520px) {
-    .timeline li { gap: 10px; }
-    .archive-cover { width: 58px; height: 38px; flex-basis: 58px; }
+    .timeline-panel { padding: 24px 20px 30px; }
+    .timeline-year li { grid-template-columns: 45px minmax(0, 1fr); gap: 9px; }
+    .timeline-entry { display: grid; gap: 5px; }
+    .category { width: fit-content; }
   }
 </style>

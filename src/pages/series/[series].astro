@@ -1,6 +1,7 @@
 ---
 import type { InferGetStaticPropsType } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContentPageLayout from '../../components/ContentPageLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import { allSeries, publishedPosts } from '../../lib/posts';
 
@@ -17,20 +18,24 @@ const { series } = Astro.params;
 const { posts } = Astro.props as Props;
 ---
 <BaseLayout title={`专栏：${series}`} description={`“${series}”系列文章。`}>
-  <main class="container dense" style="padding-top:var(--page-top);max-width:760px;">
+  <ContentPageLayout>
+  <main class="glass series-detail">
     <p class="page-sub">专栏</p>
     <h1 class="page-title">{series}</h1>
     <div class="post-list">
       {posts.map((post) => <PostCard post={post} />)}
     </div>
   </main>
+  </ContentPageLayout>
 </BaseLayout>
 
 <style>
+  .series-detail { padding: 30px 34px 38px; }
   .post-list {
     display: flex;
     flex-direction: column;
     gap: 14px;
     margin-top: 26px;
   }
+  @media (max-width: 520px) { .series-detail { padding: 24px 20px 30px; } }
 </style>

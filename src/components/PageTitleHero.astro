@@ -1,0 +1,47 @@
+---
+import { SITE, withBase } from '../config';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+const background = withBase(SITE.heroImages[0] ?? '/hero.webp');
+---
+<section class="page-title-hero" aria-labelledby="page-title-hero-heading">
+  <img src={background} alt="" width="1920" height="1080" loading="eager" />
+  <div class="page-title-hero-veil"></div>
+  <h1 id="page-title-hero-heading">{title}</h1>
+</section>
+<style>
+  .page-title-hero {
+    position: relative;
+    height: clamp(380px, 46vh, 500px);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: #000;
+  }
+  .page-title-hero img,
+  .page-title-hero-veil {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .page-title-hero img { object-fit: cover; object-position: 42% center; }
+  .page-title-hero-veil { background: rgba(0, 0, 0, .54); }
+  .page-title-hero h1 {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    color: #fff;
+    font-family: var(--serif);
+    font-size: clamp(42px, 5vw, 64px);
+    letter-spacing: .06em;
+  }
+  @media (max-width: 520px) {
+    .page-title-hero { height: 340px; }
+    .page-title-hero h1 { font-size: 40px; }
+  }
+</style>

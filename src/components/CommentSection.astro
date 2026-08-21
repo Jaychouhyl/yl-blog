@@ -1,0 +1,16 @@
+---
+import Giscus from './Giscus.astro';
+---
+<section class="glass comment-section" aria-labelledby="comments-heading" data-pagefind-ignore>
+  <h2 id="comments-heading">评论</h2>
+  <Giscus />
+</section>
+<style>
+  .comment-section { padding: 24px; }
+  .comment-section h2 {
+    margin: 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+    font-size: 21px;
+  }
+</style>

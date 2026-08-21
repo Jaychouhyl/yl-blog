@@ -4,7 +4,12 @@ import { publishedPosts } from '../lib/posts';
 import { formatDate } from '../lib/text';
 import Widget from './Widget.astro';
 
-const posts = (await publishedPosts()).slice(0, 5);
+interface Props {
+  limit?: number;
+}
+
+const { limit = 3 } = Astro.props;
+const posts = (await publishedPosts()).slice(0, limit);
 ---
 <Widget title="最近文章">
   <div class="recent-posts-widget">

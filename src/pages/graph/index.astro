@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContentPageLayout from '../../components/ContentPageLayout.astro';
 import GraphView from '../../components/GraphView.astro';
 import { withBase } from '../../config';
 import { allTags, publishedPosts } from '../../lib/posts';
@@ -33,12 +34,15 @@ const links = posts.flatMap((post) =>
 );
 ---
 <BaseLayout title="关系图谱" noindex={true} searchable={false}>
-  <div class="container dense graph-page" style="padding-top:var(--page-top);">
+  <ContentPageLayout>
+  <section class="glass graph-page">
     <p class="page-sub">LINK MAP</p>
     <h1 class="page-title">关系图谱</h1>
     <GraphView graph={{ nodes, links }} />
-  </div>
+  </section>
+  </ContentPageLayout>
 </BaseLayout>
 <style>
-  .graph-page { max-width: 980px; }
+  .graph-page { padding: 30px 34px 38px; }
+  @media (max-width: 520px) { .graph-page { padding: 24px 20px 30px; } }
 </style>

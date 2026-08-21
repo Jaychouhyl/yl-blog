@@ -3,14 +3,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import AnnouncementWidget from '../components/AnnouncementWidget.astro';
 import AvatarCard from '../components/AvatarCard.astro';
 import PostCard from '../components/PostCard.astro';
-import ProfileSummaryWidget from '../components/ProfileSummaryWidget.astro';
 import RecentPostsWidget from '../components/RecentPostsWidget.astro';
+import SiteStats from '../components/SiteStats.astro';
+import CommentSection from '../components/CommentSection.astro';
 import { SITE, withBase } from '../config';
 import { publishedPosts } from '../lib/posts';
 
 const recent = (await publishedPosts()).slice(0, 5);
 const heroImages = SITE.heroImages.map((image) => withBase(image));
 const firstHeroImage = heroImages[0] ?? withBase('/hero.webp');
+const heroLines = ['记录项目、琐碎、AI', '微服务、前端、后端、AI 学习琐碎'];
 ---
 <BaseLayout>
   <section class="hero-screen" aria-labelledby="hero-title">
@@ -27,21 +29,10 @@ const firstHeroImage = heroImages[0] ?? withBase('/hero.webp');
     />
     <div class="hero-veil"></div>
     <div class="hero-content">
-      <p class="hero-kicker">忆霖 / 公开作品集</p>
-      <h1 id="hero-title">写作、项目与长期复盘</h1>
-      <p class="hero-lead">
-        以公开文章、项目说明和阶段复盘整理成长轨迹，服务求职沟通、考研复试与长期作品沉淀。
+      <h1 id="hero-title">Yilin Blog</h1>
+      <p class="hero-typewriter" data-typewriter data-lines={JSON.stringify(heroLines)}>
+        <span data-typewriter-text>{heroLines[0]}</span>
       </p>
-      <div class="hero-tags" aria-label="站点用途">
-        <span>求职沟通</span>
-        <span>考研复试</span>
-        <span>项目复盘</span>
-      </div>
-      <div class="hero-actions" aria-label="主要入口">
-        <a class="primary" href={withBase('/projects/')}>查看项目</a>
-        <a href={withBase('/about/')}>关于我</a>
-        <a href={withBase('/posts/')}>阅读文章</a>
-      </div>
     </div>
     <button class="hero-down" aria-label="向下滚动查看内容">⌄</button>
     <div class="hero-wave" aria-hidden="true">
@@ -61,35 +52,13 @@ const firstHeroImage = heroImages[0] ?? withBase('/hero.webp');
     <aside class="side">
       <AvatarCard />
       <AnnouncementWidget />
-      <ProfileSummaryWidget />
-      <RecentPostsWidget />
+      <RecentPostsWidget limit={3} />
+      <SiteStats />
     </aside>
     <div class="feed">
-      <section class="portfolio-index glass" aria-labelledby="materials-heading">
-        <div>
-          <p class="section-kicker">公开材料</p>
-          <h2 id="materials-heading">公开材料索引</h2>
-          <p>
-            面向求职沟通、考研复试和长期作品沉淀，把项目说明、写作记录和个人简介放在同一组入口里，方便快速判断当前材料是否匹配场景。
-          </p>
-        </div>
-        <div class="material-links" aria-label="公开材料入口">
-          <a href={withBase('/projects/')}>
-            <span>项目说明</span>
-            <small>项目定位、技术栈、当前进度与后续计划</small>
-          </a>
-          <a href={withBase('/posts/')}>
-            <span>写作记录</span>
-            <small>学习过程、阶段复盘和可持续更新的公开材料</small>
-          </a>
-          <a href={withBase('/about/')}>
-            <span>个人简介</span>
-            <small>当前定位、关注方向和公开联系方式</small>
-          </a>
-        </div>
-      </section>
       {recent.map((post) => <PostCard post={post} />)}
       <a class="more muted" href={withBase('/posts/')}>查看全部文章 →</a>
+      <CommentSection />
     </div>
   </div>
 </BaseLayout>
@@ -107,103 +76,44 @@ const firstHeroImage = heroImages[0] ?? withBase('/hero.webp');
   @media (prefers-reduced-motion: reduce) { .hero-img { transition: none; opacity: 1; } }
   .hero-veil {
     position: absolute; inset: 0;
-    background:
-      linear-gradient(115deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 56%, rgba(0,0,0,.62) 100%),
-      linear-gradient(90deg, rgba(0,0,0,.58) 0%, rgba(0,0,0,.18) 34%, rgba(0,0,0,0) 68%),
-      linear-gradient(180deg, rgba(0,0,0,.30) 0%, rgba(0,0,0,0) 34%, rgba(0,0,0,.12) 74%, rgba(0,0,0,.28) 100%);
-  }
-  .hero-veil::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 84% 76%, rgba(0,0,0,.92) 0%, rgba(0,0,0,.72) 34%, rgba(0,0,0,.18) 68%, rgba(0,0,0,0) 86%);
-    pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,.68) 0%, rgba(0,0,0,.42) 28%, rgba(0,0,0,.12) 58%, rgba(0,0,0,0) 74%);
   }
   :global(html[data-theme='dark']) .hero-veil {
-    background:
-      linear-gradient(115deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 54%, rgba(0,0,0,.72) 100%),
-      linear-gradient(90deg, rgba(0,0,0,.70) 0%, rgba(0,0,0,.26) 36%, rgba(0,0,0,.05) 70%),
-      linear-gradient(180deg, rgba(0,0,0,.46) 0%, rgba(0,0,0,.18) 34%, rgba(0,0,0,.32) 74%, rgba(0,0,0,.50) 100%);
+    background: radial-gradient(ellipse at center, rgba(0,0,0,.74) 0%, rgba(0,0,0,.48) 30%, rgba(0,0,0,.16) 60%, rgba(0,0,0,0) 76%);
   }
   .hero-content {
     position: absolute;
     z-index: 3;
-    left: clamp(24px, 7vw, 96px);
-    bottom: clamp(110px, 18vh, 168px);
-    width: min(560px, calc(100vw - 48px));
+    left: 50%;
+    top: 47%;
+    transform: translate(-50%, -50%);
+    width: min(760px, calc(100vw - 40px));
+    text-align: center;
     color: #fff;
-    text-shadow: 0 2px 18px rgba(0,0,0,.48);
-  }
-  .hero-kicker {
-    margin: 0 0 10px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: rgba(255,255,255,.72);
   }
   .hero-content h1 {
     margin: 0;
-    font-size: clamp(34px, 5.4vw, 64px);
-    line-height: 1.12;
+    font-family: var(--serif);
+    font-size: clamp(46px, 6vw, 76px);
+    line-height: 1.16;
     color: #fff;
   }
-  .hero-lead {
-    max-width: 520px;
-    margin: 16px 0 0;
-    color: rgba(255,255,255,.84);
-    font-size: clamp(15px, 1.6vw, 18px);
+  .hero-typewriter {
+    min-height: 1.8em;
+    margin: 18px 0 0;
+    color: rgba(255,255,255,.94);
+    font-family: var(--serif);
+    font-size: clamp(14px, 2vw, 24px);
     line-height: 1.8;
+    white-space: nowrap;
   }
-  .hero-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 18px;
+  .hero-typewriter span {
+    display: inline-block;
+    min-width: 1px;
+    border-right: 2px solid rgba(255,255,255,.88);
+    animation: caretBlink .8s steps(1) infinite;
   }
-  .hero-tags span {
-    display: inline-flex;
-    min-height: 28px;
-    align-items: center;
-    padding: 2px 10px;
-    border: 1px solid rgba(255,255,255,.30);
-    border-radius: 6px;
-    color: rgba(255,255,255,.86);
-    background: rgba(0,0,0,.18);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    font-size: 12px;
-  }
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 22px;
-  }
-  .hero-actions a {
-    min-height: 36px;
-    display: inline-flex;
-    align-items: center;
-    padding: 5px 14px;
-    border: 1px solid rgba(255,255,255,.34);
-    border-radius: 6px;
-    color: rgba(255,255,255,.92);
-    background: rgba(0,0,0,.20);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    font-size: 13px;
-  }
-  .hero-actions .primary {
-    border-color: rgba(255,255,255,.72);
-    background: rgba(255,255,255,.92);
-    color: #151515;
-    text-shadow: none;
-  }
-  .hero-actions a:hover {
-    color: #fff;
-    border-color: rgba(255,255,255,.70);
-  }
-  .hero-actions .primary:hover {
-    color: #151515;
-  }
+  @keyframes caretBlink { 50% { border-color: transparent; } }
   .hero-down {
     position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
     background: none; border: none; cursor: pointer; z-index: 3;
@@ -228,61 +138,72 @@ const firstHeroImage = heroImages[0] ?? withBase('/hero.webp');
   .columns { display: flex; gap: 22px; padding-top: 56px; padding-bottom: 80px; scroll-margin-top: var(--page-top); }
   .side { width: 230px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
   .feed { flex: 1; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-  .portfolio-index {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
-    gap: 22px;
-    padding: 24px 26px;
-  }
-  .section-kicker {
-    margin: 0 0 8px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--sakura);
-  }
-  .portfolio-index h2 { margin: 0; font-size: 24px; }
-  .portfolio-index p { max-width: 560px; margin: 12px 0 0; color: var(--ink-2); line-height: 1.8; }
-  .material-links { display: grid; gap: 10px; }
-  .material-links a {
-    display: grid;
-    gap: 4px;
-    padding: 10px 0 0;
-    border-top: 1px solid var(--line);
-    color: var(--ink);
-  }
-  .material-links a:hover {
-    color: var(--sakura);
-  }
-  .material-links span { font-family: var(--serif); font-size: 16px; font-weight: 700; }
-  .material-links small { color: var(--ink-2); line-height: 1.6; }
   .more { text-align: center; padding: 8px; }
   @media (max-width: 768px) {
     .columns { flex-direction: column; }
     .side { width: 100%; }
-    .portfolio-index { grid-template-columns: 1fr; padding: 20px; }
     .hero-img { object-position: 42% center; }
     .hero-veil {
       background:
         linear-gradient(180deg, rgba(0,0,0,.44) 0%, rgba(0,0,0,.16) 38%, rgba(0,0,0,.58) 100%);
     }
-    .hero-content {
-      left: 24px;
-      right: 24px;
-      bottom: 112px;
-      width: auto;
-    }
+    .hero-content { width: calc(100vw - 32px); }
   }
   @media (max-width: 420px) {
-    .hero-content h1 { font-size: 32px; }
-    .hero-lead { font-size: 14px; line-height: 1.72; }
-    .hero-actions a { flex: 1 1 auto; justify-content: center; }
+    .hero-content h1 { font-size: 42px; }
+    .hero-typewriter { font-size: 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-typewriter span { animation: none; border-right: 0; }
   }
 </style>
 <script>
-  document.querySelector('.hero-down')?.addEventListener('click', () => {
-    const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    document.getElementById('home-content')?.scrollIntoView({ behavior: (prefersReduced ? 'instant' : 'smooth') as ScrollBehavior });
-  });
+  const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let scrollLocked = false;
+
+  const scrollToContent = () => {
+    if (scrollLocked) return;
+    scrollLocked = true;
+    document.getElementById('home-content')?.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth' });
+    window.setTimeout(() => { scrollLocked = false; }, prefersReduced ? 100 : 900);
+  };
+
+  document.querySelector('.hero-down')?.addEventListener('click', scrollToContent);
+  window.addEventListener('wheel', (event) => {
+    if (window.scrollY > 8 || event.deltaY <= 0 || scrollLocked) return;
+    event.preventDefault();
+    scrollToContent();
+  }, { passive: false });
+
+  const typewriter = document.querySelector<HTMLElement>('[data-typewriter]');
+  const typewriterText = typewriter?.querySelector<HTMLElement>('[data-typewriter-text]');
+  if (typewriter && typewriterText && !prefersReduced) {
+    const lines = JSON.parse(typewriter.dataset.lines || '[]') as string[];
+    let lineIndex = 0;
+    let charIndex = Array.from(lines[0] || '').length;
+    let deleting = true;
+
+    const tick = () => {
+      const chars = Array.from(lines[lineIndex] || '');
+      charIndex += deleting ? -1 : 1;
+      typewriterText.textContent = chars.slice(0, Math.max(0, charIndex)).join('');
+
+      if (!deleting && charIndex >= chars.length) {
+        deleting = true;
+        window.setTimeout(tick, 1500);
+        return;
+      }
+      if (deleting && charIndex <= 0) {
+        deleting = false;
+        lineIndex = (lineIndex + 1) % lines.length;
+        window.setTimeout(tick, 420);
+        return;
+      }
+      window.setTimeout(tick, deleting ? 58 : 105);
+    };
+
+    window.setTimeout(tick, 1500);
+  }
 
   const heroImg = document.querySelector<HTMLImageElement>('[data-hero-image]');
   if (heroImg) {
@@ -297,7 +218,6 @@ const firstHeroImage = heroImages[0] ?? withBase('/hero.webp');
     };
 
     const images = parseImages();
-    const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let current = 0;
 
     heroImg.dataset.currentHero = heroImg.currentSrc || heroImg.src;

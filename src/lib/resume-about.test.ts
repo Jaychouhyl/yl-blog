@@ -10,10 +10,10 @@ function readSource(path: string) {
 }
 
 describe('resume style about page', () => {
-  test('site config exposes an opt-in resume url', () => {
+  test('site config keeps the removed resume url option absent', () => {
     const source = readSource('src/config.ts');
 
-    expect(source).toContain("resumeUrl: ''");
+    expect(source).not.toContain('resumeUrl');
   });
 
   test('about page is structured as a restrained resume entry', () => {
@@ -28,14 +28,12 @@ describe('resume style about page', () => {
       '语言',
       '框架与工具',
       '方向',
-      '// 待站主填写真实信息',
     ];
 
     for (const text of requiredText) expect(source).toContain(text);
-    expect(source).toContain("href={withBase('/projects/oracle-alpha/')}");
-    expect(source).toContain('SITE.resumeUrl');
-    expect(source).toContain('withBase(SITE.resumeUrl)');
-    expect(source).toContain('下载简历 PDF');
+    expect(source).toContain("href={withBase('/projects/smartx-erp/')}");
+    expect(source).not.toContain('SITE.resumeUrl');
+    expect(source).not.toContain('下载简历 PDF');
     expect(source).toContain('border-top: 1px solid var(--line);');
     expect(source).not.toContain('rgba(68, 53, 58, 0.12)');
   });

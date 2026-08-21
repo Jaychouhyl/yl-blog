@@ -14,6 +14,9 @@ describe('FloatingToc integration', () => {
     const source = readFileSync(componentPath, 'utf8');
     expect(source).toContain('floating-toc-wrapper');
     expect(source).toContain('floating-toc-panel');
+    expect(source).toContain('data-toc-progress>0</span>');
+    expect(source).toContain('updateReadingProgress');
+    expect(source).toContain("window.addEventListener('scroll', requestReadingProgressUpdate, { passive: true })");
     expect(source).toContain('floating-toc-toggle');
     expect(source).toContain('floating-toc-drawer');
     expect(source).toContain('IntersectionObserver');
@@ -37,11 +40,29 @@ describe('FloatingToc integration', () => {
     expect(source).toContain('var(--page-top)');
   });
 
-  test('post detail page renders the component behind the existing toc gate', () => {
+  test('post detail page renders the toc through the article sidebar', () => {
     const source = readFileSync(resolve(root, 'src/pages/posts/[id].astro'), 'utf8');
+    const sidebar = readFileSync(resolve(root, 'src/components/ArticleSidebar.astro'), 'utf8');
+    const hero = readFileSync(resolve(root, 'src/components/ArticleTitleHero.astro'), 'utf8');
 
-    expect(source).toContain("import FloatingToc from '../../components/FloatingToc.astro';");
-    expect(source).toContain('{toc.length > 2 && <FloatingToc headings={toc} />}');
+    expect(source).toContain("import ArticleTitleHero from '../../components/ArticleTitleHero.astro';");
+    expect(source).toContain("<ArticleTitleHero post={post} readingTime={readingMinutes(post.body ?? '')} />");
+    expect(source).toContain('<ContentPageLayout compactTop>');
+    expect(hero).toContain('height: clamp(380px, 46vh, 500px)');
+    expect(source).toContain("import ArticleSidebar from '../../components/ArticleSidebar.astro';");
+    expect(source).toContain('<ArticleSidebar slot="sidebar" headings={toc} />');
+    expect(sidebar.indexOf('<AvatarCard />')).toBeLessThan(sidebar.indexOf('<AnnouncementWidget />'));
+    expect(sidebar.indexOf('<AnnouncementWidget />')).toBeLessThan(sidebar.indexOf('<FloatingToc headings={headings} />'));
+    expect(sidebar.indexOf('<FloatingToc headings={headings} />')).toBeLessThan(sidebar.indexOf('<RecentPostsWidget limit={3} />'));
+    expect(sidebar.indexOf('<RecentPostsWidget limit={3} />')).toBeLessThan(sidebar.indexOf('<SiteStats />'));
+    expect(sidebar).toContain('position: sticky');
+    expect(sidebar).toContain('max-height: calc(100vh - var(--page-top) - 18px)');
+    expect(sidebar).toContain('scrollbar-width: none');
+    expect(sidebar).toContain('::-webkit-scrollbar');
+    expect(sidebar).toContain('font-family: var(--sans)');
+    expect(sidebar).toContain('.article-sidebar :global(.widget)');
+    expect(sidebar).toContain('font-size: 15px');
+    expect(source).not.toContain('<header class="head">');
     expect(source).not.toContain('class="toc glass"');
   });
 });

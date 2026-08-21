@@ -1,8 +1,9 @@
 ---
 import { SITE, withBase } from '../config';
 const current = Astro.url.pathname;
+const isHome = current === withBase('/');
 ---
-<nav class="glass nav" data-nav>
+<nav class:list={['glass', 'nav', { transparent: isHome }]} data-nav>
   <a class="brand" href={withBase('/')}>{SITE.name}</a>
   <button id="menu-btn" class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="打开导航">
     <span></span><span></span><span></span>
@@ -33,6 +34,7 @@ const current = Astro.url.pathname;
   .sep { color: var(--line); }
   .actions { display: flex; align-items: center; gap: 14px; }
   .icon-btn { background: none; border: none; cursor: pointer; font-size: 16px; line-height: 1; padding: 0; color: inherit; }
+  #search-btn { font-size: 19px; }
   .menu-btn { display: none; }
   :global(html[data-theme='light']) #theme-btn::before { content: '◐'; }
   :global(html[data-theme='dark']) #theme-btn::before { content: '◑'; }
