@@ -59,12 +59,14 @@ describe('site hardening', () => {
     expect(lock.packages['node_modules/yaml-language-server/node_modules/yaml'].version).toBe('2.8.3');
   });
 
-  test('the approved avatar asset is used for profile and social previews', () => {
-    expect(readSource('src/layouts/BaseLayout.astro')).toContain("withBase('/favicon.png')");
+  test('the approved avatar asset is used for profile, favicon, and social previews', () => {
+    expect(readSource('src/layouts/BaseLayout.astro')).toContain(
+      '<link rel="icon" href={withBase(\'/avatar.png\')} />',
+    );
     expect(readSource('src/components/AvatarCard.astro')).toContain("withBase('/avatar.png')");
 
     expect(statSync(resolve(root, 'public/avatar.png')).size).toBeLessThan(200_000);
-    expect(statSync(resolve(root, 'public/favicon.png')).size).toBeLessThan(120_000);
+    expect(existsSync(resolve(root, 'public/favicon.png'))).toBe(false);
   });
 
   test('the public contact email is configured once and rendered as a mail link', () => {

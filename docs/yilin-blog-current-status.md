@@ -37,7 +37,7 @@
 - 文章源目录：12 个，其中 `draft-sample` 为草稿示例。
 - SmartX ERP 复盘系列：第 1–10 篇均已存在。
 - SmartX 项目页截图：7 张，位于 `public/images/projects/smartx-erp/`。
-- 作者头像和社交分享预览统一使用 `public/avatar.png`；公开邮箱为 `hyl92186009@gmail.com`。
+- 作者头像、浏览器站点图标和社交分享预览统一使用 `public/avatar.png`；公开邮箱为 `hyl92186009@gmail.com`。
 
 ### 3.3 使用与集成验证
 
