@@ -69,6 +69,15 @@ describe('site hardening', () => {
     expect(existsSync(resolve(root, 'public/favicon.png'))).toBe(false);
   });
 
+  test('closing the mascot only hides it for the current page', () => {
+    const source = readSource('src/components/PioMascot.astro');
+
+    expect(source).toContain('if (innerWidth > 768) root.hidden = false;');
+    expect(source).not.toContain('localStorage.getItem(KEY)');
+    expect(source).not.toContain('localStorage.setItem(KEY');
+    expect(source).toMatch(/\.mascot-close\s*\{[^}]*z-index:\s*1;/s);
+  });
+
   test('the public contact email is configured once and rendered as a mail link', () => {
     const config = readSource('src/config.ts');
     const about = readSource('src/pages/about.astro');

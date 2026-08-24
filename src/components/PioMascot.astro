@@ -26,7 +26,7 @@ const messages = SITE.mascotMessages ?? [];
     filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.18));
   }
   .mascot-close {
-    position: absolute; top: -6px; left: -6px;
+    position: absolute; top: -6px; left: -6px; z-index: 1;
     width: 20px; height: 20px; border-radius: 50%; border: none;
     background: var(--card); color: var(--ink-2); box-shadow: var(--shadow);
     font-size: 13px; line-height: 1; cursor: pointer;
@@ -52,9 +52,8 @@ const messages = SITE.mascotMessages ?? [];
   const closeBtn = document.getElementById('mascot-close');
 
   if (root && img && bubble && closeBtn) {
-    const KEY = 'mascot';
-    // 移动端不显示；用户关过则记住
-    if (innerWidth > 768 && localStorage.getItem(KEY) !== 'off') root.hidden = false;
+    // 移动端不显示；桌面端每次进入页面时恢复
+    if (innerWidth > 768) root.hidden = false;
 
     const messages: string[] = JSON.parse(root.dataset.messages || '[]');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -100,6 +99,6 @@ const messages = SITE.mascotMessages ?? [];
       }, 120);
     });
 
-    closeBtn.addEventListener('click', () => { root.hidden = true; localStorage.setItem(KEY, 'off'); });
+    closeBtn.addEventListener('click', () => { root.hidden = true; });
   }
 </script>
