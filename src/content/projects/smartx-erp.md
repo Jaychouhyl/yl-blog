@@ -3,6 +3,8 @@ title: SmartX EKG · 知识图谱智能 ERP
 repo: https://github.com/Jaychouhyl/ERP-Konwledgegraph-System
 status: 毕业设计系统
 summary: 将 ERP 业务、知识图谱、混合检索 RAG 与 MCP 工具连接为可核对、可跳转、可审计的智能业务工作台。
+role: 独立设计 / 全栈实现
+period: 2025-12-25 — 2026-08-20
 featured: true
 audience: [系统设计, AI 工程, 企业后台, 技术复盘]
 tech: [Vue 3, Spring Boot, Spring Cloud, MySQL, Redis, Neo4j, RocketMQ, Seata, RAG, MCP, Docker]
@@ -248,7 +250,7 @@ RAG 可以帮助用户准备销售或采购草稿，但正式写入仍然经过�
 
 ### 6.1 工具目录
 
-当前 MCP 服务包含 28 个工具，覆盖：
+截至 2026-07-26 的归档材料，MCP 服务包含 28 个工具，覆盖：
 
 - 销售：销售查询、销售草稿和相关履约能力。
 - 采购：采购查询、采购草稿和相关履约能力。
@@ -262,7 +264,7 @@ MCP Server 独立运行，通过 `/mcp/sse` 和 `/mcp/message` 提供协议入�
 
 ![MCP 工具目录与业务域分类](../../../public/images/projects/smartx-erp/06-mcp-console.png)
 
-*图 6：MCP 控制台按业务域展示已注册工具、输入参数和用途，当前目录包含 28 个工具。*
+*图 6：MCP 控制台按业务域展示已注册工具、输入参数和用途，归档目录包含 28 个工具。*
 
 ### 6.2 Key 与真实用户身份
 
@@ -351,13 +353,15 @@ Nacos 和 Sentinel 负责服务注册、配置与流量治理；Zipkin 负责调
 
 *图 7：运行状态页集中展示 MCP Server、SSE、日志队列和下游服务连通性。*
 
-### 10.2 当前可核对结果
+### 10.2 2026-07-26 归档可核对结果
 
-- 当前源码包含 7 个 Spring Boot 服务。
-- 当前源码包含 28 个 MCP 工具。
+该日期的归档材料记录了以下结果：
+
+- 源码包含 7 个 Spring Boot 服务。
+- MCP 目录包含 28 个工具。
 - 前端 Node 测试为 176 / 176 通过。
 - Vite 生产构建成功，转换 4,979 个模块。
-- Maven Reactor 20 个模块构建成功；该次构建明确使用 `-DskipTests`。
+- Maven Reactor 20 个模块构建成功；该次构建明确使用 `-DskipTests`，因此只作为构建证据。
 
 ### 10.3 仍然缺少的证据
 
@@ -403,3 +407,14 @@ SmartX EKG 的核心价值不在于把 ERP 加上一个聊天窗口，而在于�
 - 当前页面展示的是本地开发与演示系统，不声称已经生产上线。
 - 当前没有可公开的真实用户数、客户数、并发量、性能提升比例或业务收益。
 - “系统支持某项能力”指当前源码、配置或本地验证中存在对应实现，不等同于已经完成商业化运营。
+
+## 系列导读
+
+十篇工程复盘按项目推进过程分成四个阶段。建议顺序阅读，也可以从当前遇到的问题直接进入对应阶段：
+
+1. **建立边界**：[把后台做得更像系统](../../posts/smartx-erp-frontend-retrospective/) → [MCP 的重点不是工具列表](../../posts/smartx-erp-mcp-boundary/) → [让 AI 回答能够被追踪](../../posts/smartx-erp-agent-audit/)。这一阶段先解决页面规则、工具契约、身份和审计。
+2. **接通业务链路**：[微服务启动失败，真正缺的是可复现环境](../../posts/smartx-erp-reproducible-environment/) → [让 RAG 回答真正回到业务页面](../../posts/smartx-erp-rag-entity-routing/) → [Seata、Outbox 与 RocketMQ 如何分工](../../posts/smartx-erp-consistency-strategy/)。这一阶段关注运行环境、实体路由和一致性。
+3. **处理真实复杂度**：[一次 StackOverflowError 背后的身份递归](../../posts/smartx-erp-mcp-recursive-auth/) → [从页面补丁到 Aeria 组件体系](../../posts/smartx-erp-aeria-system/) → [自动化通过为什么不等于验收完成](../../posts/smartx-erp-validation-evidence/)。这一阶段记录故障、组件沉淀和验证证据。
+4. **完成工程收尾**：[一个毕业设计如何完成工程收尾](../../posts/smartx-erp-graduation-closeout/)。最后统一事实、安全、可靠性、智能能力、前端与交付边界。
+
+[查看完整 SmartX ERP 工程复盘系列](../../series/SmartX%20ERP%20工程复盘/)
