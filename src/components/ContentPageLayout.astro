@@ -29,12 +29,12 @@ const hasCustomSidebar = Astro.slots.has('sidebar');
     padding-bottom: 80px;
   }
   .sidebar-column { min-width: 0; }
-  .content-column { min-width: 0; display: grid; gap: 18px; }
+  .content-column { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .content-layout.compact-top { padding-top: 38px; }
   .content-layout.custom-sidebar { align-items: stretch; }
   .content-layout.custom-sidebar .sidebar-column { height: 100%; }
   @media (max-width: 768px) {
-    .content-layout { grid-template-columns: 1fr; padding-top: 92px; }
+    .content-layout { grid-template-columns: minmax(0, 1fr); padding-top: 92px; }
     .content-layout.compact-top { padding-top: 28px; }
     .content-column { grid-row: 1; }
     .sidebar-column { grid-row: 2; }

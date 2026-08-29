@@ -21,6 +21,12 @@ SmartX EKG 以企业资源计划系统为业务底座，将销售、采购、库
 
 **关键词：** 企业资源计划；知识图谱；检索增强生成；模型上下文协议；微服务；权限审计；分布式一致性
 
+## 架构总览
+
+![SmartX EKG 智能 ERP 微服务架构](../../../public/images/projects/smartx-erp/architecture.svg)
+
+*架构图：依据当前 Vue/Aeria 工作台、Gateway、Auth、SCM、Sales、Finance、RAG Decision、SmartX MCP 与数据基础设施整理。业务主账、图关系、异步事件和智能入口的权威边界保持分离。*
+
 ## 1. 问题背景
 
 ### 1.1 业务事实被切割在多个模块中
