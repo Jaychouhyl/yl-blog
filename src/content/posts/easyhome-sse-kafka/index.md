@@ -2,7 +2,7 @@
 title: EasyHome 工程复盘 04：SSE 与 Kafka 分别解决什么问题
 date: 2025-08-08
 tags: [EasyHome, SSE, Kafka, 流式响应, 异步任务]
-category: 项目复盘
+category: EasyHome
 series: EasyHome 工程复盘
 seriesOrder: 4
 summary: SSE 改善回答抵达页面的过程，Kafka 解耦后台任务，但两者都不能替代幂等、错误处理和最终业务状态验证。

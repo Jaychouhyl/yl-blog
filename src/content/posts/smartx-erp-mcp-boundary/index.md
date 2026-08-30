@@ -2,7 +2,7 @@
 title: SmartX ERP 工程复盘 02：MCP 的重点不是工具列表
 date: 2026-06-19
 tags: [SmartX ERP, MCP, 权限, RAG, AI 工程]
-category: 项目复盘
+category: SmartX ERP
 series: SmartX ERP 工程复盘
 seriesOrder: 2
 summary: MCP 接入 ERP 后，真正难的是身份、权限、内部边界和审计，而不是把接口简单包装成工具。

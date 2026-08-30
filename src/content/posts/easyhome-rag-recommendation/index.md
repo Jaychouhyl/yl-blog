@@ -2,7 +2,7 @@
 title: EasyHome 工程复盘 03：RAG 与 pgvector 如何参与房源推荐
 date: 2025-07-27
 tags: [EasyHome, RAG, pgvector, Embedding, 房源推荐]
-category: 项目复盘
+category: EasyHome
 series: EasyHome 工程复盘
 seriesOrder: 3
 summary: 房源推荐需要同时处理精确字段、语义偏好和可核对理由，向量检索负责召回候选，模型不能替代真实房源数据。

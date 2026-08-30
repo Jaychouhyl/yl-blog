@@ -2,7 +2,7 @@
 title: EasyHome 工程复盘 02：自然语言购房需求如何变成可执行条件
 date: 2025-07-12
 tags: [EasyHome, 自然语言理解, 意图识别, 结构化数据, 推荐系统]
-category: 项目复盘
+category: EasyHome
 series: EasyHome 工程复盘
 seriesOrder: 2
 summary: 模型可以理解“安静、通勤方便”这样的表达，但真正可执行的推荐仍要把硬条件、软偏好和不确定信息分别处理。

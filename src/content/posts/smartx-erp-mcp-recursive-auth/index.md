@@ -2,7 +2,7 @@
 title: SmartX ERP 工程复盘 07：一次 StackOverflowError 背后的身份递归
 date: 2026-07-26
 tags: [SmartX ERP, MCP, Feign, StackOverflowError, 故障排查]
-category: 项目复盘
+category: SmartX ERP
 series: SmartX ERP 工程复盘
 seriesOrder: 7
 summary: 工具调用出现栈溢出时，真正的根因不是 JSON 序列化，而是认证拦截器为了获取令牌再次触发了自己。

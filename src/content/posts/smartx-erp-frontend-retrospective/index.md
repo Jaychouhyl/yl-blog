@@ -2,7 +2,7 @@
 title: SmartX ERP 工程复盘 01：把后台做得更像系统
 date: 2025-12-25
 tags: [SmartX ERP, 前端工程, 设计系统, 企业后台]
-category: 项目复盘
+category: SmartX ERP
 series: SmartX ERP 工程复盘
 seriesOrder: 1
 summary: 这篇记录我在 ERP 前端优化里真正学到的东西：一致性、真实数据、空态、坏数据和验证，比单纯换皮重要得多。

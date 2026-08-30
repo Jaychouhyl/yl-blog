@@ -2,7 +2,7 @@
 title: Auto Obsidian MD 工程复盘 02：用 SQLite 管理去重、重试与任务恢复
 date: 2026-06-17
 tags: [Auto Obsidian MD, SQLite, 任务队列, 幂等, 可靠性]
-category: 项目复盘
+category: Auto Obsidian MD
 series: Auto Obsidian MD 工程复盘
 seriesOrder: 2
 summary: 当一次导入包含几十条网页和媒体资料时，可靠队列比单次成功更重要，状态机、幂等和重试共同决定任务能否恢复。

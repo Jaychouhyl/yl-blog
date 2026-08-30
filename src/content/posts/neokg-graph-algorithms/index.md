@@ -2,7 +2,7 @@
 title: NeoKG 工程复盘 03：路径搜索与社区发现怎样变成产品功能
 date: 2025-10-05
 tags: [NeoKG, 图算法, BFS, 最短路径, 社区发现]
-category: 项目复盘
+category: NeoKG
 series: NeoKG 工程复盘
 seriesOrder: 3
 summary: BFS 和社区发现只有与查询目标、高亮方式和解释入口结合，才会从算法名词变成真正可用的图谱能力。

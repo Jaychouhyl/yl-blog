@@ -2,7 +2,7 @@
 title: Auto Obsidian MD 工程复盘 01：从收藏到本地知识库的完整入库链路
 date: 2026-06-08
 tags: [Auto Obsidian MD, Python, Markdown, OCR, 语音转写]
-category: 项目复盘
+category: Auto Obsidian MD
 series: Auto Obsidian MD 工程复盘
 seriesOrder: 1
 summary: 网页、视频、PDF 和本地文件只有经过统一采集、提取、清洗与输出，才能从分散收藏变成可以继续使用的本地知识。

@@ -2,7 +2,7 @@
 title: NeoKG 工程复盘 02：知识图谱前端如何做到能看、能查、能操作
 date: 2025-09-20
 tags: [NeoKG, Vue 3, TypeScript, Cytoscape.js, 图谱可视化]
-category: 项目复盘
+category: NeoKG
 series: NeoKG 工程复盘
 seriesOrder: 2
 summary: 图谱前端不是把节点和边直接画出来，而是围绕查询目标组织布局、筛选、高亮、详情和异常状态。

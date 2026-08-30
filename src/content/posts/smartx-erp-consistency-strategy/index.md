@@ -2,7 +2,7 @@
 title: SmartX ERP 工程复盘 06：Seata、Outbox 与 RocketMQ 如何分工
 date: 2026-07-26
 tags: [SmartX ERP, Seata, RocketMQ, Outbox, 分布式事务]
-category: 项目复盘
+category: SmartX ERP
 series: SmartX ERP 工程复盘
 seriesOrder: 6
 summary: 同步核心写入、异步提醒、重复消费和事后对账需要不同机制，可靠性不是部署一个中间件就结束。

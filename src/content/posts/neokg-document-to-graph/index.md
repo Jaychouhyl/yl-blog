@@ -2,7 +2,7 @@
 title: NeoKG 工程复盘 01：一份文档如何变成知识图谱
 date: 2025-09-08
 tags: [NeoKG, 知识图谱, Apache Tika, Neo4j, 数据建模]
-category: 项目复盘
+category: NeoKG
 series: NeoKG 工程复盘
 seriesOrder: 1
 summary: 从文档解析、实体关系抽取到图数据库入库，梳理非结构化文本变成节点与关系时必须面对的数据问题。

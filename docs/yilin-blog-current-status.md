@@ -37,6 +37,7 @@
 
 - 项目页：Auto Obsidian MD、EasyHome、NeoKG、SmartX ERP，共 4 个。
 - 文章源目录：22 个，当前没有示例草稿或 `draft: true` 的文章。
+- 项目文章分类已按项目名称拆分为 `SmartX ERP`、`Auto Obsidian MD`、`NeoKG` 和 `EasyHome`；站点文章继续使用 `站点记录`，不再使用笼统的 `项目复盘` 分类。
 - SmartX ERP 复盘系列：第 1–10 篇均已存在。
 - SmartX ERP 第 1–10 篇均已增加编程知识、系统设计取舍和学习总结；第 1 篇发布日期修正为项目实际开始日 2025-12-25，使时间轴从该日开始，第 10 篇发布日期为项目结束后的 2026-08-27。其余篇目日期暂不根据推测重新分配。
 - Auto Obsidian MD 工程复盘：第 1–3 篇均已存在，分别整理入库链路、可靠队列和 Tauri 桌面化。

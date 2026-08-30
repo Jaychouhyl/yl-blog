@@ -2,7 +2,7 @@
 title: SmartX ERP 工程复盘 05：让 RAG 回答真正回到业务页面
 date: 2026-07-26
 tags: [SmartX ERP, RAG, 实体识别, Vue, 业务交互]
-category: 项目复盘
+category: SmartX ERP
 series: SmartX ERP 工程复盘
 seriesOrder: 5
 summary: 一段回答只有在能够准确打开单据、筛选客户并处理匹配失败时，才真正成为 ERP 的业务入口。

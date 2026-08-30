@@ -2,7 +2,7 @@
 title: SmartX ERP 工程复盘 10：一个毕业设计如何完成工程收尾
 date: 2026-08-27
 tags: [SmartX ERP, 毕业设计, 项目复盘, 系统设计, 工程收尾]
-category: 项目复盘
+category: SmartX ERP
 series: SmartX ERP 工程复盘
 seriesOrder: 10
 summary: 工程收尾不是继续增加功能，而是让安全、可靠性、智能能力、前端体验、验证证据和公开边界形成一致结论。

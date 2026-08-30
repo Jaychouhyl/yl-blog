@@ -2,7 +2,7 @@
 title: SmartX ERP 工程复盘 08：从页面补丁到 Aeria 组件体系
 date: 2026-07-26
 tags: [SmartX ERP, Vue 3, 设计系统, Aeria Studio, 组件工程]
-category: 项目复盘
+category: SmartX ERP
 series: SmartX ERP 工程复盘
 seriesOrder: 8
 summary: 页面逐个调整只能得到更多局部样式，稳定的企业后台需要 token、组件契约、业务 Blocks 与真实浏览器验收。

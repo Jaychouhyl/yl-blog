@@ -2,7 +2,7 @@
 title: SmartX ERP 工程复盘 03：让 AI 回答能够被追踪
 date: 2026-06-19
 tags: [Agent Bridge, 模型审计, MCP, RAG, 可观测性]
-category: 项目复盘
+category: SmartX ERP
 series: SmartX ERP 工程复盘
 seriesOrder: 3
 summary: 当 AI 可以调用 ERP 工具后，系统必须能回答它看到了什么、调用了什么、为什么给出这个答案。

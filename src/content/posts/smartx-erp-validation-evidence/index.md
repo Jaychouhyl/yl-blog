@@ -2,7 +2,7 @@
 title: SmartX ERP 工程复盘 09：自动化通过为什么不等于验收完成
 date: 2026-07-26
 tags: [SmartX ERP, 软件测试, 浏览器验收, 质量保障, 工程实践]
-category: 项目复盘
+category: SmartX ERP
 series: SmartX ERP 工程复盘
 seriesOrder: 9
 summary: 构建、测试、权限矩阵、真实浏览器和人工视觉判断回答的是不同问题，任何一种都不能独自证明系统已经完成。

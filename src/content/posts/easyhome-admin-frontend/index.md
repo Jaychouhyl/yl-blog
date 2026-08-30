@@ -2,7 +2,7 @@
 title: EasyHome 工程复盘 01：从管理后台理解业务状态与前端结构
 date: 2025-06-30
 tags: [EasyHome, Vue 3, TypeScript, Element Plus, 企业后台]
-category: 项目复盘
+category: EasyHome
 series: EasyHome 工程复盘
 seriesOrder: 1
 summary: 房源审核、用户管理和预约处理让我理解，后台前端的核心不是堆表格，而是准确表达业务对象、状态变化和操作结果。

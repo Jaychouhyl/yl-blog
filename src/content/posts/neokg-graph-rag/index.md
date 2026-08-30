@@ -2,7 +2,7 @@
 title: NeoKG 工程复盘 04：知识图谱为什么还需要 RAG
 date: 2025-10-19
 tags: [NeoKG, Graph RAG, pgvector, Neo4j, 智能问答]
-category: 项目复盘
+category: NeoKG
 series: NeoKG 工程复盘
 seriesOrder: 4
 summary: 向量检索擅长发现语义相近文本，图查询擅长保留实体关系，Graph RAG 的价值来自两类证据的组合而不是简单叠加。

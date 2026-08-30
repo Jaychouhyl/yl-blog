@@ -2,7 +2,7 @@
 title: SmartX ERP 工程复盘 04：微服务启动失败，真正缺的是可复现环境
 date: 2026-07-26
 tags: [SmartX ERP, 微服务, Nacos, Spring Boot, 工程实践]
-category: 项目复盘
+category: SmartX ERP
 series: SmartX ERP 工程复盘
 seriesOrder: 4
 summary: 当多个服务在 IDEA 中反复启动失败时，问题往往不在某一行 Java 代码，而在配置、基础设施和运行顺序没有形成统一事实。

@@ -2,7 +2,7 @@
 title: Auto Obsidian MD 工程复盘 03：从 Python 脚本到 Tauri 桌面应用
 date: 2026-06-28
 tags: [Auto Obsidian MD, Tauri, Rust, TypeScript, Windows]
-category: 项目复盘
+category: Auto Obsidian MD
 series: Auto Obsidian MD 工程复盘
 seriesOrder: 3
 summary: 桌面化不是给命令行套一层按钮，而是重新处理进程通信、依赖检测、账号状态、隐私边界和发布验证。
