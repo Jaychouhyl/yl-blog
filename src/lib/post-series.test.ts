@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
@@ -52,5 +52,24 @@ describe('post series system', () => {
 
     expect(source).toContain('series: 站点建设');
     expect(source).toContain('seriesOrder: 1');
+  });
+
+  test('post tags stay safe for single-segment tag routes', () => {
+    const postRoot = resolve(root, 'src/content/posts');
+    const files = readdirSync(postRoot, { recursive: true })
+      .map(String)
+      .filter((path) => path.endsWith('index.md'));
+
+    const invalidTags = files.flatMap((path) => {
+      const source = readFileSync(resolve(postRoot, path), 'utf8');
+      const tagLine = source.match(/^tags:\s*\[(.*)\]$/m)?.[1] ?? '';
+      return tagLine
+        .split(',')
+        .map((tag) => tag.trim())
+        .filter((tag) => tag.includes('/'))
+        .map((tag) => `${path}: ${tag}`);
+    });
+
+    expect(invalidTags).toEqual([]);
   });
 });

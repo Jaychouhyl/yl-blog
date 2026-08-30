@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">静态博客的构建期、页面期与外部服务边界</title>
+  <desc id="desc">Pagefind、RSS 和 sitemap 在构建阶段生成，分享元数据随页面输出，giscus 在读者点击后连接。</desc>
+  <rect width="1200" height="675" fill="#f5f2eb"/>
+  <text x="64" y="80" fill="#22201d" font-family="Noto Serif SC, serif" font-size="32" font-weight="700">静态页面之外，能力如何接入</text>
+  <text x="64" y="114" fill="#7c756b" font-family="Arial, sans-serif" font-size="17">BUILD TIME · PAGE METADATA · OPT-IN RUNTIME</text>
+  <g font-family="Noto Sans SC, Arial, sans-serif">
+    <rect x="62" y="164" width="332" height="414" rx="24" fill="#eef3f8" stroke="#92aac2"/>
+    <circle cx="106" cy="208" r="18" fill="#3d6f9e"/><text x="106" y="215" text-anchor="middle" fill="#fff" font-size="18">1</text>
+    <text x="140" y="216" fill="#2f526f" font-size="25" font-weight="700">构建阶段</text>
+    <rect x="96" y="258" width="264" height="70" rx="12" fill="#fff" stroke="#b9cad9"/><text x="228" y="288" text-anchor="middle" fill="#2f526f" font-size="19" font-weight="700">Pagefind</text><text x="228" y="313" text-anchor="middle" fill="#61788c" font-size="15">扫描 dist，生成搜索索引</text>
+    <rect x="96" y="350" width="126" height="78" rx="12" fill="#fff" stroke="#b9cad9"/><text x="159" y="382" text-anchor="middle" fill="#2f526f" font-size="18">RSS</text><text x="159" y="407" text-anchor="middle" fill="#61788c" font-size="14">订阅正文</text>
+    <rect x="234" y="350" width="126" height="78" rx="12" fill="#fff" stroke="#b9cad9"/><text x="297" y="382" text-anchor="middle" fill="#2f526f" font-size="18">sitemap</text><text x="297" y="407" text-anchor="middle" fill="#61788c" font-size="14">收录边界</text>
+    <text x="228" y="500" text-anchor="middle" fill="#61788c" font-size="16">不需要浏览器连接后端</text>
+    <rect x="434" y="164" width="332" height="414" rx="24" fill="#f5f0e8" stroke="#c5a679"/>
+    <circle cx="478" cy="208" r="18" fill="#a77736"/><text x="478" y="215" text-anchor="middle" fill="#fff" font-size="18">2</text>
+    <text x="512" y="216" fill="#775a31" font-size="25" font-weight="700">页面输出</text>
+    <rect x="468" y="258" width="264" height="96" rx="12" fill="#fff" stroke="#d8c29f"/><text x="600" y="292" text-anchor="middle" fill="#775a31" font-size="19" font-weight="700">Open Graph</text><text x="600" y="319" text-anchor="middle" fill="#8b7658" font-size="15">标题 · 摘要 · 横版分享图</text><text x="600" y="340" text-anchor="middle" fill="#8b7658" font-size="15">随 HTML 一起发布</text>
+    <rect x="468" y="380" width="264" height="96" rx="12" fill="#fff" stroke="#d8c29f"/><text x="600" y="414" text-anchor="middle" fill="#775a31" font-size="19" font-weight="700">canonical / robots</text><text x="600" y="441" text-anchor="middle" fill="#8b7658" font-size="15">明确网址与索引策略</text>
+    <rect x="806" y="164" width="332" height="414" rx="24" fill="#f7eded" stroke="#c99a9a"/>
+    <circle cx="850" cy="208" r="18" fill="#a55353"/><text x="850" y="215" text-anchor="middle" fill="#fff" font-size="18">3</text>
+    <text x="884" y="216" fill="#814a4a" font-size="25" font-weight="700">主动连接</text>
+    <rect x="840" y="258" width="264" height="134" rx="12" fill="#fff" stroke="#dbbaba"/><text x="972" y="294" text-anchor="middle" fill="#814a4a" font-size="20" font-weight="700">GitHub Discussions</text><text x="972" y="326" text-anchor="middle" fill="#8d6969" font-size="16">读者点击“加载评论”</text><path d="M894 355 H1050" stroke="#dbbaba" stroke-width="2"/><text x="972" y="379" text-anchor="middle" fill="#a55353" font-size="15">giscus client.js</text>
+    <text x="972" y="446" text-anchor="middle" fill="#8d6969" font-size="16">失败不影响正文阅读</text><text x="972" y="478" text-anchor="middle" fill="#8d6969" font-size="16">未点击不建立第三方连接</text>
+  </g>
+  <text x="600" y="626" text-anchor="middle" fill="#7c756b" font-family="Noto Sans SC, Arial, sans-serif" font-size="18">核心阅读保持静态，附加能力按真实边界独立工作。</text>
+</svg>

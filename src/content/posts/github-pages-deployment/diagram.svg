@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">从 Git 推送到 GitHub Pages 的部署流水线</title>
+  <desc id="desc">main 分支更新后依次执行 checkout、Node 22、npm ci、检查与构建、Pagefind、制品上传和 Pages 发布。</desc>
+  <rect width="1200" height="675" fill="#f5f2eb"/>
+  <text x="62" y="78" fill="#22201d" font-family="Noto Serif SC, serif" font-size="32" font-weight="700">一次部署经过什么</text>
+  <text x="62" y="112" fill="#7c756b" font-family="Arial, sans-serif" font-size="17">SOURCE → REPRODUCIBLE BUILD → ARTIFACT → PUBLIC SITE</text>
+  <g font-family="Noto Sans SC, Arial, sans-serif">
+    <rect x="58" y="204" width="170" height="206" rx="22" fill="#22201d"/>
+    <text x="143" y="258" text-anchor="middle" fill="#fff" font-size="24" font-weight="700">main</text><text x="143" y="292" text-anchor="middle" fill="#d9d2c8" font-size="17">git push</text>
+    <circle cx="143" cy="344" r="34" fill="#35322e" stroke="#716b62"/><path d="M125 345 h36 M143 327 v36" stroke="#f5f2eb" stroke-width="4"/>
+    <path d="M228 307 H290" stroke="#9b958b" stroke-width="4"/><polygon points="290,296 310,307 290,318" fill="#9b958b"/>
+    <rect x="310" y="160" width="478" height="294" rx="24" fill="#fffdf9" stroke="#d8d1c4"/>
+    <text x="348" y="208" fill="#22201d" font-size="24" font-weight="700">Build job · Ubuntu · Node.js 22</text>
+    <g font-size="16">
+      <rect x="348" y="246" width="180" height="58" rx="10" fill="#eef3f8"/><text x="438" y="281" text-anchor="middle" fill="#2f526f">1. checkout</text>
+      <rect x="552" y="246" width="198" height="58" rx="10" fill="#eef3f8"/><text x="651" y="281" text-anchor="middle" fill="#2f526f">2. npm ci</text>
+      <rect x="348" y="326" width="180" height="86" rx="10" fill="#edf5f1"/><text x="438" y="360" text-anchor="middle" fill="#356c58">3. astro check</text><text x="438" y="388" text-anchor="middle" fill="#5f8173">类型与内容 schema</text>
+      <rect x="552" y="326" width="198" height="86" rx="10" fill="#f5f0e8"/><text x="651" y="360" text-anchor="middle" fill="#775a31">4. build + Pagefind</text><text x="651" y="388" text-anchor="middle" fill="#8b7658">静态页面与搜索索引</text>
+    </g>
+    <path d="M788 307 H850" stroke="#9b958b" stroke-width="4"/><polygon points="850,296 870,307 850,318" fill="#9b958b"/>
+    <rect x="870" y="204" width="126" height="206" rx="22" fill="#3d6f9e"/>
+    <text x="933" y="264" text-anchor="middle" fill="#fff" font-size="21" font-weight="700">dist</text><path d="M906 294 h54 v70 h-54 z" fill="none" stroke="#eaf2f9" stroke-width="3"/><path d="M916 310 h34 M916 325 h34 M916 340 h26" stroke="#eaf2f9" stroke-width="3"/>
+    <text x="933" y="390" text-anchor="middle" fill="#eaf2f9" font-size="15">Pages artifact</text>
+    <path d="M996 307 H1044" stroke="#9b958b" stroke-width="4"/><polygon points="1044,296 1064,307 1044,318" fill="#9b958b"/>
+    <rect x="1064" y="204" width="92" height="206" rx="22" fill="#a55353"/>
+    <text x="1110" y="268" text-anchor="middle" fill="#fff" font-size="18" font-weight="700">Pages</text><circle cx="1110" cy="328" r="29" fill="none" stroke="#f8eaea" stroke-width="3"/><path d="M1081 328 h58 M1110 299 c-12 10-12 48 0 58 M1110 299 c12 10 12 48 0 58" fill="none" stroke="#f8eaea" stroke-width="2"/>
+  </g>
+  <rect x="182" y="502" width="836" height="76" rx="18" fill="#fffdf9" stroke="#d8d1c4" stroke-dasharray="7 7"/>
+  <text x="600" y="534" text-anchor="middle" fill="#22201d" font-family="Noto Sans SC, Arial, sans-serif" font-size="18" font-weight="700">线上验收</text>
+  <text x="600" y="560" text-anchor="middle" fill="#7c756b" font-family="Noto Sans SC, Arial, sans-serif" font-size="16">基础路径 · 页面资源 · 搜索跳转 · RSS / sitemap · 桌面与移动端</text>
+  <text x="600" y="630" text-anchor="middle" fill="#7c756b" font-family="Noto Sans SC, Arial, sans-serif" font-size="18">公开结果来自流水线制品，而不是本地工作目录。</text>
+</svg>

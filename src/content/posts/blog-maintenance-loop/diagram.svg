@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">博客长期维护的验证闭环</title>
+  <desc id="desc">从真实证据出发，经范围确认、精确修改、自动测试、生产构建和浏览器验收后更新文档，再回到新的证据。</desc>
+  <rect width="1200" height="675" fill="#f5f2eb"/>
+  <text x="64" y="80" fill="#22201d" font-family="Noto Serif SC, serif" font-size="32" font-weight="700">长期维护不是不断添加，而是持续确认</text>
+  <text x="64" y="114" fill="#7c756b" font-family="Arial, sans-serif" font-size="17">EVIDENCE-LED MAINTENANCE LOOP</text>
+  <g fill="none" stroke="#a8a096" stroke-width="4">
+    <path d="M600 175 C788 175 930 270 930 366"/><path d="M930 366 C930 494 774 560 600 560"/><path d="M600 560 C426 560 270 494 270 366"/><path d="M270 366 C270 270 412 175 600 175"/>
+  </g>
+  <g fill="#a8a096"><polygon points="914,343 936,370 945,337"/><polygon points="628,546 594,562 629,574"/><polygon points="286,391 264,364 255,397"/><polygon points="572,189 606,173 571,161"/></g>
+  <g font-family="Noto Sans SC, Arial, sans-serif">
+    <rect x="488" y="137" width="224" height="92" rx="18" fill="#22201d"/>
+    <text x="600" y="176" text-anchor="middle" fill="#fff" font-size="22" font-weight="700">真实证据</text><text x="600" y="204" text-anchor="middle" fill="#d9d2c8" font-size="15">运行行为 · 源码 · 配置 · 历史</text>
+    <rect x="817" y="256" width="256" height="92" rx="18" fill="#eef3f8" stroke="#92aac2"/>
+    <text x="945" y="295" text-anchor="middle" fill="#2f526f" font-size="22" font-weight="700">范围确认与精确修改</text><text x="945" y="323" text-anchor="middle" fill="#61788c" font-size="15">一次只改变一个明确变量</text>
+    <rect x="817" y="402" width="256" height="92" rx="18" fill="#edf5f1" stroke="#8eb4a2"/>
+    <text x="945" y="441" text-anchor="middle" fill="#356c58" font-size="22" font-weight="700">测试与 Astro check</text><text x="945" y="469" text-anchor="middle" fill="#5f8173" font-size="15">守住内容和组件契约</text>
+    <rect x="472" y="514" width="256" height="92" rx="18" fill="#f5f0e8" stroke="#c5a679"/>
+    <text x="600" y="553" text-anchor="middle" fill="#775a31" font-size="22" font-weight="700">生产构建与索引</text><text x="600" y="581" text-anchor="middle" fill="#8b7658" font-size="15">路由 · RSS · sitemap · Pagefind</text>
+    <rect x="127" y="402" width="256" height="92" rx="18" fill="#f7eded" stroke="#c99a9a"/>
+    <text x="255" y="441" text-anchor="middle" fill="#814a4a" font-size="22" font-weight="700">真实浏览器验收</text><text x="255" y="469" text-anchor="middle" fill="#8d6969" font-size="15">视觉 · 路径 · 交互 · 响应式</text>
+    <rect x="127" y="256" width="256" height="92" rx="18" fill="#fffdf9" stroke="#d8d1c4"/>
+    <text x="255" y="295" text-anchor="middle" fill="#22201d" font-size="22" font-weight="700">文档与回滚记录</text><text x="255" y="323" text-anchor="middle" fill="#7c756b" font-size="15">结论 · 测试证据 · 文件 · 回滚点</text>
+    <circle cx="600" cy="366" r="102" fill="#3d6f9e"/>
+    <text x="600" y="350" text-anchor="middle" fill="#fff" font-family="Noto Serif SC, serif" font-size="30" font-weight="700">可复现</text>
+    <text x="600" y="388" text-anchor="middle" fill="#eaf2f9" font-size="20">不是“看起来完成”</text>
+  </g>
+  <text x="600" y="644" text-anchor="middle" fill="#7c756b" font-family="Noto Sans SC, Arial, sans-serif" font-size="17">每一次闭环都会产生新的权威状态，也为下一次维护提供起点。</text>
+</svg>

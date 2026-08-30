@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">从需求到 Astro 的技术选型路径</title>
+  <desc id="desc">写作、内容结构、静态部署与长期维护四项需求经过边界判断，最终指向 Astro。</desc>
+  <rect width="1200" height="675" fill="#f5f2eb"/>
+  <rect x="36" y="36" width="1128" height="603" rx="28" fill="#fffdf9" stroke="#d8d1c4"/>
+  <text x="78" y="100" fill="#22201d" font-family="Noto Serif SC, serif" font-size="32" font-weight="700">技术选型从需求开始</text>
+  <text x="78" y="136" fill="#7c756b" font-family="Arial, sans-serif" font-size="18">REQUIREMENTS → BOUNDARY → TOOL</text>
+  <g font-family="Noto Sans SC, Arial, sans-serif" font-size="22">
+    <rect x="82" y="190" width="250" height="76" rx="16" fill="#eef3f8" stroke="#92aac2"/><text x="112" y="237" fill="#2f526f">Markdown 长期写作</text>
+    <rect x="82" y="286" width="250" height="76" rx="16" fill="#f7eded" stroke="#c99a9a"/><text x="112" y="333" fill="#814a4a">文章与项目有结构</text>
+    <rect x="82" y="382" width="250" height="76" rx="16" fill="#edf5f1" stroke="#8eb4a2"/><text x="112" y="429" fill="#356c58">GitHub Pages 静态部署</text>
+    <rect x="82" y="478" width="250" height="76" rx="16" fill="#f5f0e8" stroke="#c5a679"/><text x="112" y="525" fill="#775a31">允许持续调整页面</text>
+  </g>
+  <g stroke="#9b958b" stroke-width="3" fill="none">
+    <path d="M332 228 C420 228 432 300 496 318"/><path d="M332 324 H496"/><path d="M332 420 C420 420 432 348 496 330"/><path d="M332 516 C430 516 452 388 502 344"/>
+  </g>
+  <polygon points="486,313 505,324 486,335" fill="#9b958b"/>
+  <rect x="510" y="240" width="258" height="170" rx="22" fill="#22201d"/>
+  <text x="639" y="292" text-anchor="middle" fill="#f5f2eb" font-family="Noto Serif SC, serif" font-size="26" font-weight="700">边界判断</text>
+  <text x="639" y="334" text-anchor="middle" fill="#d9d2c8" font-family="Noto Sans SC, Arial, sans-serif" font-size="19">不需要数据库与在线后台</text>
+  <text x="639" y="369" text-anchor="middle" fill="#d9d2c8" font-family="Noto Sans SC, Arial, sans-serif" font-size="19">内容归仓库 · 页面构建时生成</text>
+  <path d="M768 325 H884" stroke="#9b958b" stroke-width="4"/><polygon points="884,313 906,325 884,337" fill="#9b958b"/>
+  <rect x="906" y="218" width="208" height="214" rx="26" fill="#3d6f9e"/>
+  <text x="1010" y="302" text-anchor="middle" fill="#fff" font-family="Georgia, serif" font-size="48" font-weight="700">Astro</text>
+  <text x="1010" y="346" text-anchor="middle" fill="#e8f1f8" font-family="Noto Sans SC, Arial, sans-serif" font-size="19">内容集合</text>
+  <text x="1010" y="378" text-anchor="middle" fill="#e8f1f8" font-family="Noto Sans SC, Arial, sans-serif" font-size="19">组件页面 · 静态输出</text>
+  <text x="78" y="606" fill="#7c756b" font-family="Noto Sans SC, Arial, sans-serif" font-size="18">结论不是“框架越强越好”，而是“工作流与约束是否匹配”。</text>
+</svg>

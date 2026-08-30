@@ -127,7 +127,7 @@ describe('site hardening', () => {
     expect(footer).not.toContain("withBase('/graph/')");
     expect(footer).not.toContain("withBase('/albums/')");
     expect(footer).not.toContain("withBase('/friends/')");
-    expect(firstPost).toContain('tags: [站点记录]');
+    expect(firstPost).toContain('tags: [站点记录, 站点建设]');
     expect(firstPost).toContain('category: 站点记录');
     expect(firstPost).not.toContain('tags: [随笔]');
     expect(firstPost).not.toContain('category: 随笔');
