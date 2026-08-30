@@ -17,8 +17,8 @@ describe('site hardening', () => {
     expect(source).toContain('property="og:title"');
     expect(source).toContain('property="og:description"');
     expect(source).toContain('property="og:url"');
-    expect(source).toContain("withBase('/avatar.png')");
-    expect(source).toContain('name="twitter:card" content="summary"');
+    expect(source).toContain("withBase('/social-cover.png')");
+    expect(source).toContain('name="twitter:card" content="summary_large_image"');
   });
 
   test('giscus is loaded only after an explicit reader action', () => {
@@ -59,7 +59,7 @@ describe('site hardening', () => {
     expect(lock.packages['node_modules/yaml-language-server/node_modules/yaml'].version).toBe('2.8.3');
   });
 
-  test('the approved avatar asset is used for profile, favicon, and social previews', () => {
+  test('the approved avatar asset is used for profile and favicon', () => {
     expect(readSource('src/layouts/BaseLayout.astro')).toContain(
       '<link rel="icon" href={withBase(\'/avatar.png\')} />',
     );
@@ -78,13 +78,35 @@ describe('site hardening', () => {
     expect(source).toMatch(/\.mascot-close\s*\{[^}]*z-index:\s*1;/s);
   });
 
-  test('the public contact email is configured once and rendered as a mail link', () => {
+  test('the public contact email stays configured without being repeated on the about page', () => {
     const config = readSource('src/config.ts');
     const about = readSource('src/pages/about.astro');
 
     expect(config).toContain("email: 'hyl92186009@gmail.com'");
-    expect(about).toContain('href={`mailto:${SITE.email}`}');
-    expect(about).toContain('{SITE.email}');
+    expect(about).not.toContain('SITE.email');
+    expect(about).not.toContain('SITE.github');
+  });
+
+  test('the about page explains the blog without duplicating a personal resume', () => {
+    const about = readSource('src/pages/about.astro');
+
+    expect(about).toContain('关于此博客');
+    expect(about).toContain('项目复盘');
+    expect(about).toContain('学习记录');
+    expect(about).toContain('琐碎');
+    expect(about).not.toContain('教育背景');
+    expect(about).not.toContain('技能栈');
+    expect(about).not.toContain('研究兴趣');
+    expect(about).not.toContain('代表项目');
+    expect(about).not.toContain('联系方式');
+  });
+
+  test('social previews use a dedicated 1200 by 630 homepage-style image', () => {
+    const image = readFileSync(resolve(root, 'public/social-cover.png'));
+
+    expect(image.subarray(1, 4).toString('ascii')).toBe('PNG');
+    expect(image.readUInt32BE(16)).toBe(1200);
+    expect(image.readUInt32BE(20)).toBe(630);
   });
 
   test('rss rendering drops raw html before publishing feed content', () => {
@@ -165,12 +187,9 @@ describe('site hardening', () => {
     expect(page).toContain('p.data.audience');
   });
 
-  test('personal factual copy stays marked for owner review', () => {
-    const about = readSource('src/pages/about.astro');
+  test('profile summary factual copy stays marked for owner review', () => {
     const summaryWidget = readSource('src/components/ProfileSummaryWidget.astro');
 
-    expect(about).toContain('具体学校、专业和时间信息暂不公开。');
-    expect(about).not.toContain('计算机相关方向');
     expect(summaryWidget).toContain('公开材料');
     expect(summaryWidget).toContain('待补充');
     expect(summaryWidget).not.toContain('数据分析');
@@ -194,10 +213,10 @@ describe('site hardening', () => {
     expect(sources[2]).toContain('](../../../../public/images/projects/smartx-erp/');
   });
 
-  test('about profile separators use theme line token', () => {
+  test('about copy uses the shared theme line token', () => {
     const about = readSource('src/pages/about.astro');
 
-    expect(about).toContain('border-top: 1px solid var(--line);');
+    expect(about).toContain('border-bottom: 1px solid var(--line);');
     expect(about).not.toContain('rgba(68, 53, 58, 0.12)');
   });
 

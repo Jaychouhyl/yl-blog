@@ -2,203 +2,43 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContentPageLayout from '../components/ContentPageLayout.astro';
 import PageTitleHero from '../components/PageTitleHero.astro';
-import { SITE, withBase } from '../config';
 ---
 <BaseLayout title="关于">
   <PageTitleHero title="关于" />
   <ContentPageLayout compactTop>
-  <section class="glass about-page">
-    <header class="about-head">
-      <p class="lead">本科阶段主要围绕前端工程、数据可视化、AI/RAG 应用和工程文档做项目。这个站点更像一个长期作品集：不追求把所有细节铺开，而是保留能说明技术判断、协作方式和成长轨迹的材料。</p>
-    </header>
-
-    <section class="resume-section" aria-labelledby="position-heading">
-      <h2 id="position-heading">一句话定位</h2>
-      <p>前端与工程表达为主的开发者：个人项目独立做全栈，团队项目主攻前端。关注企业后台、数据可视化、知识图谱和 RAG 产品化的落地。</p>
-    </section>
-
-    <section class="resume-section" aria-labelledby="education-heading">
-      <h2 id="education-heading">教育背景</h2>
-      <dl class="resume-list">
-        <div>
-          <dt>阶段</dt>
-          <dd>本科四年项目经历整理中；具体学校、专业和时间信息暂不公开。</dd>
-        </div>
-        <div>
-          <dt>主线</dt>
-          <dd>从前端页面、UI 与工程图，到企业系统、AI/RAG 和知识图谱，逐步把项目从“能做出来”推进到“能解释、能维护、能复盘”。</dd>
-        </div>
-        <div>
-          <dt>补充说明</dt>
-          <dd>站内内容会优先展示公开项目、工程复盘和学习记录；不把未经确认的学校、奖项或指标写成正式经历。</dd>
-        </div>
-      </dl>
-    </section>
-
-    <section class="resume-section" aria-labelledby="skills-heading">
-      <h2 id="skills-heading">技能栈</h2>
-      <div class="skill-groups">
-        <section aria-label="语言">
-          <h3>语言</h3>
-          <div class="skill-tags">
-            <span>TypeScript</span>
-            <span>JavaScript</span>
-            <span>Python</span>
-            <span>Java</span>
-            <span>SQL</span>
-            <span>Markdown</span>
-          </div>
-        </section>
-        <section aria-label="框架与工具">
-          <h3>框架与工具</h3>
-          <div class="skill-tags">
-            <span>Vue 3</span>
-            <span>Astro</span>
-            <span>Vite</span>
-            <span>Element Plus</span>
-            <span>Ant Design Vue</span>
-            <span>FastAPI</span>
-            <span>Spring Boot</span>
-            <span>ECharts</span>
-            <span>Cytoscape.js</span>
-            <span>Docker</span>
-          </div>
-        </section>
-        <section aria-label="方向">
-          <h3>方向</h3>
-          <div class="skill-tags">
-            <span>前端工程</span>
-            <span>企业后台 UI</span>
-            <span>数据可视化</span>
-            <span>工程图与文档</span>
-            <span>RAG / Agent</span>
-          </div>
-        </section>
+    <article class="glass about-page" aria-labelledby="about-blog-heading">
+      <h2 id="about-blog-heading">关于此博客</h2>
+      <div class="about-copy">
+        <p>这个博客用来记录我在项目开发、技术学习和日常思考中留下的过程。比起只展示一个完成结果，我更想把问题怎么出现、方案怎么取舍，以及最后学到了什么整理下来。</p>
+        <p>站内内容以项目复盘和学习记录为主，也会放一些与工具、AI、前后端和知识整理有关的琐碎内容。文章不追求包罗万象，而是尽量把当时真正理解和验证过的部分说清楚。</p>
+        <p>希望它能成为一份长期更新的个人记录：过一段时间回头看，既能找到用过的方法，也能看见自己的思路是怎样一点点变化的。</p>
       </div>
-    </section>
-
-    <section class="resume-section" aria-labelledby="research-heading">
-      <h2 id="research-heading">研究兴趣</h2>
-      <p>我更关心“技术怎么变成可信的工具”：比如知识图谱如何被前端清楚地呈现，RAG/Agent 如何进入真实业务流程，以及 UI、工程图、文档如何帮助团队理解复杂系统。</p>
-    </section>
-
-    <section class="resume-section" aria-labelledby="projects-heading">
-      <h2 id="projects-heading">代表项目</h2>
-      <div class="project-list">
-        <div class="project-link">
-          <a href={withBase('/projects/auto-obsidian-md/')}>Auto Obsidian MD</a>
-          <p>我独立开发的本地知识入库工具，将网页、收藏、视频和本地资料整理为可检索的 Markdown 笔记。</p>
-        </div>
-        <div class="project-link">
-          <a href={withBase('/projects/smartx-erp/')}>SmartX EKG</a>
-          <p>我独立设计与实现的毕业设计：把 ERP 业务、知识图谱、RAG 助手和 MCP 工具连接起来，覆盖前端、后端、图谱、权限与审计。</p>
-        </div>
-        <div class="project-link">
-          <a href={withBase('/projects/neokg/')}>NeoKG</a>
-          <p>团队的知识图谱管理系统，我主要参与前端页面与图谱可视化（Cytoscape.js）。</p>
-        </div>
-        <div class="project-link">
-          <a href={withBase('/projects/easyhome/')}>EasyHome</a>
-          <p>团队的二手房推荐系统（LLM + RAG），我参与管理端前端、UI 设计和项目文档，并在后期复盘整体技术链路。</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="resume-section" aria-labelledby="contact-heading">
-      <h2 id="contact-heading">联系方式</h2>
-      <dl class="resume-list">
-        <div>
-          <dt>GitHub</dt>
-          <dd><a class="link" href={SITE.github} target="_blank" rel="noopener noreferrer">@Jaychouhyl</a></dd>
-        </div>
-        <div>
-          <dt>邮箱</dt>
-          <dd><a class="link" href={`mailto:${SITE.email}`}>{SITE.email}</a></dd>
-        </div>
-      </dl>
-    </section>
-  </section>
+    </article>
   </ContentPageLayout>
 </BaseLayout>
 <style>
-  .about-page { padding: 30px 34px 38px; }
-  .about-head {
-    display: grid;
-    gap: 12px;
-    margin-bottom: 34px;
+  .about-page {
+    padding: 34px 38px 42px;
   }
-  .lead {
-    max-width: 720px;
+  .about-page h2 {
+    margin: 0 0 22px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+    font-size: 24px;
+  }
+  .about-copy {
+    max-width: 860px;
+  }
+  .about-copy p {
     margin: 0;
     color: var(--ink-2);
-    line-height: 1.85;
+    line-height: 2;
   }
-  .resume-section {
-    border-top: 1px solid var(--line);
-    padding: 22px 0;
-  }
-  .resume-section h2 {
-    margin: 0 0 12px;
-    font-size: 22px;
-  }
-  .resume-section p {
-    margin: 0;
-    color: var(--ink-2);
-    line-height: 1.85;
-  }
-  .resume-list {
-    display: grid;
-    gap: 14px;
-    margin: 0;
-  }
-  .resume-list div {
-    display: grid;
-    gap: 4px;
-  }
-  .resume-list dt {
-    color: var(--ink);
-    font-weight: 700;
-  }
-  .resume-list dd {
-    margin: 0;
-    color: var(--ink-2);
-  }
-  .skill-groups {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
-  }
-  .skill-groups h3 {
-    margin: 0 0 8px;
-    color: var(--ink);
-    font-size: 15px;
-  }
-  .skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .skill-tags span {
-    padding: 3px 10px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    color: var(--ink-2);
-    font-size: 13px;
-  }
-  .project-link {
-    display: grid;
-    gap: 8px;
-  }
-  .project-list {
-    display: grid;
-    gap: 16px;
-  }
-  .project-link a,
-  .link {
-    color: var(--sakura);
+  .about-copy p + p {
+    margin-top: 22px;
   }
   @media (max-width: 680px) {
-    .about-page { padding: 24px 20px 30px; }
-    .skill-groups { grid-template-columns: 1fr; }
+    .about-page { padding: 26px 22px 32px; }
+    .about-page h2 { font-size: 22px; }
   }
 </style>

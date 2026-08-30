@@ -1,6 +1,6 @@
 ---
 title: SmartX ERP 工程复盘 01：把后台做得更像系统
-date: 2026-06-19
+date: 2025-12-25
 tags: [SmartX ERP, 前端工程, 设计系统, 企业后台]
 category: 项目复盘
 series: SmartX ERP 工程复盘
